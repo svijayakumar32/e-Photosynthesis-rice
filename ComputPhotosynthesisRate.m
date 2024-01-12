@@ -1,26 +1,27 @@
 function PhotosynthesisRate=ComputPhotosynthesisRate(PhotosynthesisType,PhotosynthesQ10,Vcmax25,Jmax25,Rd25,R,LeafTemperature,Convert, Radiation_PAR,PhotosynthesisTheta,Ci,Air_O2,GRNC,Einput,Eio)
 %Temporary variables double Q10Temperature;
 if (PhotosynthesisType == 1.0 || PhotosynthesisType == 1.1)% C3 Farquhar or Metabolic
-    Rd = Rd25 * exp(18.72 - 46.39 / (R * (LeafTemperature + 273.15)));
+    %Rd = Rd25 * exp(18.72 - 46.39 / (R * (LeafTemperature + 273.15)));
+    Rd = 1.33898789673117; %SV: Rd value from measure data
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Compute C3 photosynthesis
 %Constant
-if (PhotosynthesisType == 1.0)% C3 Farquhar or Metabolic
+if (PhotosynthesisType == 1.0)% C3 Farquhar
 Rate_TPu = 23.0; %u moles/m2 leaf area/s
-%Temporary variables
+%Temporary variables - SV: not used at the moment but should be altered according to species and measured data
 LeafTemperatureKelvin = LeafTemperature + 273.15; %Leaf temperature in K
-GammaStar = exp(19.02 - 37.83 / (R * LeafTemperatureKelvin));
-Ko = exp(20.30 - 36.38 / (R * LeafTemperatureKelvin));
-Kc = exp(38.05 - 79.43 / (R * LeafTemperatureKelvin));	
-Vcmax = Vcmax25 * exp(26.35 - 65.33 / (R * LeafTemperatureKelvin));
+GammaStar = exp(19.02 - 37.83 / (R * LeafTemperatureKelvin)); %SV: modify GammaStar according to crop
+Ko = exp(20.30 - 36.38 / (R * LeafTemperatureKelvin)); %SV: modify Kc and Ko 
+Kc = exp(38.05 - 79.43 / (R * LeafTemperatureKelvin));	%SV: modify Kc and Ko 
+Vcmax = Vcmax25 * exp(26.35 - 65.33 / (R * LeafTemperatureKelvin)); %SV: substitute Jmax/J value from measured data
 PhiPS2 = 0.385 + 0.02166 * LeafTemperature - 3.37 * LeafTemperature^2.0 / 10000.0;% Match PS_FIT
 I = Convert * Radiation_PAR * PhiPS2 * 0.5;
 ThetaPS2 = PhotosynthesisTheta + 0.01713 * LeafTemperature - 3.75 * LeafTemperature^2.0 / 10000.0; % Match PS_FIT
-Jmax = Jmax25 * exp(17.57 - 43.54 / (R * LeafTemperatureKelvin));
-J = (I + Jmax - sqrt((I + Jmax)^2.0 - 4.0 * ThetaPS2 * I * Jmax)) / (2.0 * ThetaPS2);
-LeafAc = (1.0 - GammaStar / Ci) * (Vcmax * Ci) /(Ci + Kc * (1.0 + Air_O2 / Ko));%Rubisco limited photosynthesis
-LeafAj = (1.0 - GammaStar / Ci) * (J * Ci) /(4.5 * Ci + 10.5 * GammaStar); %Light limited photosynthesis
+Jmax = Jmax25 * exp(17.57 - 43.54 / (R * LeafTemperatureKelvin));%SV: substitute Jmax/J value from measured data
+J = (I + Jmax - sqrt((I + Jmax)^2.0 - 4.0 * ThetaPS2 * I * Jmax)) / (2.0 * ThetaPS2); 
+LeafAc = (1.0 - GammaStar / Ci) * (Vcmax * Ci) /(Ci + Kc * (1.0 + Air_O2 / Ko));%Rubisco limited photosynthesis - SV: modify to quadratic form?
+LeafAj = (1.0 - GammaStar / Ci) * (J * Ci) /(4.5 * Ci + 10.5 * GammaStar); %Light limited photosynthesis - SV: modify to quadratic form?
 if (LeafAj < 0.0)
     LeafAj = 0.0;
 end
@@ -51,7 +52,8 @@ NetAssimilation=GrossAssimilation-Rd;
 
     end
 LeafTemperatureKelvin = LeafTemperature + 273.15; %Leaf temperature in K
-GammaStar = exp(19.02 - 37.83 / (R * LeafTemperatureKelvin));
+%GammaStar = exp(19.02 - 37.83 / (R * LeafTemperatureKelvin));
+GammaStar = 50.2248975;% GammaStar from measured data
 end
 
 
