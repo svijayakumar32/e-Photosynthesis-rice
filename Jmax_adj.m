@@ -20,7 +20,7 @@ Lii=2000;%light intensity from IRRI
 %Farquhar model parameters
 %Gr=38.6;%µbar von caemmerer 2020 %Gamma Star
 %Gr=;%µbar %Gamma Star calculated from msuRACiFit using Hermida-Carrera(2016) rice parameters at 25C, 100.5kPa
-Gr=50.2248975;%µbar %Gamma Star calculated from fitting IR64 of IRRI using Hermida-Carrera rice parameters at Tleaf
+Gr=49.6558492521714;%µbar %Gamma Star calculated from fitting IR64 of IRRI using Hermida-Carrera rice parameters at Tleaf
 %Rd=1;%default
 Rd = 1.33898789673117; %Rd estimated using msuRACiFit (Gregory et al 2021) rice parameters at Tleaf 
 Gm = 5.395926789339;
@@ -28,9 +28,9 @@ Gm = 5.395926789339;
 I2=Lii/2*0.85*(1-0.15);
 Theta=0.7;
 
-Kc=348.318266403677;%ubar, 34.832 Pa, avg of Tleaf values, rice c and dHa
-Ko=275.324214275076;%mbar, 27.532 kPa, avg of Tleaf values, rice c and dHa 
-Kc_air = 613.901254795337;%ubar, 61.390 Pa avg of Tleaf values, rice c and dHa
+Kc=344.372950911716;%ubar, 34.832 Pa, avg of Tleaf values, rice c and dHa
+Ko=272.205362286189;%mbar, 27.532 kPa, avg of Tleaf values, rice c and dHa 
+Kc_air = 606.946980366782;%ubar, 61.390 Pa avg of Tleaf values, rice c and dHa
 O=210;%mbar
 
 %J=(I2+Jmax_m-sqrt((I2+Jmax_m)^2-4*Theta*I2*Jmax_m))/(2*Theta);
@@ -77,7 +77,7 @@ GRNC=0;
 
 for j=1:25
     j
-VmaxAdj=1.0+j*0.02;%adjust enzyme activity  %modify ratio 1.2 to 1.4 (or greater) if no fit %default 0.8
+VmaxAdj=0.5+j*0.02;%adjust enzyme activity  %modify ratio 1.2 to 1.4 (or greater) if no fit %default 0.8
 Eio(1)=Edata.data(1,1)*Vrubusco_adj;
 Eio(2:27)=Edata.data(2:27,1)*VmaxAdj;
 Ci_vals=zeros(4,1);
@@ -104,7 +104,6 @@ b=(J/4)-Rd+(Ci+2*Gr)*Gm;
 c=((Ci-Gr)*J/4-(Ci+2*Gr)*Rd)*Gm;
 %ACI_m=((J/4)-Rd+(Ci+2*Gr)*Gm)-(sqrt(((J/4)-Rd+(Ci+2*Gr)*Gm)^2)-4*(((Ci-Gr)*J/4-(Ci+2*Gr)*Rd)*Gm))/2;
 ACI_m=(b-sqrt(b^2-4*c))/2; %Aj expressed as a function of Ci
-
 ACi_evsm(i)=(ACI_m-NetAssimilation)^2;%the squares of the residuals
 end
 SSR(j,1)=VmaxAdj;
