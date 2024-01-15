@@ -192,22 +192,69 @@ PsKM12_0    =  (O2_uM/((17.2515/8.03)-1))/1000; % rice O2	1	RuBP+CO2->2PGA
 % so a conversion to Pa/kPa, then to ubar/mbar is needed by multiplying (1000 / 1000000) and
 % then multiplying by the atmospheric pressure (standard pressure is 101.325 kPa but could be adjusted to match gas exchange measurement?)
 %Kc_25 = exp(c_c-dHa_c*1000/(R*(25+273.15)))*(1000 / 1000000)*101.146126226945*10; %Kc at 25C in ubar
-Kc_25 = exp(c_c-dHa_c*1000/(R*(25+273.15)))*(1000 / 1000000)*101.325*10; %Kc at 25C in ubar
+% To account for pressure differences at each A/Ci curve
+Patm = [101.2307157,...
+       101.1605204,...
+       101.1843824,...
+       101.1336601,...
+       101.2090909,...
+       101.2,...
+       101.0321614,...
+       101.0184791]';
 
-%Kcair_25 = exp(c_air-dHa_air*1000/(R*(25+273.15)))*(1000 / 1000000)*101.146126226945*10; %Kcair at 25C in ubar
-Kcair_25 = exp(c_air-dHa_air*1000/(R*(25+273.15)))*(1000 / 1000000)*101.325*10; %Kcair at 25C in ubar
+[Kc_25_vals,Kcair_25_vals,Ko_25_vals,Kc_Tp_vals,Kcair_Tp_vals,Ko_Tp_vals]=deal(zeros(8,1));
 
-Ko_25 = ((21000/((Kcair_25/Kc_25) - 1))/1000)*10; %Ko at 25C in mbar
+for i=1:length(Patm)
+Kc_25_vals(i,1) = exp(c_c-dHa_c*1000/(R*(25+273.15)))*(1000 / 1000000)*Patm(i,1)*10; %Kcair at 25C in ubar
+Kc_Tp_vals(i,1) = exp(c_c-dHa_c*1000/(R*(Tp+273.15)))*(1000 / 1000000)*Patm(i,1)*10; %Kcair at 25C in ubar
+Kcair_25_vals(i,1) = exp(c_air-dHa_air*1000/(R*(25+273.15)))*(1000 / 1000000)*Patm(i,1)*10; %Kcair at Tp in ubar
+Kcair_Tp_vals(i,1) = exp(c_air-dHa_air*1000/(R*(Tp+273.15)))*(1000 / 1000000)*Patm(i,1)*10; %Kcair at Tp in ubar
+Ko_25_vals(i,1) = ((21000/((Kcair_25_vals(i,1)/Kc_25_vals(i,1)) - 1))/1000)/Patm(i,1)*1000; %Ko at 25C in mbar
+Ko_Tp_vals(i,1) = ((21000/((Kcair_Tp_vals(i,1)/Kc_Tp_vals(i,1)) - 1))/1000)/Patm(i,1)*1000; %Ko at Tp in mbar
+end
+
+% To account for pressure differences at each A/Ci curve
+% Kc_25 = exp(c_c-dHa_c*1000/(R*(25+273.15)))*(1000 / 1000000)*101.23071566495*10; %Kcair at 25C in ubar
+% Kc_25 = exp(c_c-dHa_c*1000/(R*(25+273.15)))*(1000 / 1000000)*101.160520380194*10; %Kcair at 25C in ubar
+% Kc_25 = exp(c_c-dHa_c*1000/(R*(25+273.15)))*(1000 / 1000000)*101.1843824*10; %Kcair at 25C in ubar
+% Kc_25 = exp(c_c-dHa_c*1000/(R*(25+273.15)))*(1000 / 1000000)*101.1336601*10; %Kcair at 25C in ubar
+% Kc_25 = exp(c_c-dHa_c*1000/(R*(25+273.15)))*(1000 / 1000000)*101.2090909*10; %Kcair at 25C in ubar
+% Kc_25 = exp(c_c-dHa_c*1000/(R*(25+273.15)))*(1000 / 1000000)*101.2*10; %Kcair at 25C in ubar
+% Kc_25 = exp(c_c-dHa_c*1000/(R*(25+273.15)))*(1000 / 1000000)*101.0321614*10; %Kcair at 25C in ubar
+% Kc_25 = exp(c_c-dHa_c*1000/(R*(25+273.15)))*(1000 / 1000000)*101.0184791*10; %Kcair at 25C in ubar
+
+Kc_25 = mean(Kc_25_vals); %Kc avg at 25C in ubar
+Kcair_25 = mean(Kcair_25_vals); %Kcair avg at 25C in ubar
+Ko_25 = mean(Ko_25_vals); % Ko avg at 25C in mbar
+Kc_Tp = mean(Kc_Tp_vals); %Kc avg at 25C in ubar
+Kcair_Tp = mean(Kcair_Tp_vals); %Kcair avg at 25C in ubar
+Ko_Tp = mean(Ko_Tp_vals); % Ko avg at 25C in mbar
+%Kc_25 = exp(c_c-dHa_c*1000/(R*(25+273.15)))*(1000 / 1000000)*101.325*10; %Kc at 25C in ubar
+
+% To account for pressure differences at each A/Ci curve
+%Kcair_25 = exp(c_air-dHa_air*1000/(R*(25+273.15)))*(1000 / 1000000)*101.23071566495*10; %Kcair at 25C in ubar
+%Kcair_25 = exp(c_air-dHa_air*1000/(R*(25+273.15)))*(1000 / 1000000)*101.160520380194*10; %Kcair at 25C in ubar
+%Kcair_25 = exp(c_air-dHa_air*1000/(R*(25+273.15)))*(1000 / 1000000)*101.1843824*10; %Kcair at 25C in ubar
+%Kcair_25 = exp(c_air-dHa_air*1000/(R*(25+273.15)))*(1000 / 1000000)*101.1336601*10; %Kcair at 25C in ubar
+%Kcair_25 = exp(c_air-dHa_air*1000/(R*(25+273.15)))*(1000 / 1000000)*101.2090909*10; %Kcair at 25C in ubar
+%Kcair_25 = exp(c_air-dHa_air*1000/(R*(25+273.15)))*(1000 / 1000000)*101.2*10; %Kcair at 25C in ubar
+%Kcair_25 = exp(c_air-dHa_air*1000/(R*(25+273.15)))*(1000 / 1000000)*101.0321614*10; %Kcair at 25C in ubar
+%Kcair_25 = exp(c_air-dHa_air*1000/(R*(25+273.15)))*(1000 / 1000000)*101.0184791*10; %Kcair at 25C in ubar
+
+
+%Kcair_25 = exp(c_air-dHa_air*1000/(R*(25+273.15)))*(1000 / 1000000)*101.325*10; %Kcair at 25C in ubar
+
+%Ko_25 = ((21000/((Kcair_25/Kc_25) - 1))/1000)*10; %Ko at 25C in mbar - correct this conversion!
 
 % Now we calculate the same parameters at leaf temperature (Tp) and convert to ubar/mbar as above
 % Tp is adjusted by changing the global WeatherTemp variable in Jmax_adj, Vcmax_adj or gpmain files 
 %Kc_Tp = exp(c_c-dHa_c*1000/(R*(Tp+273.15)))*(1000 / 1000000)*101.146126226945*10; %Kc at Tp in ubar
-Kc_Tp = exp(c_c-dHa_c*1000/(R*(Tp+273.15)))*(1000 / 1000000)*101.325*10; %Kc at Tp in ubar
+%Kc_Tp = exp(c_c-dHa_c*1000/(R*(Tp+273.15)))*(1000 / 1000000)*101.325*10; %Kc at Tp in ubar
 %Kc_Tp = 348.318266403677; %ubar, 34.832 Pa, avg of Tleaf values, rice c and dHa
 %Kcair_Tp = exp(c_air-dHa_air*1000/(R*(Tp+273.15)))*(1000 / 1000000)*101.146126226945*10; %Kcair at Tp in ubar
-Kcair_Tp = exp(c_air-dHa_air*1000/(R*(Tp+273.15)))*(1000 / 1000000)*101.325*10; %Kcair at Tp in ubar
+%Kcair_Tp = exp(c_air-dHa_air*1000/(R*(Tp+273.15)))*(1000 / 1000000)*101.325*10; %Kcair at Tp in ubar
 %Kcair_Tp = 613.901254795337;
-Ko_Tp = ((21000/((Kcair_Tp/Kc_Tp) - 1))/1000)*10; %Ko at Tp in mbar
+%Ko_Tp = ((21000/((Kcair_Tp/Kc_Tp) - 1))/1000)*10; %Ko at Tp in mbar
 %Ko_Tp = 275.324214275076; %mbar, 27.532 kPa, avg of Tleaf values, rice c and dHa
 
 % Original calculation here
