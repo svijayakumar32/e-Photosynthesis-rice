@@ -19,7 +19,7 @@ Lii=2000;%light intensity from IRRI
 
 %Farquhar model parameters
 %Gr=38.6;%µbar von caemmerer 2020 %Gamma Star
-Gr=50.2248975;%µbar %Gamma Star calculated from fitting IR64 of IRRI using Hermida-Carrera rice parameters at Tleaf
+Gr=49.6558492521714;%µbar %Gamma Star calculated from fitting IR64 of IRRI using Hermida-Carrera rice parameters at Tleaf
 %Rd=1; %default value for day respiration (in light)
 Rd = 1.33898789673117; %Rd estimated using msuRACiFit (Gregory et al 2016) rice parameters at Tleaf 
 Gm = 5.395926789339;
@@ -27,9 +27,9 @@ Gm = 5.395926789339;
 I2=Lii/2*0.85*(1-0.15);
 Theta=0.7;
 
-Kc=348.318266403677;%ubar, 34.832 Pa, avg of Tleaf values, rice c and dHa
-Ko=275.324214275076;%mbar, 27.532 kPa, avg of Tleaf values, rice c and dHa
-Kc_air = 613.901254795337;%ubar, 61.390 Pa avg of Tleaf values, rice c and dHa
+Kc=344.372950911716;%ubar, 34.832 Pa, avg of Tleaf values, rice c and dHa
+Ko=272.205362286189;%mbar, 27.532 kPa, avg of Tleaf values, rice c and dHa
+Kc_air = 606.946980366782;%ubar, 61.390 Pa avg of Tleaf values, rice c and dHa
 O=210;%mbar
 
 %Rearrange
@@ -107,13 +107,13 @@ end
 %ACI_m=Vcmax_m*(Ci-Gr)/(Ci+Kc_air)-Rd; %subbed in Kc_air for Kc*(1+O/Ko)
 
 %05/01/2024 modification
-%ACI_m=(Vcmax_m-Rd+(Ci+Kc_air)*Gm)-(sqrt((Vcmax_m-Rd+(Ci+Kc_air)*Gm)^2)-(4*(((Ci-Gr)*Vcmax_m-(Ci-Kc_air)*Rd)*Gm)))/2;
 b=Vcmax_m-Rd+(Ci+Kc_air)*Gm;
-c=((Ci-Gr)*Vcmax_m-(Ci-Kc_air)*Rd)*Gm;
+c=((Ci-Gr)*Vcmax_m-(Ci+Kc_air)*Rd)*Gm;
 
-ACI_m=(b-sqrt(b^2-4*c))/2; %Ac expressed as a function of Ci, where
+ACI_m=(Vcmax_m-Rd+(Ci+Kc_air)*Gm)-(sqrt((Vcmax_m-Rd+(Ci+Kc_air)*Gm)^2)-(4*(((Ci-Gr)*Vcmax_m-(Ci-Kc_air)*Rd)*Gm)))/2;
+ACi_evsm(i)=(ACI_Ac-NetAssimilation)^2;%the squares of the residuals
+%ACi_evsm(i)=(ACI_m-NetAssimilation)^2;%the squares of the residuals
 
-ACi_evsm(i)=(ACI_m-NetAssimilation)^2;%the squares of the residuals
 end
 SSR(j,1)=Vrubusco_adj;
 SSR(j,2)=sum(ACi_evsm);%the sum of the squares of the residuals
