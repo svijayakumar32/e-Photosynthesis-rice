@@ -15,22 +15,25 @@ J=189.091184437385;% Avg Estimated using msuRACiFit (Gregory et al 2021) with ri
 
 %%%%%%%%%%
 Lii=2000;%light intensity from IRRI
-%Lii=1500;%light intensity from Acevedo-Siaca
 
 %Farquhar model parameters
-%Gr=38.6;%µbar von caemmerer 2020 %Gamma Star
-%Gr=;%µbar %Gamma Star calculated from msuRACiFit using Hermida-Carrera(2016) rice parameters at 25C, 100.5kPa
-Gr=50.2248975;%µbar %Gamma Star calculated from fitting IR64 of IRRI using Hermida-Carrera rice parameters at Tleaf
+%Gr=50.2248975;%µbar %Gamma Star calculated from fitting IR64 of IRRI using Hermida-Carrera rice parameters at Tleaf
+Gr = 49.6558492521714;%µmol mol-1
+
 %Rd=1;%default
-Rd = 1.33898789673117; %Rd estimated using msuRACiFit (Gregory et al 2021) rice parameters at Tleaf 
-Gm = 5.395926789339;
+Rd = 1.33898789673117; %umol m-2 s-1, estimated using msuRACiFit (Gregory et al 2021) rice parameters at Tleaf 
+
+%Gm = 5.395926789339; %umol m-2 s-1 Pa-1
+Gm = 0.545813281251705; %umol m-2 s-1
 
 I2=Lii/2*0.85*(1-0.15);
 Theta=0.7;
 
-Kc=348.318266403677;%ubar, 34.832 Pa, avg of Tleaf values, rice c and dHa
-Ko=275.324214275076;%mbar, 27.532 kPa, avg of Tleaf values, rice c and dHa 
-Kc_air = 61.3901254795337;%ubar, 61.390 Pa avg of Tleaf values, rice c and dHa
+%Kc=348.318266403677;%ubar, 34.832 Pa, avg of Tleaf values, rice c and dHa
+%Ko=275.324214275076;%mbar, 27.532 kPa, avg of Tleaf values, rice c and dHa 
+%Kc_air = 613.901254795337;%ubar, 61.390 Pa avg of Tleaf values, rice c and dHa
+Kc_air = 606.946980366782;%umol mol-1
+
 O=210;%mbar
 
 %J=(I2+Jmax_m-sqrt((I2+Jmax_m)^2-4*Theta*I2*Jmax_m))/(2*Theta);
@@ -102,7 +105,7 @@ end
 %05/01/2024 modification from Gu et al (2010) - quadratic form
 b=(J/4)-Rd+(Ci+2*Gr)*Gm;
 c=((Ci-Gr)*J/4-(Ci+2*Gr)*Rd)*Gm;
-%ACI_m=((J/4)-Rd+(Ci+2*Gr)*Gm)-(sqrt(((J/4)-Rd+(Ci+2*Gr)*Gm)^2)-4*(((Ci-Gr)*J/4-(Ci+2*Gr)*Rd)*Gm))/2;
+
 ACI_m=(b-sqrt(b^2-4*c))/2; %Aj expressed as a function of Ci
 ACi_evsm(i)=(ACI_m-NetAssimilation)^2;%the squares of the residuals
 end

@@ -2,7 +2,7 @@ function PhotosynthesisRate=ComputPhotosynthesisRate(PhotosynthesisType,Photosyn
 %Temporary variables double Q10Temperature;
 if (PhotosynthesisType == 1.0 || PhotosynthesisType == 1.1)% C3 Farquhar or Metabolic
     %Rd = Rd25 * exp(18.72 - 46.39 / (R * (LeafTemperature + 273.15)));
-    Rd = 1.33898789673117; %SV: Rd value from measure data
+    Rd = 1.33898789673117; %SV: Rd value from measured data
 end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %Compute C3 photosynthesis
@@ -53,7 +53,7 @@ NetAssimilation=GrossAssimilation-Rd;
     end
 LeafTemperatureKelvin = LeafTemperature + 273.15; %Leaf temperature in K
 %GammaStar = exp(19.02 - 37.83 / (R * LeafTemperatureKelvin));
-GammaStar = 50.2248975;% GammaStar from measured data
+GammaStar = 50.2248975;% GammaStar in ubar from measured data
 end
 
 

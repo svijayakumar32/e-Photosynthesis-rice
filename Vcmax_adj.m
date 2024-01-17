@@ -19,27 +19,31 @@ Lii=2000;%light intensity from IRRI
 
 %Farquhar model parameters
 %Gr=38.6;%µbar von caemmerer 2020 %Gamma Star
-Gr=50.2248975;%µbar %Gamma Star calculated from fitting IR64 of IRRI using Hermida-Carrera rice parameters at Tleaf
+%Gr=50.2248975;%µbar %Gamma Star calculated from fitting IR64 of IRRI using Hermida-Carrera rice parameters at Tleaf
+Gr = 49.6558492521714;%µmol mol-1
+
 %Rd=1; %default value for day respiration (in light)
-Rd = 1.33898789673117; %Rd estimated using msuRACiFit (Gregory et al 2016) rice parameters at Tleaf 
-Gm = 5.395926789339;
+Rd = 1.33898789673117; %umol m-2 s-1, estimated using msuRACiFit (Gregory et al 2016) rice parameters at Tleaf 
+%Gm = 5.395926789339; %umol m-2 s-1 Pa-1
+Gm = 0.545813281251705; %umol m-2 s-1
 
 I2=Lii/2*0.85*(1-0.15);
 Theta=0.7;
 
-Kc=348.318266403677;%ubar, 34.832 Pa, avg of Tleaf values, rice c and dHa
-Ko=275.324214275076;%mbar, 27.532 kPa, avg of Tleaf values, rice c and dHa
-Kc_air = 61.3901254795337;%ubar, 61.390 Pa avg of Tleaf values, rice c and dHa
+%Kc=348.318266403677;%ubar, 34.832 Pa, avg of Tleaf values, rice c and dHa
+%Ko=275.324214275076;%mbar, 27.532 kPa, avg of Tleaf values, rice c and dHa
+%Kc_air = 613.901254795337;%ubar, 61.390 Pa avg of Tleaf values, rice c and dHa
+Kc_air = 606.946980366782;%umol mol-1
+
 O=210;%mbar
 
 %Rearrange
 %Kc_air=Kc*(1+(O/Ko))
 %Ko=O/((Kc_air/Kc)-1)
 %%%%%%%%%%%%%%%%%%%%%
-% 05/01/2024 Smaller range to avoid intersection of Rubisco-limited and electron transport
+% Check range to avoid intersection of Rubisco-limited and electron transport
 % limited points
-%CA=[100,150,200,250,300]; %Red
-CA=[100,150,200,250];
+CA=[100,150,200,250,300];
 
 global Vrubusco_adj;
 global VmaxAdj;
@@ -110,10 +114,9 @@ end
 b=Vcmax_m-Rd+(Ci+Kc_air)*Gm;
 c=((Ci-Gr)*Vcmax_m-(Ci+Kc_air)*Rd)*Gm;
 
-ACI_m=(Vcmax_m-Rd+(Ci+Kc_air)*Gm)-(sqrt((Vcmax_m-Rd+(Ci+Kc_air)*Gm)^2)-(4*(((Ci-Gr)*Vcmax_m-(Ci-Kc_air)*Rd)*Gm)))/2;
+ACI_m=(b-sqrt(b^2-4*c))/2; %Aj expressed as a function of Ci
 ACi_evsm(i)=(ACI_Ac-NetAssimilation)^2;%the squares of the residuals
 %ACi_evsm(i)=(ACI_m-NetAssimilation)^2;%the squares of the residuals
-
 end
 SSR(j,1)=Vrubusco_adj;
 SSR(j,2)=sum(ACi_evsm);%the sum of the squares of the residuals
