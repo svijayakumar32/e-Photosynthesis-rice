@@ -66,7 +66,7 @@ Einput=ones(37,1);%No gene expression data input
 Edata=importdata('Einput7.txt');
 Eio=Edata.data(:,1);
 MetaOnly=0;% if MetaOnly=1 run only Metabolic model
-WeatherTemp=28.9310407291759; %Original = 25C, Avg Tleaf = 28.93104073
+WeatherTemp=28.9310407291759; %Avg Tleaf, Original = 25C
 WeatherRH=0.6;
 WeatherWind=5;
 Convert=1E6/(2.35E5); %Convert W m^{-2} to u moles m^{-2} s^{-1}
@@ -80,7 +80,7 @@ GRNC=0;
 
 for j=1:25
     j
-VmaxAdj=0.5+j*0.02;%adjust enzyme activity  %modify ratio 1.2 to 1.4 (or greater) if no fit %default 0.8
+VmaxAdj=1.0+j*0.02;%adjust enzyme activity  %modify ratio 1.2 to 1.4 (or greater) if no fit %default 0.8
 Eio(1)=Edata.data(1,1)*Vrubusco_adj;
 Eio(2:27)=Edata.data(2:27,1)*VmaxAdj;
 Ci_vals=zeros(4,1);

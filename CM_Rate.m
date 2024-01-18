@@ -191,21 +191,27 @@ PsKM12_0    =  (O2_uM/((17.2515/8.03)-1))/1000; % rice O2	1	RuBP+CO2->2PGA
 % c and dHa for rice Kc and Kcair were given in umol mol-1 by Hermida-Carrera
 % so a conversion to Pa/kPa, then to ubar/mbar is needed by multiplying (1000 / 1000000) and
 % then multiplying by the atmospheric pressure (standard pressure is 101.325 kPa but could be adjusted to match leaf-level measurement?)
-Kc_25 = exp(c_c-dHa_c*1000/(R*(25+273.15)))*(1000 / 1000000)*101.146126226945*10; %Kc at 25C in ubar% 
+%Kc_25 = exp(c_c-dHa_c*1000/(R*(25+273.15)))*(1000 / 1000000)*101.146126226945*10; %Kc at 25C in ubar% 
+Kc_25 = exp(c_c-dHa_c*1000/(R*(25+273.15)));%Kc at 25C in umol mol -1% 
+
 %Kc_25 = exp(c_c-dHa_c*1000/(R*(25+273.15)))*(1000 / 1000000)*101.325*10; %Kc at 25C in ubar
-Kcair_25 = exp(c_air-dHa_air*1000/(R*(25+273.15)))*(1000 / 1000000)*101.146126226945*10; %Kcair at 25C in ubar
+%Kcair_25 = exp(c_air-dHa_air*1000/(R*(25+273.15)))*(1000 / 1000000)*101.146126226945*10; %Kcair at 25C in ubar
+Kcair_25 = exp(c_air-dHa_air*1000/(R*(25+273.15))); %Kcair at 25C in umol mol -1
+
 %Kcair_25 = exp(c_air-dHa_air*1000/(R*(25+273.15)))*(1000 / 1000000)*101.325*10; %Kcair at 25C in ubar
-Ko_25 = ((21000/((Kcair_25/Kc_25) - 1))/1000)*10; %Ko at 25C in mbar 
+Ko_25 = ((21000/((Kcair_25/Kc_25) - 1))/1000)*10; %Ko at 25C in mbar or mmol mol -1 
 
 % Now we calculate the same parameters at leaf temperature (Tp) and convert to ubar/mbar as above
 % Tp is adjusted by changing the global WeatherTemp variable in Jmax_adj, Vcmax_adj or gpmain files 
-Kc_Tp = exp(c_c-dHa_c*1000/(R*(Tp+273.15)))*(1000 / 1000000)*101.146126226945*10; %Kc at Tp in ubar
+%Kc_Tp = exp(c_c-dHa_c*1000/(R*(Tp+273.15)))*(1000 / 1000000)*101.146126226945*10; %Kc at Tp in ubar
+Kc_Tp = exp(c_c-dHa_c*1000/(R*(Tp+273.15))); %Kc at Tp in umol mol-1
 %Kc_Tp = exp(c_c-dHa_c*1000/(R*(Tp+273.15)))*(1000 / 1000000)*101.325*10; %Kc at Tp in ubar
 %Kc_Tp = 348.318266403677; %ubar, 34.832 Pa, avg of Tleaf values, rice c and dHa
-Kcair_Tp = exp(c_air-dHa_air*1000/(R*(Tp+273.15)))*(1000 / 1000000)*101.146126226945*10; %Kcair at Tp in ubar
+Kcair_Tp = exp(c_air-dHa_air*1000/(R*(Tp+273.15))); %Kcair at Tp in umol mol -1
+%Kcair_Tp = exp(c_air-dHa_air*1000/(R*(Tp+273.15)))*(1000 / 1000000)*101.146126226945*10; %Kcair at Tp in ubar
 %Kcair_Tp = exp(c_air-dHa_air*1000/(R*(Tp+273.15)))*(1000 / 1000000)*101.325*10; %Kcair at Tp in ubar
 %Kcair_Tp = 613.901254795337; %ubar, avg of Tleaf values, rice c and dHa
-Ko_Tp = ((21000/((Kcair_Tp/Kc_Tp) - 1))/1000)*10; %Ko at Tp in mbar
+Ko_Tp = ((21000/((Kcair_Tp/Kc_Tp) - 1))/1000)*10; %Ko at Tp in mbar or mmol mol -1 
 %Ko_Tp = 275.324214275076; %mbar, 27.532 kPa, avg of Tleaf values
 
 % Original calculation here

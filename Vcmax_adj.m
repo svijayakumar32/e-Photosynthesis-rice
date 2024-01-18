@@ -47,7 +47,7 @@ CA=[100,150,200,250,300];
 
 global Vrubusco_adj;
 global VmaxAdj;
-VmaxAdj=1.12;%adjust enzyme activity i.e. sub in optimal Vmaxadj from Jmax_adj % default 1.3
+VmaxAdj=1.08;%adjust enzyme activity i.e. sub in optimal Vmaxadj from Jmax_adj % default 1.3
 global pcfactor;  
 ProteinTotalRatio=0;
 pcfactor=1/ProteinTotalRatio;
@@ -72,7 +72,7 @@ Einput=ones(37,1);%No gene expression data input
 Edata=importdata('Einput7.txt');
 Eio=Edata.data(:,1);
 MetaOnly=0;% if MetaOnly=1 run only Metabolic model
-WeatherTemp=28.9310407291759; %Original = 25C
+WeatherTemp=28.9310407291759; %Avg Tleaf, Original = 25C
 WeatherRH=0.6;
 WeatherWind=5;
 Convert=1E6/(2.35E5); %Convert W m^{-2} to u moles m^{-2} s^{-1}
@@ -114,9 +114,8 @@ end
 b=Vcmax_m-Rd+(Ci+Kc_air)*Gm;
 c=((Ci-Gr)*Vcmax_m-(Ci+Kc_air)*Rd)*Gm;
 
-ACI_m=(b-sqrt(b^2-4*c))/2; %Aj expressed as a function of Ci
-ACi_evsm(i)=(ACI_Ac-NetAssimilation)^2;%the squares of the residuals
-%ACi_evsm(i)=(ACI_m-NetAssimilation)^2;%the squares of the residuals
+ACI_m=(b-sqrt(b^2-4*c))/2; %Ac expressed as a function of Ci
+ACi_evsm(i)=(ACI_m-NetAssimilation)^2;%the squares of the residuals
 end
 SSR(j,1)=Vrubusco_adj;
 SSR(j,2)=sum(ACi_evsm);%the sum of the squares of the residuals
