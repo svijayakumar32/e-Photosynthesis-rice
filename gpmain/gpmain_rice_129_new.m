@@ -31,7 +31,7 @@ WeatherTemp=28.9310407291759;
 GRNC=0;
 Einput=ones(37,1);%No gene expression data input
 %Edata=importdata('Einput7.txt');
-Edata=importdata('Einput_rice.txt');
+Edata=importdata('Einput7.txt');
 Eio=Edata.data(:,1);
 Eio(1)=Edata.data(1,1)*Vrubusco_adj;
 Eio(2:26)=Edata.data(2:26,1)*VmaxAdj;
@@ -245,14 +245,15 @@ for i = 1:numofGen
 	    if rem(i/100,1)==0
         i
         Ci_str = num2str(CO2i);
+        task_id=getenv('SLURM_ARRAY_TASK_ID');
         % Specify unique filenames for each Ci
-        workspacefileName = strcat ("CO2_rice_",Ci_str,"_New_1.mat");
+        workspacefileName = strcat ("CO2_rice_",Ci_str,"_",task_id,".mat");
         % Save the work space 
         save(workspacefileName);
-%       Save matrix of optimal enzyme rates to output file
-		BestMatrix=BestMatrix'; % Transpose matrix
-        BestMatrixfileName = strcat ("outputenz_",Ci_str,"_New_rice_1.txt");
-        d_plotfileName = strcat ("d_plot_",Ci_str,"_New_rice_1.xls");
+        %Save matrix of optimal enzyme rates to output file
+        BestMatrix=BestMatrix'; % Transpose matrix
+        BestMatrixfileName = strcat ("outputenz_",Ci_str,"_",task_id,".txt");
+        d_plotfileName = strcat ("d_plot_",Ci_str,"_",task_id,".xls");
         writematrix(BestMatrix,BestMatrixfileName);
         writematrix(d_plot,d_plotfileName);
         end
