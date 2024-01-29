@@ -1,14 +1,5 @@
 clear all;
-% REMEMBER TO CHECK IF USING KC OR KCAIR TO CALCULATE ASSIMILATION AT DIFF CI (LINE 98/99)
-%Estimated From ACi data from Liana Acevedo-Siaca (2021), 
-% Values presented in paper were fitted using Bernacchi and Long (2003) who don't estimate
-% Chl level parameters for Rd and Gamma at 25C 
-% Therefore O.sativa upper canopy data points were re-estimated from Fig 6,
-% using Tleaf average of 6 replicates = 32.35C (Canopy Compiled Traits) and pressure of 100.5kPa 
-% These values were used to construct and fit A/Ci and derive new parameters at Tleaf 
-% corrected to equivalent values at 25C using constants from the Sharkey et al (2015) tool
-
-% However this didn't work out so tried refitting WT IR64 data provided by IRRI
+% Fitting WT IR64 data provided by IRRI (Gas exchange measurement WT plants)
 % Tleaf average of 8 replicates = 28.93104073C
 Vcmax_m=134.380530667391;% Avg Estimated using msuRACiFit (Gregory et al 2016) with rice Gamma Star at 28.9C
 J=189.091184437385;% Avg Estimated using msuRACiFit (Gregory et al 2016) with rice Gamma Star at 28.9C
@@ -86,7 +77,7 @@ GRNC=0;
 
 for j=1:25
     j
-Vrubusco_adj=1.0+j*0.02;%adjust enzyme activity between 0.6-1.0 %default 0.8
+Vrubusco_adj=0+j*0.02;%adjust enzyme activity between 0.6-1.0 %default 0.8
 Eio(1)=Edata.data(1,1)*Vrubusco_adj;
 Eio(2:27)=Edata.data(2:27,1)*VmaxAdj;
 Ci_vals=zeros(4,1);
@@ -101,7 +92,9 @@ else
 LeafResult=Leaf(WeatherRH,WeatherTemp,Air_CO2,WeatherWind,Radiation_PAR,Radiation_NIR,Radiation_LW,PhotosynthesisType,Vcmax25,Jmax25,GRNC,Einput,Eio);
 Ci=LeafResult(1);
 Ci_vals(i)=Ci;
-NetAssimilation=LeafResult(2);
+%NetAssimilation=LeafResult(2);
+GrossAssimilation=LeafResult(2);
+NetAssimilation=GrossAssimilation-Rd;
 Gs=LeafResult(3);
 LeafTemperature=LeafResult(4);
 Transpirationi=LeafResult(5);
