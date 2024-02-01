@@ -272,14 +272,15 @@ PR_constraints=PR_constraints_data.data(:,1);
 	    if rem(i/100,1)==0
         i
         Ci_str = num2str(CO2i);
+		task_id=getenv('SLURM_ARRAY_TASK_ID');
         % Specify unique filenames for each Ci
-        workspacefileName = strcat ("CO2_rice_",Ci_str,"_New_1.mat");
+        workspacefileName = strcat ("CO2_rice_",Ci_str,"_",task_id,".mat");
         % Save the work space 
         save(workspacefileName);
         %Save matrix of optimal enzyme rates to output file
         BestMatrix=BestMatrix'; % Transpose matrix
-        BestMatrixfileName = strcat ("outputenz_",Ci_str,"_New_rice_1.txt");
-        d_plotfileName = strcat ("d_plot_",Ci_str,"_New_rice_1.xls");
+        BestMatrixfileName = strcat ("outputenz_",Ci_str,"_",task_id,".txt");
+        d_plotfileName = strcat ("d_plot_",Ci_str,"_",task_id,".xls");
         writematrix(BestMatrix,BestMatrixfileName);
         writematrix(d_plot,d_plotfileName);
       end
