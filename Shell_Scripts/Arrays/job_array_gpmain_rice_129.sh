@@ -10,4 +10,4 @@ module add matlab/2022a
 
 matlab -nodisplay -nodesktop -r "gpmain_rice_129_new;quit"
 
-echo This is job task ${SLURM_ARRAY_TASK_ID}
+echo This is job task ${SLURM_ARRAY_TASK_ID} running on compute node `uname -n`
