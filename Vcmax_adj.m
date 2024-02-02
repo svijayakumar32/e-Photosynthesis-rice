@@ -38,7 +38,7 @@ CA=[100,150,200,250,300];
 
 global Vrubusco_adj;
 global VmaxAdj;
-VmaxAdj=1.08;%adjust enzyme activity i.e. sub in optimal Vmaxadj from Jmax_adj % default 1.3
+VmaxAdj=1.06;%adjust enzyme activity i.e. sub in optimal Vmaxadj from Jmax_adj % default 1.3
 global pcfactor;  
 ProteinTotalRatio=0;
 pcfactor=1/ProteinTotalRatio;
@@ -77,7 +77,7 @@ GRNC=0;
 
 for j=1:25
     j
-Vrubusco_adj=0+j*0.02;%adjust enzyme activity between 0.6-1.0 %default 0.8
+Vrubusco_adj=1.0+j*0.02;%adjust enzyme activity between 0.6-1.0 %default 0.8
 Eio(1)=Edata.data(1,1)*Vrubusco_adj;
 Eio(2:27)=Edata.data(2:27,1)*VmaxAdj;
 Ci_vals=zeros(4,1);
@@ -89,12 +89,14 @@ CO2i=Air_CO2*0.7; % intercellular CO2
 PPFDi=Lii;
 NetAssimilation=EPS_Drive_GRNs(Einput,CO2i,PPFDi,WeatherTemp,GRNC,0,Eio);
 else
-LeafResult=Leaf(WeatherRH,WeatherTemp,Air_CO2,WeatherWind,Radiation_PAR,Radiation_NIR,Radiation_LW,PhotosynthesisType,Vcmax25,Jmax25,GRNC,Einput,Eio);
+%LeafResult=Leaf(WeatherRH,WeatherTemp,Air_CO2,WeatherWind,Radiation_PAR,Radiation_NIR,Radiation_LW,PhotosynthesisType,Vcmax25,Jmax25,GRNC,Einput,Eio);
+%try including Rd, Gr as inputs here
+LeafResult=Leaf(WeatherRH,WeatherTemp,Air_CO2,WeatherWind,Radiation_PAR,Radiation_NIR,Radiation_LW,PhotosynthesisType,Vcmax25,Jmax25,GRNC,Einput,Eio,Rd,Gr);
 Ci=LeafResult(1);
 Ci_vals(i)=Ci;
-%NetAssimilation=LeafResult(2);
-GrossAssimilation=LeafResult(2);
-NetAssimilation=GrossAssimilation-Rd;
+NetAssimilation=LeafResult(2);
+%GrossAssimilation=LeafResult(2);
+%NetAssimilation=GrossAssimilation-Rd;
 Gs=LeafResult(3);
 LeafTemperature=LeafResult(4);
 Transpirationi=LeafResult(5);

@@ -1,64 +1,68 @@
-function PhotosynthesisRate=ComputPhotosynthesisRate(PhotosynthesisType,PhotosynthesQ10,Vcmax25,Jmax25,Rd25,R,LeafTemperature,Convert, Radiation_PAR,PhotosynthesisTheta,Ci,Air_O2,GRNC,Einput,Eio)
+%function
+%PhotosynthesisRate=ComputPhotosynthesisRate(PhotosynthesisType,PhotosynthesQ10,Vcmax25,Jmax25,Rd25,R,LeafTemperature,Convert, Radiation_PAR,PhotosynthesisTheta,Ci,Air_O2,GRNC,Einput,Eio) %try including Rd as an input here
+function PhotosynthesisRate=ComputPhotosynthesisRate(PhotosynthesisType,PhotosynthesQ10,Vcmax25,Jmax25,Rd25,R,LeafTemperature,Convert, Radiation_PAR,PhotosynthesisTheta,Ci,Air_O2,GRNC,Einput,Eio,Rd,Gr)
 %Temporary variables double Q10Temperature;
-if (PhotosynthesisType == 1.0 || PhotosynthesisType == 1.1)% C3 Farquhar or Metabolic
-    Rd = Rd25 * exp(18.72 - 46.39 / (R * (LeafTemperature + 273.15))); 
-    %Rd = 1.33898789673117; %SV: Rd value from measured data
-end
+% if (PhotosynthesisType == 1.0 || PhotosynthesisType == 1.1)% C3 Farquhar or Metabolic
+%     Rd = Rd25 * exp(18.72 - 46.39 / (R * (LeafTemperature + 273.15))); %comment out since this changes Rd
+%     %Rd = 1.33898789673117; %SV: Rd value from measured data
+% end
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%Compute C3 photosynthesis
-%Constant
-if (PhotosynthesisType == 1.0)% C3 Farquhar
-Rate_TPu = 23.0; %u moles/m2 leaf area/s
-%Temporary variables - SV: not used at the moment but should be altered according to species and measured data
-LeafTemperatureKelvin = LeafTemperature + 273.15; %Leaf temperature in K
-GammaStar = exp(19.02 - 37.83 / (R * LeafTemperatureKelvin)); %SV: modify GammaStar according to crop
-Ko = exp(20.30 - 36.38 / (R * LeafTemperatureKelvin)); %SV: modify Kc and Ko 
-Kc = exp(38.05 - 79.43 / (R * LeafTemperatureKelvin));	%SV: modify Kc and Ko 
-Vcmax = Vcmax25 * exp(26.35 - 65.33 / (R * LeafTemperatureKelvin)); %SV: substitute Jmax/J value from measured data
-PhiPS2 = 0.385 + 0.02166 * LeafTemperature - 3.37 * LeafTemperature^2.0 / 10000.0;% Match PS_FIT
-I = Convert * Radiation_PAR * PhiPS2 * 0.5;
-ThetaPS2 = PhotosynthesisTheta + 0.01713 * LeafTemperature - 3.75 * LeafTemperature^2.0 / 10000.0; % Match PS_FIT
-Jmax = Jmax25 * exp(17.57 - 43.54 / (R * LeafTemperatureKelvin));%SV: substitute Jmax/J value from measured data
-J = (I + Jmax - sqrt((I + Jmax)^2.0 - 4.0 * ThetaPS2 * I * Jmax)) / (2.0 * ThetaPS2); 
-LeafAc = (1.0 - GammaStar / Ci) * (Vcmax * Ci) /(Ci + Kc * (1.0 + Air_O2 / Ko));%Rubisco limited photosynthesis - SV: modify to quadratic form?
-LeafAj = (1.0 - GammaStar / Ci) * (J * Ci) /(4.5 * Ci + 10.5 * GammaStar); %Light limited photosynthesis - SV: modify to quadratic form?
-if (LeafAj < 0.0)
-    LeafAj = 0.0;
-end
-LeafAp = (3.0 * Rate_TPu) / (1.0 - GammaStar /Ci); %TPU limited photosynthesis
-if (LeafAp < 0.0)
-    LeafAp=0.0;
-end
-GrossAssimilation=min(min(LeafAc,LeafAj),LeafAp);%Minimum of three limitations
-NetAssimilation=GrossAssimilation-Rd;
-  
-    if (isinf(GrossAssimilation) || isnan(GrossAssimilation))
-%         fprintf(LogOutputFile, "Error in ComputeC3Photosynthesis for Leaf ID: %f: GrossAssimilation=%f\n",
-%                 Photosynthesis->LeafID, LeafMassFlux->GrossAssimilation);
-        GrossAssimilation = 0.0;
-        NetAssimilation =-Rd;
-
-    end
-end
+% %Compute C3 photosynthesis %Commented out Farquhar model assimilation
+% %Constant
+% if (PhotosynthesisType == 1.0)% C3 Farquhar
+% Rate_TPu = 23.0; %u moles/m2 leaf area/s
+% %Temporary variables - SV: not used at the moment but should be altered according to species and measured data
+% LeafTemperatureKelvin = LeafTemperature + 273.15; %Leaf temperature in K
+% GammaStar = exp(19.02 - 37.83 / (R * LeafTemperatureKelvin)); %SV: modify GammaStar according to crop
+% Ko = exp(20.30 - 36.38 / (R * LeafTemperatureKelvin)); %SV: modify Kc and Ko 
+% Kc = exp(38.05 - 79.43 / (R * LeafTemperatureKelvin));	%SV: modify Kc and Ko 
+% Vcmax = Vcmax25 * exp(26.35 - 65.33 / (R * LeafTemperatureKelvin)); %SV: substitute Jmax/J value from measured data
+% PhiPS2 = 0.385 + 0.02166 * LeafTemperature - 3.37 * LeafTemperature^2.0 / 10000.0;% Match PS_FIT
+% I = Convert * Radiation_PAR * PhiPS2 * 0.5;
+% ThetaPS2 = PhotosynthesisTheta + 0.01713 * LeafTemperature - 3.75 * LeafTemperature^2.0 / 10000.0; % Match PS_FIT
+% Jmax = Jmax25 * exp(17.57 - 43.54 / (R * LeafTemperatureKelvin));%SV: substitute Jmax/J value from measured data
+% J = (I + Jmax - sqrt((I + Jmax)^2.0 - 4.0 * ThetaPS2 * I * Jmax)) / (2.0 * ThetaPS2); 
+% LeafAc = (1.0 - GammaStar / Ci) * (Vcmax * Ci) /(Ci + Kc * (1.0 + Air_O2 / Ko));%Rubisco limited photosynthesis - SV: modify to quadratic form?
+% LeafAj = (1.0 - GammaStar / Ci) * (J * Ci) /(4.5 * Ci + 10.5 * GammaStar); %Light limited photosynthesis - SV: modify to quadratic form?
+% if (LeafAj < 0.0)
+%     LeafAj = 0.0;
+% end
+% LeafAp = (3.0 * Rate_TPu) / (1.0 - GammaStar /Ci); %TPU limited photosynthesis
+% if (LeafAp < 0.0)
+%     LeafAp=0.0;
+% end
+% GrossAssimilation=min(min(LeafAc,LeafAj),LeafAp);%Minimum of three limitations
+% NetAssimilation=GrossAssimilation-Rd;
+% 
+%     if (isinf(GrossAssimilation) || isnan(GrossAssimilation))
+% %         fprintf(LogOutputFile, "Error in ComputeC3Photosynthesis for Leaf ID: %f: GrossAssimilation=%f\n",
+% %                 Photosynthesis->LeafID, LeafMassFlux->GrossAssimilation);
+%         GrossAssimilation = 0.0;
+%         NetAssimilation =-Rd;
+% 
+%     end
+% end
 
 if (PhotosynthesisType == 1.1)% C3 metabolic
 GrossAssimilation=EPS_Drive_GRNs(Einput,Ci,Convert * Radiation_PAR,LeafTemperature,GRNC,0,Eio);
-NetAssimilation=GrossAssimilation-Rd;
+NetAssimilation=GrossAssimilation-Rd; %comment this out and move to adj script
     if (isinf(GrossAssimilation) || isnan(GrossAssimilation))
 %         fprintf(LogOutputFile, "Error in ComputeC3Photosynthesis for Leaf ID: %f: GrossAssimilation=%f\n",
 %                 Photosynthesis->LeafID, LeafMassFlux->GrossAssimilation);
         GrossAssimilation = 0.0;
-        NetAssimilation =-Rd;
+        NetAssimilation =-Rd; %comment this out and move to adj script
 
     end
 LeafTemperatureKelvin = LeafTemperature + 273.15; %Leaf temperature in K
-GammaStar = exp(19.02 - 37.83 / (R * LeafTemperatureKelvin));
+GammaStar = exp(19.02 - 37.83 / (R * LeafTemperatureKelvin)); % Gamma Star based on Bernacchi 2001 (umol mol -1) - measured on a Rubisco-antisense line of Nicotiana tabacum L. cv. W38
+%GammaStar = 49.6558492521714;%GammaStar in µmol mol-1 from measured data
 %GammaStar = 50.2248975;% GammaStar in ubar from measured data
 end
 
 
 PhotosynthesisRate(1)=NetAssimilation;
-PhotosynthesisRate(2)=GrossAssimilation;
+PhotosynthesisRate(2)=GrossAssimilation; %Take out only Gross A as output
 PhotosynthesisRate(3)=Rd;
-PhotosynthesisRate(4)=GammaStar;
+%PhotosynthesisRate(4)=GammaStar;
+PhotosynthesisRate(4)=Gr;
 end

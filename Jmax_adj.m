@@ -31,7 +31,8 @@ O=210;%mbar
 %%%%%%%%%%%%%%%%%%%%%
 CA=[800,1200,1500,1800];
 global Vrubusco_adj;
-Vrubusco_adj=1.12;
+%Vrubusco_adj=1.12; 
+Vrubusco_adj=1.0; % keep same rubisco activity as original Einput
 global VmaxAdj;%adjust enzyme activity
 global pcfactor;  
 ProteinTotalRatio=0;
@@ -71,28 +72,30 @@ GRNC=0;
 
 for j=1:25
     j
-VmaxAdj=1.0+j*0.02;%adjust enzyme activity  %modify ratio 1.2 to 1.4 (or greater) if no fit %default 0.8
+VmaxAdj=0.5+j*0.02;%adjust enzyme activity  %modify ratio 1.2 to 1.4 (or greater) if no fit %default 0.8
 Eio(1)=Edata.data(1,1)*Vrubusco_adj;
 Eio(2:27)=Edata.data(2:27,1)*VmaxAdj;
 Ci_vals=zeros(4,1);
 
 for i=1:4
 Air_CO2=CA(i);
-if MetaOnly==1
-CO2i=Air_CO2*0.7; % intercellular CO2 
-PPFDi=Lii;
-NetAssimilation=EPS_Drive_GRNs(Einput,CO2i,PPFDi,WeatherTemp,GRNC,0,Eio);
-else
-LeafResult=Leaf(WeatherRH,WeatherTemp,Air_CO2,WeatherWind,Radiation_PAR,Radiation_NIR,Radiation_LW,PhotosynthesisType,Vcmax25,Jmax25,GRNC,Einput,Eio);
+% if MetaOnly==1 %run only Metabolic model
+% CO2i=Air_CO2*0.7; % intercellular CO2 
+% PPFDi=Lii;
+% NetAssimilation=EPS_Drive_GRNs(Einput,CO2i,PPFDi,WeatherTemp,GRNC,0,Eio);
+% else
+%LeafResult=Leaf(WeatherRH,WeatherTemp,Air_CO2,WeatherWind,Radiation_PAR,Radiation_NIR,Radiation_LW,PhotosynthesisType,Vcmax25,Jmax25,GRNC,Einput,Eio);
+%try including Rd, Gr as inputs here
+LeafResult=Leaf(WeatherRH,WeatherTemp,Air_CO2,WeatherWind,Radiation_PAR,Radiation_NIR,Radiation_LW,PhotosynthesisType,Vcmax25,Jmax25,GRNC,Einput,Eio,Rd,Gr);
 Ci=LeafResult(1);
 Ci_vals(i)=Ci;
-%NetAssimilation=LeafResult(2);
-GrossAssimilation=LeafResult(2);
-NetAssimilation=GrossAssimilation-Rd; 
+NetAssimilation=LeafResult(2);
+% GrossAssimilation=LeafResult(2);
+% NetAssimilation=GrossAssimilation-Rd; 
 Gs=LeafResult(3);
 LeafTemperature=LeafResult(4);
 Transpirationi=LeafResult(5);
-end
+%end %remove end since associated with if MetaOnly loop 
 %Calculate measured A values at different Ci
 %ACI_m=J*(Ci-Gr)/(4*Ci+8*Gr)-Rd;
 %05/01/2024 modification from Gu et al (2010) - quadratic form
