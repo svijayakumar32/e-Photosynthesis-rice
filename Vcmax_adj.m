@@ -86,6 +86,7 @@ for i=1:5
 Air_CO2=CA(i);
 if MetaOnly==1
 CO2i=Air_CO2*0.7; % intercellular CO2 
+Ci=CO2i;
 PPFDi=Lii;
 NetAssimilation=EPS_Drive_GRNs(Einput,CO2i,PPFDi,WeatherTemp,GRNC,0,Eio);
 else
@@ -108,8 +109,8 @@ end
 b=Vcmax_m-Rd+(Ci+Kc_air)*Gm;
 c=((Ci-Gr)*Vcmax_m-(Ci+Kc_air)*Rd)*Gm;
 
-ACI_m=(b-sqrt(b^2-4*c))/2; %Ac expressed as a function of Ci 
-%ACI_m=((b-sqrt(b^2-4*c))/2)+Rd; %%ACI_m+Rd if GrossA calculated instead of NetA as a result of EPS_Drive_GRNs
+%ACI_m=(b-sqrt(b^2-4*c))/2; %Ac expressed as a function of Ci 
+ACI_m=((b-sqrt(b^2-4*c))/2)+Rd; %%ACI_m+Rd if GrossA calculated instead of NetA as a result of EPS_Drive_GRNs
 
 ACi_evsm(i)=(ACI_m-NetAssimilation)^2;%the squares of the residuals
 end
