@@ -1,5 +1,5 @@
 %   Copyright   Xin-Guang Zhu and Stephen P. Long, University of Illinois 
-%   Copyright ©  2007
+%   Copyright ï¿½  2007
 
 %   This file is part of CarbonMetabolism.
 
@@ -20,13 +20,7 @@
 
 function standardev = stdev(pop,popSize)
 
-global VmaxNum;
 
-poptemp = pop';
-stdM = zeros(1,VmaxNum + 2);
-
-for m = 2: VmaxNum + 2;
-    stdM(m) = std(poptemp(:,m));
-end
-
-standardev = stdM;
+standardev=std(pop,0,2)
+standardev(1)=0;
+standardev=reshape(standardev,[1,size(standardev,1)]);

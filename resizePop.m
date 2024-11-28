@@ -1,5 +1,5 @@
 %   Copyright   Xin-Guang Zhu and Stephen P. Long, University of Illinois 
-%   Copyright ©  2007
+%   Copyright ï¿½  2007
 
 %   This file is part of CarbonMetabolism.
 
@@ -16,13 +16,12 @@
 %    You should have received a copy of the GNU General Public License (GPL)
 %    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
-function resizePopulation = resizePop(pop, popSize)
-
+function pop = resizePop(pop, popSize)
+temp0 = popSize/4;
 for m = 1:3
-    temp0 = popSize/4;
     temp1 = popSize/4*m + 1;
     temp2 = popSize/4*(m+1);
     pop(:,temp1:temp2)= pop(:,1:temp0);
 end
 
-resizePopulation = pop;
+

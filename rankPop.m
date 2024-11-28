@@ -1,5 +1,5 @@
 %   Copyright   Xin-Guang Zhu and Stephen P. Long, University of Illinois 
-%   Copyright ©  2007
+%   Copyright ï¿½  2007
 
 %   This file is part of CarbonMetabolism.
 
@@ -22,25 +22,29 @@
 
 function rankPopulation = rankPop(pop, popSize)
 
-    global VmaxNum;
+%     global VmaxNum;
     
-    %%%%%%%% Evaluate Fitness %%%%%%%%%%
-%     NewM = zeros(VmaxNum+2,popSize);
-    newM = zeros(VmaxNum+2,popSize);
+%     %%%%%%%% Evaluate Fitness %%%%%%%%%%
+% %     NewM = zeros(VmaxNum+2,popSize);
+%     newM = zeros(VmaxNum+2,popSize);
 
-    CO2Array = zeros(popSize,1);
     
-    for j = 1:popSize
-        CO2Array(j) = pop(2,j);
-    end
-    
-    for m = 1:popSize
-        % Find the index of the highest CO2 concentration. 
-        [x,maxindex] = max(CO2Array);
-        CO2Array(maxindex) = -1;       
-        NewM(1,m) = m;
-        NewM(2,m) = x;
-        NewM(3:VmaxNum+2,m)=pop(3:VmaxNum+2,maxindex);
-    end
-    
-    rankPopulation = NewM;
+    % sort the CO2Array in descending order
+    [out,idx] = sort(pop(2,:),'descend');
+
+    % for m = 1:popSize
+    %     % Find the index of the highest CO2 concentration. 
+    %     [x,maxindex] = max(CO2Array);
+    %     CO2Array(maxindex) = -1;
+
+    %     NewM(1,m) = maxindex; %idx(m);
+    %     NewM(2,m) = x; %out(m);
+    %     NewM(3:VmaxNum+2,m)=pop(3:VmaxNum+2,maxindex);
+    % end
+
+    rankPopulation=pop(:,idx);
+    rankPopulation(1,:)=1:popSize;
+    rankPopulation(2,:)=out;
+    % disp(NewM2 - NewM);
+
+  

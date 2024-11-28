@@ -1,6 +1,6 @@
 
 %   Copyright   Xin-Guang Zhu and Stephen P. Long, University of Illinois 
-%   Copyright ©  2007
+%   Copyright ï¿½  2007
 
 %   This file is part of CarbonMetabolism.
 
@@ -19,14 +19,8 @@
 
 % average.m     This function calculate the average of Vmax for each generation. 
 
-function ave = average(pop,popSize)
+function ave2 = average(pop,popSize)
 global VmaxNum;
-
-poptemp = pop';
-AVGM = zeros(1,VmaxNum + 2);
-
-for m = 2: VmaxNum + 2;
-    AVGM(m) = sum(poptemp(:,m))/popSize;
-end
-
-ave = AVGM;
+ave2=mean(pop,2)
+ave2(1)=0;
+ave2=reshape(ave2,[1,size(ave2,1)]);  
