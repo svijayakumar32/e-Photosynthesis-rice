@@ -88,13 +88,13 @@ if MetaOnly==1
 CO2i=Air_CO2*0.7; % intercellular CO2 
 Ci=CO2i;
 PPFDi=Lii;
-NetAssimilation=EPS_Drive_GRNs(Einput,CO2i,PPFDi,WeatherTemp,GRNC,0,Eio);
+GrossAssimilation=EPS_Drive_GRNs(Einput,CO2i,PPFDi,WeatherTemp,GRNC,0,Eio);
 else
 % Adding measured Rd, Gr as inputs to Leaf
 LeafResult=Leaf(WeatherRH,WeatherTemp,Air_CO2,WeatherWind,Radiation_PAR,Radiation_NIR,Radiation_LW,PhotosynthesisType,Vcmax25,Jmax25,GRNC,Einput,Eio,Rd,Gr);
 Ci=LeafResult(1);
 Ci_vals(i)=Ci;
-NetAssimilation=LeafResult(2);
+GrossAssimilation=LeafResult(2);
 %GrossAssimilation=LeafResult(2);
 %NetAssimilation=GrossAssimilation-Rd;
 Gs=LeafResult(3);
@@ -112,7 +112,7 @@ c=((Ci-Gr)*Vcmax_m-(Ci+Kc_air)*Rd)*Gm;
 %ACI_m=(b-sqrt(b^2-4*c))/2; %Ac expressed as a function of Ci 
 ACI_m=((b-sqrt(b^2-4*c))/2)+Rd; %%ACI_m+Rd if GrossA calculated instead of NetA as a result of EPS_Drive_GRNs
 
-ACi_evsm(i)=(ACI_m-NetAssimilation)^2;%the squares of the residuals
+ACi_evsm(i)=(ACI_m-GrossAssimilation)^2;%the squares of the residuals
 end
 SSR(j,1)=Vrubusco_adj;
 SSR(j,2)=sum(ACi_evsm);%the sum of the squares of the residuals

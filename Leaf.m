@@ -1,5 +1,8 @@
 %function LeafA=Leaf(WeatherRH,WeatherTemperature,Air_CO2,WeatherWind,Radiation_PAR,Radiation_NIR,Radiation_LW,PhotosynthesisType,Vcmax25,Jmax25,GRNC,Einput,Eio)%try including Rd as an input here
-function LeafA=Leaf(WeatherRH,WeatherTemperature,Air_CO2,WeatherWind,Radiation_PAR,Radiation_NIR,Radiation_LW,PhotosynthesisType,Vcmax25,Jmax25,GRNC,Einput,Eio,Rd,Gr)
+%function LeafA=Leaf(WeatherRH,WeatherTemperature,Air_CO2,WeatherWind,Radiation_PAR,Radiation_NIR,Radiation_LW,PhotosynthesisType,Vcmax25,Jmax25,GRNC,Einput,Eio,Rd,Gr)
+% LeafAmatrix outputs a matrix with all convergence loop iteration values for Ci, NetAssimilation, Gs, LeafTemperature and Transpiration
+function LeafAmatrix=Leaf(WeatherRH,WeatherTemperature,Air_CO2,WeatherWind,Radiation_PAR,Radiation_NIR,Radiation_LW,PhotosynthesisType,Vcmax25,Jmax25,GRNC,Einput,Eio,Rd,Gr)
+
 PhotosynthesQ10=0;
 R=8.314472E-3;%Gas constant KJ mole^{-1} K^{-1}
 Convert=1E6/(2.35E5); %Convert W m^{-2} to u moles m^{-2} s^{-1}
@@ -9,8 +12,8 @@ Pressure=101325.0; % Standard atmospheric pressure Pa
 ConstantsCp=29.3;
 PhotosynthesisTheta=0.76;
 Rd25=1; % WY 202210 - should I modify this?
-BallBerryIntercept=0.008;
-BallBerrySlope=10.5;
+BallBerryIntercept=0.008; % can be modified to measured values
+BallBerrySlope=10.5; % can be modified to measured values
 %Air_CO2=400.0;
 Air_O2=210.0;
 WaterStressFunction=3;
@@ -27,12 +30,18 @@ LeafTemperature= WeatherTemperature;% Initial Leaf temperature C
 Ci = 0.7 * Air_CO2;%Initial Ci u moles/mole
 Gs = 0.01; % Initial stomatal conductance moles/m2 leaf area/s
 Gb = 10.2; % Initial boundary layer conductance moles/m2 leaf area/s
-    %Convergence loop for leaf
-	while ((abs(ErrorLeafState_Ci) >= MinError || abs(ErrorLeafState_Gs) >= MinError ||abs(ErrorLeafState_Temperature) >= MinError) && ErrorCount <= MaxErrorCount)
 
-            %PhotosynthesisRate=ComputPhotosynthesisRate(PhotosynthesisType,PhotosynthesQ10,Vcmax25,Jmax25,Rd25,R,LeafTemperature,Convert,
-            %Radiation_PAR,PhotosynthesisTheta,Ci,Air_O2,GRNC,Einput,Eio);
-            %try including Rd,Gr as inputs here
+%Make LeafA into a result matrix: dimensions depend on how many loop iterations we expect
+%until convergence? 5 x ?
+%LeafAmatrix=zeros(maxiterCount,5); %replace maxiterCount with max no of loop iterations
+LeafAmatrix=zeros(5,5); %temporary guess for dimensions of matrix
+
+    %Convergence loop for leaf
+    max_iters = 2; % Set a limit for the maximum number of iterations to ensure we don't get stuck
+    iterCount = 0; % Count number of while loop iterations
+    while ((abs(ErrorLeafState_Ci) >= MinError || abs(ErrorLeafState_Gs) >= MinError ||abs(ErrorLeafState_Temperature) >= MinError) && ErrorCount <= MaxErrorCount) && iterCount < max_iters
+	iterCount=iterCount+1;
+            % Adding measured Rd, Gr as inputs to ComputPhotosynthesisRate
             PhotosynthesisRate=ComputPhotosynthesisRate(PhotosynthesisType,PhotosynthesQ10,Vcmax25,Jmax25,Rd25,R,LeafTemperature,Convert, Radiation_PAR,PhotosynthesisTheta,Ci,Air_O2,GRNC,Einput,Eio,Rd,Gr);
             NetAssimilation=PhotosynthesisRate(1); % move this out and calculate in adj scripts?
             GrossAssimilation=PhotosynthesisRate(2);
@@ -52,7 +61,7 @@ Gb = 10.2; % Initial boundary layer conductance moles/m2 leaf area/s
         CalGs=ComputGsBallBerry(BallBerryIntercept,BallBerrySlope,WaterStressFactor,Eb,Cb,Gb,NetAssimilation,LeafTemperature,Air_CO2);
         Gs=CalGs(1);
         Ci=CalGs(2);
-
+        
         % Compute energy balance
         CalLeafTemperature=ComputeEnergyBalance(Gb,Gs,NetAssimilation,LeafTemperature,WeatherRH,WeatherTemperature,Pressure,Boltzman,ConstantsCp,LatentHeatVaporization,Radiation_PAR,Radiation_NIR,Radiation_LW);
         LeafTemperature=CalLeafTemperature(1);
@@ -76,7 +85,7 @@ Gb = 10.2; % Initial boundary layer conductance moles/m2 leaf area/s
         % if (Ci <= GammaStar) % comment this loop out if we want to avoid incorporating GammaStar from ComputPhotosynthesisRate
         %     Ci = GammaStar; % ppm
         % end
-        if (Ci <= Gr) % modify this loop if we want to incorporating GammaStar from A/Cc fit of measured data
+        if (Ci <= Gr) % modify this loop to use Gr from A/Cc fit of measured data instead of GammaStar from ComputPhotosynthesisRate
             Ci = Gr; % ppm
         end
         Gs = Gs - Relax * (Gs - PreviousLeafState_Gs);
@@ -88,7 +97,12 @@ Gb = 10.2; % Initial boundary layer conductance moles/m2 leaf area/s
             GrossAssimilation = 0.0;
             NetAssimilation = GrossAssimilation - Rd; %Comment this out if we don't calculate NetAssimilation here
         end
-
+        %Populate matrix with results for each loop iteration (row)
+        LeafAmatrix(iterCount,1)=Ci;
+        LeafAmatrix(iterCount,2)=NetAssimilation;
+        LeafAmatrix(iterCount,3)=Gs;
+        LeafAmatrix(iterCount,4)=LeafTemperature;
+        LeafAmatrix(iterCount,5)=Transpiration;
         %Update values
         PreviousLeafState_Ci = Ci;
         Previous2Gs = PreviousLeafState_Gs; %Oscillation

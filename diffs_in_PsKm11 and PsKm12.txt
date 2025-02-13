@@ -8,6 +8,12 @@ Using diff temp and press to calculate Kc and Ko and averaging
 PsKm11= 0.012432793822111
 PsKm12 = 0.307166934437973
 
+Changing all calcs to umol mol-1
+
+PsKm11 = 0.012424078850659
+PsKm12 = 0.307032875294939
+
+
 Leaf-level calculation 
 
 Temp = [28.86966272,...

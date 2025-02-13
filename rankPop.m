@@ -29,6 +29,10 @@ function rankPopulation = rankPop(pop, popSize)
     newM = zeros(VmaxNum+2,popSize);
 
     CO2Array = zeros(popSize,1);
+
+% % Faster rewrite - check it works    
+% % Sort the CO2Array in descending order
+%     [out,idx] = sort(pop(2,:),'descend');
     
     for j = 1:popSize
         CO2Array(j) = pop(2,j);
@@ -44,3 +48,8 @@ function rankPopulation = rankPop(pop, popSize)
     end
     
     rankPopulation = NewM;
+
+    % % Faster rewrite - check it works
+    % rankPopulation = pop(:,idx);
+    % rankPopulation(1,:) = 1:popSize;
+    % rankPopulation(2,:) = out;

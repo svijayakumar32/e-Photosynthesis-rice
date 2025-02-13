@@ -27,22 +27,23 @@ global MW;
 global VmaxNum;
 
 global NTotal;
+
 tempPop = zeros((VmaxNum+2),1);   % Create a vector of the size of Vmax+2
 for j = 2:popSize
                 sum=0;
                 for m = 3:(VmaxNum+2)
 			        rng shuffle % shuffle random values so there is no repetition of sequence from the random number generator
-                    %This loop sets a non-negativity constraint when generating randval using abs for V23,V51,V52,V55,V56,V57,V58,V59 (sucrose/starch metabolism enzymes)
+                    %This loop sets a non-negativity constraint when generating randval using absolute values for V23,V51,V52,V55,V56,V57,V58,V59 (sucrose/starch metabolism enzymes)
                     if (m == 11 ||m >= 19) 
                         randval = abs(1 - 2 * rand(1))*0.01; % Change mutatePercentage for sucrose/starch enzymes from 0.02 to 0.0002 through multiplying by 0.01
                     else
                         randval = 1 - 2 * rand(1); 
                     end
-                    
+
 					tempPop(m) = (1+randval * mutatePercentage) * pop(m,j);
 
 					if m == 3 
-						sum = sum + (1.2*tempPop(m)/BK(m-2))*MW(m-2);  %For Rubisco, adjust activity
+						sum = sum + (1.1*tempPop(m)/BK(m-2))*MW(m-2);  %For Rubisco, adjust activity by 80% - 10% inhibition
 					else
                         sum = sum + (tempPop(m)/BK(m-2))*MW(m-2);       % mg protein l-1
 					end
@@ -51,4 +52,25 @@ for j = 2:popSize
                 Ratio = NTotal/sum;
                 pop(:,j) = tempPop * Ratio; 
 end
+
+%%%
+% % Faster rewrite w/o loops - check it works, especially with Rubisco readjustment - saved as mutate_mod
+% % Generate random values for the population size
+% randvals = rand((VmaxNum+2),popSize); 
+% randvals=1- randvals*2; 
+% % Change mutatePercentage for sucrose/starch enzymes from 0.02 to 0.0002 through multiplying by 0.01
+% randvals(11) = abs(randvals(11)) * 0.01; 
+% randvals(19:VmaxNum+2) = abs(randvals(19:VmaxNum+2))*0.01; 
+% % Multiply the random values by the mutatePercentage
+% randvals(:,:) = (randvals(:,:)+1) * mutatePercentage; 
+% 
+% temp_pop = randvals(3:(VmaxNum+2),:) .* pop(3:(VmaxNum+2),:);
+% 
+% items = temp_pop(:,:);
+% items(1,:) = items(1,:)*1.1; % previously 1.2
+% Ratio = repmat(NTotal,[1,popSize])./sum(items./repmat(BK(1:(VmaxNum)),[1,popSize]).* repmat(MW(1:(VmaxNum)),[1,popSize]),1);
+% 
+% pop(3:(VmaxNum+2),2:popSize) = temp_pop(:,2:popSize) .* Ratio(2:popSize); 
+%%%
+
 returnPop = pop;

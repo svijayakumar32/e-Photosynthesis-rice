@@ -30,3 +30,7 @@ for m = 2: VmaxNum + 2;
 end
 
 standardev = stdM;
+
+% standardev = std(pop,0,2)
+% standardev(1) = 0;
+% standardev = reshape(standardev,[1,size(standardev,1)]);

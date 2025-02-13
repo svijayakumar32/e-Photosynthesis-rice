@@ -16,7 +16,7 @@ pcfactor=1;
 % Loop function to calculate net assimilation rate A for a given Ci value using set of enzyme activity levels optimized for 280
 % for i=1:9 % No. of A values
 % CO2i = (200:20:360)'; % Set Ci values ranging from 200 - 360
-NetAssimilationRate= EPS_Drive_GRNs(Einput,CO2i,PPFDi,WeatherTemp,0,0,Ei);
+GrossAssimilationRate= EPS_Drive_GRNs(Einput,CO2i,PPFDi,WeatherTemp,0,0,Ei);
 %A =  EPS_Drive_GRNs(Einput,CO2i,PPFDi,WeatherTemp,0,0,Ei); 
 %end
 % Save assimilation rates to output text file

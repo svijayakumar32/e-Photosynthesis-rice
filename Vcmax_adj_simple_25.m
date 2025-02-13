@@ -1,0 +1,124 @@
+%% Simplified Vcmax_adj for running only the metabolic model (MetaOnly==1)
+% Parameters have been adjusted from 28.9 to 25C
+Vcmax_m = 134.380530667391/1.408711051;% Avg Estimated using msuRACiFit (Gregory et al 2021) with rice Gamma Star at 28.9C
+J = 189.091184437385/1.259126805;% Avg Estimated using msuRACiFit (Gregory et al 2021) with rice Gamma Star at 28.9C
+Lii = 2000;%Light intensity from IRRI
+
+%Farquhar model parameters
+Gr = 42.9424603786498;%µmol mol-1
+Rd = 1.33898789673117/1.276318536; %umol m-2 s-1
+Gm = 0.545813281251705/1.29400125830567; %umol m-2 s-1
+Kc_air = 222.419986169190;%umol mol-1
+
+O = 210;%mbar
+
+%%%%%%%%%%%%%%%%%%%%%
+CA = [100,150,200,250,300];
+%Transition point between Rubisco and RuBP limitations is around Ci = 210
+%umol/mol or 21 Pa which in terms of CA = 300 umol
+%So this range is OK
+global Vrubusco_adj;
+global VmaxAdj;%adjust enzyme activity
+VmaxAdj = 0.98;%adjust enzyme activity i.e. sub in optimal Vmaxadj from Jmax_adj % default 1.3
+global pcfactor;  
+ProteinTotalRatio = 0;
+%pcfactor=1/ProteinTotalRatio;
+%21/05/24 Change pcfactor to 1 here to avoid Inf
+pcfactor = 1;
+%%%%%%%%%%%%%%%%%%%%%
+
+Einput = ones(37,1);%No gene expression data input
+Edata = importdata('Einput7.txt');
+Eio = Edata.data(:,1);
+%MetaOnly=1;% if MetaOnly=1 run only Metabolic model
+WeatherTemp = 25; %Avg Tleaf, Original = 25C
+GRNC = 0; % In EPS_Drive_GRNs, if GRNC==0 cATPsyn,CPSi,cNADPHsyn and cpsii=1 are all set to 1
+
+%% Assimilation rates for Farquhar model 
+% Other than 5 different Ci values, everything else is the same - 
+% Maybe for indexing in later steps its easier to keep the repeated values of assimilation?
+Farq_Matrix_V = zeros(250,5);
+k = 1; % Initialize row index
+for j = 1:50
+    Vrubusco_adj = 1.5 + j * 0.02; % adjust enzyme activity
+    Eio(1) = Edata.data(1,1) * Vrubusco_adj;
+    Eio(2:27) = Edata.data(2:27,1) * VmaxAdj;
+    % Farquhar model A calculation 
+    for i = 1:5
+        Air_CO2 = CA(i);
+        Ci = Air_CO2 * 0.7; % intercellular CO2 
+        b = Vcmax_m-Rd+(Ci+Kc_air)*Gm;
+        c = ((Ci-Gr)*Vcmax_m-(Ci+Kc_air)*Rd)*Gm;
+        %Previous Ac calculation, subbing in Kc_air for Kc*(1+O/Ko)
+        %ACI_m=Vcmax_m*(Ci-Gr)/(Ci+Kc_air)-Rd; 
+        % Net Ac expressed as a function of Cc does not include Rd
+        Net_A = ((b - sqrt(b^2 - 4*c)) / 2); 
+        % Gross_A is being calculated in EPS_Drive_GRNs instead of Net_A
+        % Therefore Gross Ac expressed as a function of Cc should include Rd
+        Gross_A = Net_A + Rd; 
+        % Use Net_A to calculate Cc
+        Cc = (Ci - Net_A/Gm); 
+        % Fill in results matrix
+        Farq_Matrix_V(k, 1) = Vrubusco_adj;
+        Farq_Matrix_V(k, 2) = CA(i);
+        Farq_Matrix_V(k, 3) = Ci;
+        Farq_Matrix_V(k, 4) = Gross_A;
+        Farq_Matrix_V(k, 5) = Cc; %% Cc
+        k = k + 1; % Move to the next row
+    end
+end
+
+%% Assimilation rates for e-Photosynthesis model
+ePhoto_Matrix_V = zeros(250,5);
+k = 1; % Initialize row index
+for j = 1:50
+    Vrubusco_adj = 1.5 + j * 0.02; % Adjust enzyme activity - start at 0.5, then 1.0 and check minima of SSR vals
+    Eio(1) = Edata.data(1,1) * Vrubusco_adj;
+    Eio(2:27) = Edata.data(2:27,1) * VmaxAdj;
+    % e-Photosynthesis model A calculation 
+    for i = 1:5
+        Air_CO2 = CA(i);
+        Ci = Air_CO2 * 0.7; % intercellular CO2 
+        Cc = Farq_Matrix_V(k,5); % check index
+        PPFDi = Lii; 
+        GrossAssimilation = EPS_Drive_GRNs(Einput,Cc,PPFDi,WeatherTemp,GRNC,0,Eio);
+        % Fill in results matrix
+        ePhoto_Matrix_V(k, 1) = Vrubusco_adj;
+        ePhoto_Matrix_V(k, 2) = CA(i);
+        ePhoto_Matrix_V(k, 3) = Ci;
+        ePhoto_Matrix_V(k, 4) = GrossAssimilation;
+        ePhoto_Matrix_V(k, 5) = Cc; 
+        k = k + 1; % Move to the next row
+    end
+end
+
+%Create vector to store Vmax_adj, differences between gross assimilation rates and corresponding SSRs
+Diff_Matrix_V = zeros(250,2);
+
+% Compute differences between two photosynthetic models
+for k = 1:length(Farq_Matrix_V)
+    for j = 1:50
+    Diff_Matrix_V(k,1) = Farq_Matrix_V(k,1);
+    Diff_Matrix_V(k,2) = (Farq_Matrix_V(k,4)-ePhoto_Matrix_V(k,4))^2;%the squares of the residuals
+        while k<250
+        k = k + 1; % Move to the next row
+        end
+    end
+end
+
+% Get sums of squared residuals by summing every five rows 
+SSR_Matrix_V = zeros(50,2);
+Vrubusco_adj_vals = Diff_Matrix_V(:,1);
+SSR_Matrix_V(:,1) = Vrubusco_adj_vals(5:5:end);
+SSR_Matrix_V(:,2) = sum(reshape(Diff_Matrix_V(:,2), 5, []))';
+% Get full list of gross assimilation rates associated with each Vrubisco
+% sampled and for each Cc tested
+numbers_V = reshape(ePhoto_Matrix_V(:,4),[5,50]);
+%toc
+
+% Find scaling factor with lowest SSR
+[~, scaling_index_V] = min(SSR_Matrix_V(:,2));
+a_Rubisco = SSR_Matrix_V(scaling_index_V, 1);
+
+% If running on HEC, save result to check
+save Vcmax_simple_25_result.mat;

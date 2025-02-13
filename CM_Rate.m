@@ -164,28 +164,29 @@ global SUCS_TIME_N;
 global SUCS_VEL;
 global SUCS_CON;
 
-R=8.314;
+R = 8.314;
 %18/12/2023
-c_c=38.943737996377;% Kc c rice, umol mol-1
-dHa_c=83.1375366124519;% Kc dHa rice, umol mol-1
-c_air=30.4979391963763;% Kcair c rice,umol mol-1
-dHa_air=60.5017340537083;% Kcair dHa rice, umol mol-1
+c_c = 38.943737996377;% Kc c rice, umol mol-1
+dHa_c = 83.1375366124519;% Kc dHa rice, umol mol-1
+c_air = 30.4979391963763;% Kcair c rice,umol mol-1
+dHa_air = 60.5017340537083;% Kcair dHa rice, umol mol-1
 % 
 % First the physical and chemical constant for all the reactions
 %%%%%%%%%%soy PsKM11_0	=	0.0097; PsKM12_0	=	0.244;	
 % These values originate in Cousins et al (2010) Table 2 
 % as Kc(uM)= 9.7 uM and Ko(uM)= 244 uM in T.aestivum = wheat
-% Makino et al (1988) lists Kc = 8.0 uM,  Ko= 335 uM, therefore Kc = 0.008 mM, Ko = 0.355 mM
-% This Kc is matched by Hermida-Carrera et al (Kc=8.0 uM, Kcair = 17.3 uM - liquid phase at 25C ) - can we work out an equivalent Ko in uM?
+% Makino et al (1988) lists Kc = 8.0 uM,  Ko = 335 uM, therefore Kc = 0.008 mM, Ko = 0.355 mM
+% This Kc is matched by Hermida-Carrera et al (Kc=8.0 uM, Kcair = 17.3 uM - liquid phase at 25°C) - can we work out an equivalent Ko in uM?
 % Ko in uM = O2 in uM/(Kcair in uM/Kc in uM)-1)
 
-% To find [O2] in uM, multiply O2 partial pressure in mbar by the solubility for O2 at 25C (= 0.0013 mol -1 L bar -1) 
-%O2_uM=O2_mbar*O2_sol*1000
-O2_uM=210*0.0013*1000; 
-%Ko_uM=O2_uM/((Kc_air_uM/Kc_uM)-1);
+% To find [O2] in uM at 25°C, multiply O2 partial pressure in mbar by the
+% solubility for O2 at given temp (= 0.0013 mol/L bar -1 at 25°C) then multiply by 1000 to rescale units to uM 
+% O2_uM=O2_mbar*O2_sol*1000
 
-PsKM11_0	=   0.00803;                        % rice CO2	1	RuBP+CO2->2PGA
-PsKM12_0    =  (O2_uM/((17.2515/8.03)-1))/1000; % rice O2	1	RuBP+CO2->2PGA  
+O2_uM_25  =  210*0.0013*1000;
+PsKM11_0  =  0.00803;                  % rice CO2	1	RuBP+CO2->2PGA
+% Ko_uM = O2_uM/((Kc_air_uM/Kc_uM)-1);
+PsKM12_0    =  (O2_uM_25/((17.2515/8.03)-1))/1000; % rice O2	1	RuBP+CO2->2PGA  
 
 % Kinetics are being calculated here for rice c and dHa at 25C, 101.325 kPa
 % c and dHa for rice Kc and Kcair were given in umol mol-1 by Hermida-Carrera
@@ -219,31 +220,31 @@ Ko_Tp = ((21000/((Kcair_Tp/Kc_Tp) - 1))/1000)*10; %Ko at Tp in mbar or mmol mol 
 %PsKM12=PsKM12_0*exp(c_o-dHa_o*1000/(R*(Tp+273.15)))/165.82;
 
 % Revised calculation here
-PsKM11=PsKM11_0*(Kc_Tp)/(Kc_25); 
-PsKM12=PsKM12_0*(Ko_Tp)/(Ko_25); 
+PsKM11 = PsKM11_0*(Kc_Tp)/(Kc_25); 
+PsKM12 = PsKM12_0*(Ko_Tp)/(Ko_25); 
 
-PsKM13	=	0.02;		% 	RuBP	1	RuBP+CO2->2PGA
+PsKM13	=	0.02;		  % RuBP	1	RuBP+CO2->2PGA
 PsKI11    =   0.84   ;    % PGA  
-PsKI12    =0.04   ;       % FBP
+PsKI12    = 0.04   ;       % FBP
 PsKI13    = 0.075 ;       % SBP
 PsKI14    = 0.9   ;       % Pi
 PsKI15    = 0.07  ;       % NADPH
-PsKM21	=	0.240;		%	PGA	2	PGA+ATP <-> ADP + DPGA
-PsKM22	=	0.390;		% 	ATP	2	PGA+ATP <-> ADP + DPGA
-PsKM23    =   0.23  ;        %  ADP     
-PsKM31a	=	0.004;		%	BPGA	3	DPGA+NADPH <->GAP + OP+NADP 
-PsKM32b	=	0.1	;	    % 	NADPH	3	DPGA+NADPH <->GAP + OP+NADP
-KM41	=	2.5	;	    %	DHAP	4	DHAP <->GAP
-KM42	=	0.68;		% 	GAP	4	DHAP <->GAP
-KE4     =   0.05;       %   Using the value from Patterson
-PsKM51	=	0.3	;	    %	GAP	5	GAP+DHAP <->FBP
-PsKM52	=	0.4	;	    % 	DHAP	5	GAP+DHAP <->FBP
-PsKM53	=	0.02;		%	FBP	5	GAP+DHAP <->FBP     % Original Value: 0.02
-PsKE5     = 7.100;          % Defult: 7.1
-PsKM61	=	0.033;		% 	FBP	6	FBP<->F6P+OP
-PsKI61    = 0.7   ;       %   F6P       
-PsKI62    = 12    ;       %   Pi
-PsKE6     =   6.66 * 10^5;    % The equilibrium constant for this reaction        % New    mM     Laisk or Bassham and Krause 1969 BBA
+PsKM21	=	0.240;		  %	PGA	2	PGA+ATP <-> ADP + DPGA
+PsKM22	=	0.390;		  % ATP	2	PGA+ATP <-> ADP + DPGA
+PsKM23    =   0.23  ;     % ADP     
+PsKM31a	=	0.004;		  %	BPGA	3	DPGA+NADPH <->GAP + OP+NADP 
+PsKM32b	=	0.1	;	      % NADPH	3	DPGA+NADPH <->GAP + OP+NADP
+KM41	=	2.5	;	      %	DHAP	4	DHAP <->GAP
+KM42	=	0.68;		  % GAP	4	DHAP <->GAP
+KE4     =   0.05;         % Using the value from Patterson
+PsKM51	=	0.3	;	      %	GAP	5	GAP+DHAP <->FBP
+PsKM52	=	0.4	;	      % DHAP	5	GAP+DHAP <->FBP
+PsKM53	=	0.02;		  %	FBP	5	GAP+DHAP <->FBP     % Original Value: 0.02
+PsKE5     = 7.100;        % Default: 7.1
+PsKM61	=	0.033;		  % FBP	6	FBP<->F6P+OP
+PsKI61    = 0.7   ;       % F6P       
+PsKI62    = 12    ;       % Pi
+PsKE6     =   6.66 * 10^5;% The equilibrium constant for this reaction        % New    mM     Laisk or Bassham and Krause 1969 BBA
 PsKM71	=	0.100;		%	Xu5P	7	F6P+GAP<->E4P+Xu5P      % jn
 PsKM72	=	0.100;		% 	E4P	7	F6P+GAP<->E4P+Xu5P
 PsKM73    = 0.1;         %   F6P This value was based on estimate
@@ -254,7 +255,7 @@ PsKM81    = 0.4   ;       % DHAP
 PsKM82    = 0.2   ;       % E4P estimate
 PsKE8     = 1.017 ;     % The equilibrium constant for this reaction                  % New    mM-1         Laisk  Bassham and Krause 1969 BBA. Default: 1.107
 PsKM9	    =	0.05;		% 	SBP	9	SBP<->S7P+OP    
-PsKI9     = 12    ;       %   The inibintion constant for Pi; 
+PsKI9     = 12    ;       %   The inhibintion constant for Pi; 
 PsKE9     =   6.66 * 10^5 ; % The equilibrium constant of this reaction           % New   mM      Laisk  Bassham and Krause 1969 BBA
 PsKM10	=	1.5	;	    %	R5P	10	S7P+GAP<->Ri5P+Xu5P
 PsKM101   =   0.1 ;       %   Xu5P
@@ -341,7 +342,6 @@ PsV31	=	V31 ;	%	31	Phosphate translocator	DHAPi<->DHAPo
 PsV32	=	V32	;	%	32	Phosphate translocator	PGAi<->PGAo
 PsV33	=	V33	;	%	33	Phosphate translocator	GAPi<->GAPo
 
-
 global V111;
 global V112;
 global V113;
@@ -414,7 +414,14 @@ Q10_56=2;
 Q10_57=2;
 Q10_58=2;
 
-Ru_Act=-3E-05*Tp^3 + 0.0013*Tp^2 - 0.0106*Tp + 0.8839;%Rubisco activition state
+% Rubisco activation state (Fig 3A, Cen & Sage, 2005)
+Ru_Act_orig=-3E-05*Tp^3 + 0.0013*Tp^2 - 0.0106*Tp + 0.8839;
+% Quadratic polynomial fit (Fig 4A, Makino and Sage, 2007 - see plot_Rubisco_activation.mlx for details)
+Ru_Act = - 0.0007851 * Tp ^2 + 0.0319 * Tp + 0.5233;
+
+% Cubic polynomial fit (Fig 4A, Makino and Sage, 2007)
+%Ru_Act =- 5.053e-5 * Tp^3 + 0.003484 * Tp^2 - 0.08222 * Tp + 1.48;
+
 PsV1 =PsV1_0*Ru_Act*Q10_1^((Tp-25)/10);
 PsV2 =PsV2_0*Q10_2^((Tp-25)/10);
 PsV3 =PsV3_0*Q10_3^((Tp-25)/10);
@@ -440,10 +447,12 @@ SUCSV56=SUCSV56_0*Q10_56^((Tp-25)/10);
 SUCSV57=SUCSV57_0*Q10_57^((Tp-25)/10);
 SUCSV58=SUCSV58_0*Q10_58^((Tp-25)/10);
 
-PrV111= PsV1* 0.24;
+% To rescale the ratio between Rubisco oxygenation and carboxylation (PrV111/PsV1 or Vo/Vc) according to temperature, 
+% multiply the published Vo/Vc ratio for rice at 25C (Makino et al 1988) by an Arrhenius function which 
+% substitutes parameters derived from a normalized non-linear fit of Bernacchi Vo/Vc against temperature 
+% c = 0.1217, dHa = -5.22, see Vmax_temp_adj.mlx for details
 
-
-
+PrV111 = PsV1 * (0.58/1.77)*(0.1217 * exp(-(-5.22) / (0.008314 * (Tp + 273.15))));
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 

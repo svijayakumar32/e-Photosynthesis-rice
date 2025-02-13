@@ -1,7 +1,7 @@
 %function
 %PhotosynthesisRate=ComputPhotosynthesisRate(PhotosynthesisType,PhotosynthesQ10,Vcmax25,Jmax25,Rd25,R,LeafTemperature,Convert, Radiation_PAR,PhotosynthesisTheta,Ci,Air_O2,GRNC,Einput,Eio) %try including Rd as an input here
 function PhotosynthesisRate=ComputPhotosynthesisRate(PhotosynthesisType,PhotosynthesQ10,Vcmax25,Jmax25,Rd25,R,LeafTemperature,Convert, Radiation_PAR,PhotosynthesisTheta,Ci,Air_O2,GRNC,Einput,Eio,Rd,Gr)
-%Temporary variables double Q10Temperature;
+% %Temporary variables double Q10Temperature;
 % if (PhotosynthesisType == 1.0 || PhotosynthesisType == 1.1)% C3 Farquhar or Metabolic
 %     Rd = Rd25 * exp(18.72 - 46.39 / (R * (LeafTemperature + 273.15))); %comment out since this changes Rd
 %     %Rd = 1.33898789673117; %SV: Rd value from measured data

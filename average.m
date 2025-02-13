@@ -20,6 +20,7 @@
 % average.m     This function calculate the average of Vmax for each generation. 
 
 function ave = average(pop,popSize)
+
 global VmaxNum;
 
 poptemp = pop';
@@ -30,3 +31,8 @@ for m = 2: VmaxNum + 2;
 end
 
 ave = AVGM;
+
+% *Faster rewrite suggested - check this works
+% ave = mean(pop,2)
+% ave(1) = 0;
+% ave=reshape(ave,[1,size(ave,1)]);  

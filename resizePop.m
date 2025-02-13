@@ -26,3 +26,12 @@ for m = 1:3
 end
 
 resizePopulation = pop;
+
+% % Faster rewrite of entire function - check it works 
+% function pop = resizePop(pop, popSize)
+% temp0 = popSize/4;
+% for m = 1:3
+%     temp1 = popSize/4*m + 1;
+%     temp2 = popSize/4*(m+1);
+%     pop(:,temp1:temp2)= pop(:,1:temp0);
+% end
