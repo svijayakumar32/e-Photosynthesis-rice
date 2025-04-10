@@ -7,6 +7,6 @@
 source /etc/profile
 module add matlab/2022a
 
-matlab -nodisplay -nodesktop -r "Farq_ePhoto_compariosn;quit"
+matlab -nodisplay -nodesktop -r "Farq_ePhoto_comparison;quit"
 
 echo Job running on compute node `uname -n`
