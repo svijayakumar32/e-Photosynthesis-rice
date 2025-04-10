@@ -24,8 +24,7 @@ Vrubusco_adj = 1.32;
 global VmaxAdj;
 VmaxAdj = 1.12;
 
-%Ci=__;% Adjust Ci= 140-420 here in script or
-CO2i=380;% Ci given as input to function
+CO2i=130;% Ci given as input to function
 PPFDi=2000;
 WeatherTemp=28.9310407291759;
 GRNC=0;
@@ -100,7 +99,7 @@ MW=MWKcat(:,3);
 sumd = 0;
 for k = 1:VmaxNum
     if k == 1
-    sumd= sumd + (1.1*pop(k+2,1))/BK(k)*MW(k); % For Rubisco, adjust activity to 80% - 10% inhibition
+    sumd= sumd + (1.1*pop(k+2,1))/BK(k)*MW(k); % For Rubisco, adjust activity to 80%
     else
     sumd= sumd + pop(k+2,1)/BK(k)*MW(k);
     end
@@ -272,7 +271,7 @@ PR_constraints = importdata('PR_constraints.txt');
 	    if rem(i/100,1)==0
         i
         Ci_str = num2str(CO2i);
-        task_id=getenv('SLURM_ARRAY_TASK_ID');
+		task_id=getenv('SLURM_ARRAY_TASK_ID');
         % Specify unique filenames for each Ci
         workspacefileName = strcat ("CO2_rice_",Ci_str,"_",task_id,".mat");
         % Save the work space 

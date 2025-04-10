@@ -18,10 +18,11 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %function gpmain_rice_all(Ci)
+%Adjust alpha values here and read in Einput7.txt
 global Vrubusco_adj;
-Vrubusco_adj=1.0; %keep as 1.0 after fixed optimization
-global VmaxAdj;%
-VmaxAdj=1.0;
+Vrubusco_adj = 1.32; 
+global VmaxAdj;
+VmaxAdj = 1.12;
 
 %Ci=__;% Adjust Ci= 140-420 here in script or
 CO2i=260;% Ci given as input to function
@@ -29,8 +30,7 @@ PPFDi=2000;
 WeatherTemp=28.9310407291759;
 GRNC=0;
 Einput=ones(37,1);%No gene expression data input
-%Edata=importdata('Einput7.txt');
-Edata=importdata('Einput_rice.txt');
+Edata=importdata('Einput7.txt');
 Eio=Edata.data(:,1);
 Eio(1)=Edata.data(1,1)*Vrubusco_adj;
 Eio(2:26)=Edata.data(2:26,1)*VmaxAdj;
@@ -100,7 +100,7 @@ MW=MWKcat(:,3);
 sumd = 0;
 for k = 1:VmaxNum
     if k == 1
-    sumd= sumd + (1.2*pop(k+2,1))/BK(k)*MW(k); % For Rubisco, adjust activity to 80%
+    sumd= sumd + (1.1*pop(k+2,1))/BK(k)*MW(k); % For Rubisco, adjust activity to 80% - 10% inhibition
     else
     sumd= sumd + pop(k+2,1)/BK(k)*MW(k);
     end
@@ -142,8 +142,8 @@ for i = 1:numofGen
 %     Lapse = clock-TimeBegin
 
 % Load constraints for photorespiratory enzymes (= average of values calculated during enzyme adjustment running at 129 ppm)
-PR_constraints_data=importdata('PR_constraints.txt');    
-PR_constraints=PR_constraints_data.data(:,1);
+PR_constraints = importdata('PR_constraints.txt');    
+%PR_constraints=PR_constraints_data.data(:,1);
 
     for j = 1:popSize
 %         gp2condition_RuCon = pop(3,j)/2;

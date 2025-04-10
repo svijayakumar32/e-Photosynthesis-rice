@@ -18,25 +18,23 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %function gpmain_rice_129_new(Ci)
+%Adjust alpha values here and read in Einput7.txt
 global Vrubusco_adj;
-Vrubusco_adj=1.0; %keep as 1.0 after fixed optimization
-global VmaxAdj;%
-VmaxAdj=1.0;
+Vrubusco_adj = 1.32; 
+global VmaxAdj;
+VmaxAdj = 1.12;
 
-Ci=129;% adj 200,220,240 or 260
-CO2i=Ci;% adj 200,220,240 or 260 %CO2i=Ci if input given to function
-%PPFDi=1500; %PPFD from Acevedo-Siaca
-PPFDi=2000; %PPFD from IRRI
-WeatherTemp=28.9310407291759;
-GRNC=0;
-Einput=ones(37,1);%No gene expression data input
-%Edata=importdata('Einput7.txt');
-Edata=importdata('Einput_rice.txt');
-Eio=Edata.data(:,1);
-Eio(1)=Edata.data(1,1)*Vrubusco_adj;
-Eio(2:26)=Edata.data(2:26,1)*VmaxAdj;
-Enzyme=importdata('MW&Kcat.txt');
-MWKcat=Enzyme.data;
+CO2i = 129;% adj 200,220,240 or 260 %CO2i=Ci if input given to function
+PPFDi = 2000; %PPFD from IRRI
+WeatherTemp = 28.9310407291759;
+GRNC = 0;
+Einput = ones(37,1);%No gene expression data input
+Edata = importdata('Einput7.txt');
+Eio = Edata.data(:,1);
+Eio(1) = Edata.data(1,1)*Vrubusco_adj;
+Eio(2:26) = Edata.data(2:26,1)*VmaxAdj;
+Enzyme = importdata('MW&Kcat.txt');
+MWKcat = Enzyme.data;
 MWKcat([7,9,12],:) = []; %remove rows corresponding to V8, V10 and V16
 %%%%%%%%%%%%%%%%%%% Initialize Variables %%%%%%%%%%%%%%%%%%%
 global pcfactor; 
@@ -89,17 +87,17 @@ end
 %%%% Initialize BK and MW Array %%%%
 
 global BK;
-BK=MWKcat(:,2);
+BK = MWKcat(:,2);
 %BK([7,9,12],:) = [];
 global MW;
-MW=MWKcat(:,3);
+MW = MWKcat(:,3);
 %MW([7,9,12],:) = [];
 
 % Calculate the default nitrogen concentration
 sumd = 0;
 for k = 1:VmaxNum
     if k == 1
-    sumd= sumd + (1.2*pop(k+2,1))/BK(k)*MW(k); % For Rubisco, adjust activity to 80%
+    sumd= sumd + (1.1*pop(k+2,1))/BK(k)*MW(k); % For Rubisco, adjust activity to 80% - 10% inhibition
     else
     sumd= sumd + pop(k+2,1)/BK(k)*MW(k);
     end
@@ -116,7 +114,7 @@ global NTotal;
 NTotal = sumd
 %%%% Mutate Initial Population %%%%
 tempn = popSize/8;
-temp_pop=pop(:,1:tempn);
+temp_pop = pop(:,1:tempn);
 pop = mutate(pop, popSize, mutatePercentage);
 pop(:,1:tempn) = temp_pop;
 
@@ -184,8 +182,8 @@ for i = 1:numofGen
 %             Eiopop_phot=vertcat(Eiopop(1:6),Eiopop(4),Eiopop(7),Eiopop(6),Eiopop(8:63));
 %             Temp=EPS_Drive_GRNs(Einput,CO2i,PPFDi,WeatherTemp,GRNC,0,Eiopop_phot);
             % Set ATP synthase same as original
-            Eiopop_phot=vertcat(Eiopop(1:6),Eiopop(4),Eiopop(7),Eiopop(6),Eiopop(8:9),Eio(12),Eiopop(10:63)); 
-            Temp=EPS_Drive_GRNs(Einput,CO2i,PPFDi,WeatherTemp,GRNC,0,Eiopop_phot);
+            Eiopop_phot = vertcat(Eiopop(1:6),Eiopop(4),Eiopop(7),Eiopop(6),Eiopop(8:9),Eio(12),Eiopop(10:63)); 
+            Temp = EPS_Drive_GRNs(Einput,CO2i,PPFDi,WeatherTemp,GRNC,0,Eiopop_phot);
             %Check whether the concentrations of metabolites reach steady states#
             sizeT=size(d_plot);
             global tglobal;
@@ -236,7 +234,7 @@ for i = 1:numofGen
         %Resize Pop Array
         switch generationTransfer
             case 1
-                pop = resizePop(pop, popSize);
+                pop = resizePop(pop,popSize);
             case 2
                 pop = twoPoint(pop,popSize);
         end
@@ -245,13 +243,13 @@ for i = 1:numofGen
 	    if rem(i/100,1)==0
         i
         Ci_str = num2str(CO2i);
-        task_id=getenv('SLURM_ARRAY_TASK_ID');
+        task_id = getenv('SLURM_ARRAY_TASK_ID');
         % Specify unique filenames for each Ci
         workspacefileName = strcat ("CO2_rice_",Ci_str,"_",task_id,".mat");
         % Save the work space 
         save(workspacefileName);
         %Save matrix of optimal enzyme rates to output file
-        BestMatrix=BestMatrix'; % Transpose matrix
+        BestMatrix = BestMatrix'; % Transpose matrix
         BestMatrixfileName = strcat ("outputenz_",Ci_str,"_",task_id,".txt");
         d_plotfileName = strcat ("d_plot_",Ci_str,"_",task_id,".xls");
         writematrix(BestMatrix,BestMatrixfileName);

@@ -25,7 +25,7 @@ global VmaxAdj;
 VmaxAdj = 1.12;
 
 %Ci=__;% Adjust Ci= 140-420 here in script or
-CO2i=380;% Ci given as input to function
+CO2i=230;% Ci given as input to function
 PPFDi=2000;
 WeatherTemp=28.9310407291759;
 GRNC=0;
