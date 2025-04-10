@@ -1,7 +1,7 @@
 % Produce violin plots for enzyme sensitivity analysis using the violinplot
 % function from cobratoolbox (https://github.com/opencobra/cobratoolbox/blob/master/external/base/utilities/violinPlots/violinplot.m)
-%% Load data
-load output_enzyme_adjustment_test_2000_5_new.mat; % Load results from 2000 node test simulation
+%% Load results from 2000 node test simulation
+load output_enzyme_adjustment_test_2000_5_new.mat; 
 %% Create outputs for increases in gross CO2 assimilation rate
 [IncreaseInGrossAssimilationRate_RS_130,...%two
  IncreaseInGrossAssimilationRate_RS_250,...%two
@@ -110,8 +110,15 @@ CO2_data_percent = horzcat(PercentChangeGrossAssimilationRate_RS_130,...
                    PercentChangeGrossAssimilationRate_RSAPFT_250,...
                    PercentChangeGrossAssimilationRate_RSAPFT_360);
 % Find mean, min and max of percentages
+mean_CO2_uptake = mean(CO2_data);
+min_max_CO2_uptake = vertcat(min(CO2_data),max(CO2_data));
+range_CO2_uptake = range(CO2_data);
 mean_percents = mean(CO2_data_percent);
 min_max_percents = vertcat(min(CO2_data_percent),max(CO2_data_percent));
+% Find percentages of outcomes that were negative for current and future
+% strategies at Cc = 360
+percent_negative_360_current = nnz(CO2_data(:,6)<0)/2000*100;
+percent_negative_360_future = nnz(CO2_data(:,9)<0)/2000*100;
 %% Create the violin plot for the different enzyme combinations
 % Set colors with triplet codes
 violinColors_Stress = [0.9529 0.4588 0.5059; %Red
@@ -131,11 +138,12 @@ groupLabels = {'130', '250', '360'};
 %% STRESS
 figure;
 for i = 1:3
-    Violin(CO2_data(:, (i-1)*3+1), i, 'ViolinColor', violinColors_Stress(i, :), 'ShowMean', true, 'ShowData', false);
+    Violin(CO2_data(:, i), i, 'ViolinColor', violinColors_Stress(i, :), 'ShowMean', true, 'ShowData', false);
+    %Violin(CO2_data(:, (i-1)*3+1), i, 'ViolinColor', violinColors_Stress(i, :), 'ShowMean', true, 'ShowData', false);
 end
 set(gca, 'XTick', 1:3, 'XTickLabel', groupLabels, 'FontSize', 20);
 % Customize the labels and title
-title('Stress', 'FontSize', 22);
+%title('Stress', 'FontSize', 22);
 xlabel('C_{c} (μmol mol^{−1})', 'FontSize', 20);
 ylabel('ΔCO_{2} uptake (μmol m^{−2} s^{−1})', 'FontSize', 20);
 % Add dashed horizontal line at y = 0
@@ -146,15 +154,16 @@ ylim([-3, 6]);
 xtickangle(45);
 % Save and print the plot
 set(gcf, 'PaperOrientation', 'landscape');
-print(gcf,fullfile('Outputs/rice_params/graphs',"violin_enzymes_Stress.pdf"),'-dpdf','-bestfit');figure;
+%print(gcf,fullfile('Outputs/rice_params/graphs',"violin_enzymes_Stress.pdf"),'-dpdf','-bestfit');figure;
 
 %% CURRENT
+figure;
 for i = 1:3
-    Violin(CO2_data(:, (i-1)*3+2), i, 'ViolinColor', violinColors_Current(i, :), 'ShowMean', true, 'ShowData', false);
+    Violin(CO2_data(:, i+3), i, 'ViolinColor', violinColors_Current(i, :), 'ShowMean', true, 'ShowData', false);
 end
 set(gca, 'XTick', 1:3, 'XTickLabel', groupLabels, 'FontSize', 20);
 % Customize the labels and title
-title('Current', 'FontSize', 22);
+%title('Current', 'FontSize', 22);
 xlabel('C_{c} (μmol mol^{−1})', 'FontSize', 20);
 ylabel('ΔCO_{2} uptake (μmol m^{−2} s^{−1})', 'FontSize', 20);
 % Add dashed horizontal line at y = 0
@@ -165,15 +174,16 @@ ylim([-3, 6]);
 xtickangle(45);
 % Save and print the plot
 set(gcf, 'PaperOrientation', 'landscape');
-print(gcf,fullfile('Outputs/rice_params/graphs',"violin_enzymes_Current.pdf"),'-dpdf','-bestfit');figure;
+%print(gcf,fullfile('Outputs/rice_params/graphs',"violin_enzymes_Current.pdf"),'-dpdf','-bestfit');figure;
 
 %% FUTURE
+figure;
 for i = 1:3
-    Violin(CO2_data(:, (i-1)*3+3), i, 'ViolinColor', violinColors_Future(i, :), 'ShowMean', true, 'ShowData', false);
+    Violin(CO2_data(:, i+6), i, 'ViolinColor', violinColors_Future(i, :), 'ShowMean', true, 'ShowData', false);
 end
 set(gca, 'XTick', 1:3, 'XTickLabel', groupLabels, 'FontSize', 20);
 % Customize the labels and title
-title('Future', 'FontSize', 22);
+%title('Future', 'FontSize', 22);
 xlabel('C_{c} (μmol mol^{−1})', 'FontSize', 20);
 ylabel('ΔCO_{2} uptake (μmol m^{−2} s^{−1})', 'FontSize', 20);
 % Add dashed horizontal line at y = 0
@@ -184,5 +194,5 @@ ylim([-3, 6]);
 xtickangle(45);
 % Save and print the plot
 set(gcf, 'PaperOrientation', 'landscape');
-print(gcf,fullfile('Outputs/rice_params/graphs',"violin_enzymes_Future.pdf"),'-dpdf','-bestfit');
+%print(gcf,fullfile('Outputs/rice_params/graphs',"violin_enzymes_Future.pdf"),'-dpdf','-bestfit');
 

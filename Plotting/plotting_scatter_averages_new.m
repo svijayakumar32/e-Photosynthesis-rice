@@ -60,36 +60,38 @@ for j = 1:length(y{1,i}(:,2)) % For all enzymes
 end
 
 % Create CBB panel
-    figure('Position', [100, 100, 300, 1200]); % [left, bottom, width, height];
-    tiledlayout(4,2, 'TileSpacing', 'compact', 'Padding', 'compact','TileIndexing', 'columnmajor');
-    %tiledlayout(8,1,'TileSpacing', 'compact', 'Padding', 'compact','TileIndexing', 'columnmajor')
-    % Plot scatter graphs of Cc (x) against absolute protein concentrations of individual enzymes 
-    for j = 1:length(CBB_indices) % For each enzyme j 
+figure('Position', [100, 100, 300, 1200]); % [left, bottom, width, height];
+tiledlayout(4,2, 'TileSpacing', 'compact', 'Padding', 'compact','TileIndexing', 'columnmajor');
+% Create scatter plots with dummy data for legend
+h1 = scatter(nan, nan, 'black', 'filled', 'o', 'MarkerEdgeColor', 'black', 'LineWidth', 0.5); % Non-optimised
+hold on
+h2 = scatter(nan, nan, 'white', 'filled', '^', 'MarkerEdgeColor', 'black', 'LineWidth', 0.5); % Optimised
+hold off   
+% Plot scatter graphs of Cc (x) against absolute protein concentrations of individual enzymes 
+for j = 1:length(CBB_indices) % For each enzyme j 
         CBB_index = CBB_indices(j);
-        nexttile
+        nexttile;
         %semilogy(Cc, enzyme_nopt_concs(CBB_index,:), '.', 'MarkerSize', 15);
-        scatter(Cc, enzyme_nopt_concs(CBB_index,:),'black','filled','o'); % Plot non-optimized series
+        h1 = scatter(Cc, enzyme_nopt_concs(CBB_index,:),50,'black','filled','o','MarkerEdgeColor','black','LineWidth',0.5); % Plot non-optimized series
         hold on
         %semilogy(Cc, all_opt_concs(CBB_index,:), '^', 'MarkerSize', 15);
-        scatter(Cc, all_opt_concs(CBB_index,:),'green','filled','^'); % Plot optimized series
+        h2 = scatter(Cc, all_opt_concs(CBB_index,:),50,'white','filled','^','MarkerEdgeColor','black','LineWidth',0.5); % Plot optimized series
         hold off
         % Cc x axis limits
         xlim([min(Cc), max(Cc)]); % Cc x axis limits
         xlim ("padded");
         %xticks(Cc)
         xticks(130:50:380);
-        set(gca, 'FontSize', 10); 
+        set(gca, 'FontSize', 12); 
         %xtickangle(90);
         %xticklabels(Cc);
         xticklabels(130:50:380);
-        xlabel('C_c (μmol mol^{−1})','FontSize', 10);
+        xlabel('C_c (μmol mol^{−1})','FontSize', 12);
         % Protein y axis limits 
         % % Automatically determine y ticks
         yticks_auto = get(gca, 'YTick');
-        %yticks([0 yticks_auto]);
-        %yticklabels(sprintf('%d\n', [0, yticks_auto]));
         % Label y axis
-        ylabel('Protein content (mg m^{-2})', 'FontSize', 10);
+        ylabel('Protein content (mg m^{-2})', 'FontSize', 12);
         ylim padded
         % % Calculate tick interval
         tick_interval = mode(diff(yticks_auto));
@@ -97,54 +99,57 @@ end
         max_tick_value = max(yticks_auto);
         % Set upper limit of y-axis to be one interval higher than max
         ylim([0, max_tick_value + tick_interval]);
-        %yticks([0, max_tick_value + tick_interval]);
-        %yticklabels(sprintf('%d\n', [0, max_tick_value + tick_interval]));
         % Other properties
         title(enzymes(CBB_index))
-        grid on
-        hold off
-            % if j==length(CBB_indices)
-            % legend('Non-optimized','Optimized','Location', 'SouthEastOutside')
-            % end                               
-    end
+        grid on                             
+end
+% Add legend to whole layout
+legend_ax = axes(gcf, 'Position', [0.1, 0.02, 0.8, 0.05], 'Visible', 'off'); % Adjust position as needed
+legend(legend_ax, [h1, h2], {'Non-Optimised', 'Optimised'}, 'Location', 'southoutside',...
+    'NumColumns', 2,'FontSize', 12);
+% Modify export options
 set(gcf, 'PaperOrientation', 'portrait');
-%Modify export options
-%print(gcf,fullfile('Outputs/rice_params/graphs',"Cc_vs_CBB_Enzymes_2"),'-dpdf','-bestfit');
+print(gcf,fullfile('Outputs/rice_params/graphs',"Cc_vs_CBB_Enzymes_3"),'-dpdf','-fillpage');
 
 % Create PR panel
 figure('Position', [100, 100, 300, 1200]); % [left, bottom, width, height];
-%tiledlayout(8,1,'TileSpacing', 'compact', 'Padding', 'compact','TileIndexing', 'columnmajor')
 tiledlayout(4,2, 'TileSpacing', 'compact', 'Padding', 'compact','TileIndexing', 'columnmajor');
+% Create scatter plots with dummy data for legend
+h1 = scatter(nan, nan, 'black', 'filled', 'o', 'MarkerEdgeColor', 'black', 'LineWidth', 0.5); % Non-optimised
+hold on
+h2 = scatter(nan, nan, 'white', 'filled', '^', 'MarkerEdgeColor', 'black', 'LineWidth', 0.5); % Optimised
+h3 = plot(nan, nan, 'b--', 'LineWidth', 1.5); % Lower Limit (Dashed Blue Line)
+hold off 
 % Plot scatter graphs of Cc (x) against absolute protein concentrations of individual enzymes 
 for j = 1:length(PR_indices) % For each enzyme j 
     PR_index = PR_indices(j);
     nexttile
         %semilogy(Cc, enzyme_nopt_concs(PR_index,:), '.', 'MarkerSize', 15);
-        scatter(Cc, enzyme_nopt_concs(PR_index,:),'black','filled','o'); % Plot non-optimized series
+        h1 = scatter(Cc, enzyme_nopt_concs(PR_index,:),50,'black','filled','o','MarkerEdgeColor','black','LineWidth',0.5); % Plot non-optimized series
         hold on
         %semilogy(Cc, all_opt_concs(PR_index,:), '^', 'MarkerSize', 15);
-        scatter(Cc, all_opt_concs(PR_index,:),'green','filled','^'); % Plot optimized series
+        h2 = scatter(Cc, all_opt_concs(PR_index,:),50,'white','filled','^','MarkerEdgeColor','black','LineWidth',0.5); % Plot optimized series
         hold on 
         % Plot PR constraints levels
-        plot(Cc, PR_limits(j,:), "b--"); 
+        h3 = plot(Cc, PR_limits(j,:), "b--"); 
         hold off
         % Cc x axis limits
         xlim([min(Cc), max(Cc)]); % Cc x axis limits
         xlim ("padded");
         %xticks(Cc)
         xticks(130:50:380);
-        set(gca, 'FontSize', 10); 
+        set(gca, 'FontSize', 12); 
         %xtickangle(90);
         %xticklabels(Cc)
         xticklabels(130:50:380);
-        xlabel('C_c (μmol mol^{−1})','FontSize', 10);
+        xlabel('C_c (μmol mol^{−1})','FontSize', 12);
         % Protein y axis limits 
         % % Automatically determine y ticks
         yticks_auto = get(gca, 'YTick');
         %yticks([0 yticks_auto]);
         %yticklabels(sprintf('%d\n', [0, yticks_auto]));
         % Label y axis
-        ylabel('Protein content (mg m^{-2})', 'FontSize', 10);
+        ylabel('Protein content (mg m^{-2})', 'FontSize', 12);
         ylim padded
         % % Calculate tick interval
         tick_interval = mode(diff(yticks_auto));
@@ -155,43 +160,48 @@ for j = 1:length(PR_indices) % For each enzyme j
         title(enzymes(PR_index))
         grid on
         hold off
-            % if j==length(PR_indices)
-            % legend('Non-optimized','Optimized','Lower Limit','Location','SouthEastOutside')
-            % end
 end
-set(gcf, 'PaperOrientation', 'portrait');
+% Add legend to whole layout
+legend_ax = axes(gcf, 'Position', [0.05, 0.02, 0.9, 0.05], 'Visible', 'off'); % Adjust position as needed
+legend(legend_ax, [h1, h2, h3], {'Non-Optimised', 'Optimised','Lower Limit',}, 'Location', 'southoutside',...
+    'NumColumns', 3,'FontSize', 12);
 %Modify export options
-%print(gcf,fullfile('Outputs/rice_params/graphs',"Cc_vs_PR_Enzymes_2"),'-dpdf','-bestfit');
+set(gcf, 'PaperOrientation', 'portrait');
+print(gcf,fullfile('Outputs/rice_params/graphs',"Cc_vs_PR_Enzymes_3"),'-dpdf','-fillpage');
 
 % Create SS panel
 figure('Position', [100, 100, 300, 1200]); % [left, bottom, width, height];
 tiledlayout(4,2, 'TileSpacing', 'compact', 'Padding', 'compact','TileIndexing', 'columnmajor');
-%tiledlayout(8,1,'TileSpacing', 'compact', 'Padding', 'compact','TileIndexing', 'columnmajor')
+% Create scatter plots with dummy data for legend
+h1 = scatter(nan, nan, 'black', 'filled', 'o', 'MarkerEdgeColor', 'black', 'LineWidth', 0.5); % Non-Optimised
+hold on
+h2 = scatter(nan, nan, 'white', 'filled', '^', 'MarkerEdgeColor', 'black', 'LineWidth', 0.5); % Optimised
+hold off 
 % Plot scatter graphs of Cc (x) against absolute protein concentrations of individual enzymes 
     for j = 1:length(SS_indices) % For each enzyme j 
     SS_index = SS_indices(j);
     nexttile
-        scatter(Cc, enzyme_nopt_concs(SS_index,:),'black','filled','o'); % Plot non-optimized series
+        h1 = scatter(Cc, enzyme_nopt_concs(SS_index,:),50,'black','filled','o','MarkerEdgeColor','black','LineWidth',0.5); % Plot non-optimized series
         hold on
-        scatter(Cc, all_opt_concs(SS_index,:),'green','filled','^'); % Plot optimized series
+        h2 = scatter(Cc, all_opt_concs(SS_index,:),50,'white','filled','^','MarkerEdgeColor','black','LineWidth',0.5); % Plot optimized series
         hold off
         % Cc x axis limits
         xlim([min(Cc), max(Cc)]); % Cc x axis limits
         xlim ("padded");
         %xticks(Cc)
         xticks(130:50:380);
-        set(gca, 'FontSize', 10); 
+        set(gca, 'FontSize', 12); 
         %xtickangle(90);
         %xticklabels(Cc)
         xticklabels(130:50:380);
-        xlabel('C_c (μmol mol^{−1})','FontSize', 10);
+        xlabel('C_c (μmol mol^{−1})','FontSize', 12);
         % Protein y axis limits 
         % % Automatically determine y ticks
         yticks_auto = get(gca, 'YTick');
         %yticks([0 yticks_auto]);
         %yticklabels(sprintf('%d\n', [0, yticks_auto]));
         % Label y axis
-        ylabel('Protein content (mg m^{-2})', 'FontSize', 10);
+        ylabel('Protein content (mg m^{-2})', 'FontSize', 12);
         ylim padded
         % % Calculate tick interval
         tick_interval = mode(diff(yticks_auto));
@@ -202,10 +212,11 @@ tiledlayout(4,2, 'TileSpacing', 'compact', 'Padding', 'compact','TileIndexing', 
         title(enzymes(SS_index))
         grid on
         hold off
-            % if j==length(SS_indices)
-            % legend('Non-optimized','Optimized','Location', 'SouthEastOutside')
-            % end
     end
+% Add legend to whole layout
+legend_ax = axes(gcf, 'Position', [0.1, 0.02, 0.8, 0.05], 'Visible', 'off'); % Adjust position as needed
+legend(legend_ax, [h1, h2], {'Non-Optimised', 'Optimised'}, 'Location', 'southoutside',...
+    'NumColumns', 2,'FontSize', 12);
+% Modify export options
 set(gcf, 'PaperOrientation', 'portrait');
-%Modify export options
-%print(gcf,fullfile('Outputs/rice_params/graphs',"Cc_vs_SS_Enzymes_2"),'-dpdf','-bestfit');
+print(gcf,fullfile('Outputs/rice_params/graphs',"Cc_vs_SS_Enzymes_3"),'-dpdf','-fillpage');
