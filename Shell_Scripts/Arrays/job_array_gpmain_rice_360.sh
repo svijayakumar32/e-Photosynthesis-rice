@@ -3,6 +3,7 @@
 #SBATCH -p serial
 #SBATCH --mem=8g
 #SBATCH -J job_array_gpmain_rice_360
+#SBATCH -a 1-15
 
 source /etc/profile
 module add matlab/2022a
