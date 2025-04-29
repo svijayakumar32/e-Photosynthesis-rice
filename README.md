@@ -15,7 +15,7 @@ Running the code requires installation of the following R packages:
 - `readxl` - to import Excel files into R
 
 ## Files
-The files within the main repository contains scripts, variables and data associated with the version of e-Photosynthesis cloned from https://github.com/cropsinsilico/C3-metabolic-and-leaf-model.
+The files within the main repository contains scripts, variables and data adapted from the version of e-Photosynthesis stored in https://github.com/cropsinsilico/C3-metabolic-and-leaf-model.
 - `cdn` defines the environmental conditions, such as CO2 concentration and photon flux density.
 - `SYSInitial` defines the simulation time.
 - `CM_Drive` describes carbon metabolism (CBB cycle).
