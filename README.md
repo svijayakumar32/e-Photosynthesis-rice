@@ -39,17 +39,17 @@ In certain filenames, the names of the drives are extended with suffixes:
 - _Rate defines rate equations.
 - _mb defines differential equations.
 
-Additional custom scripts and data files are described below:
+Custom scripts and data files are described below:
 - `Calculate_Cc.m` - calculates Cc values equivalent to Ca for the FvCB model fit
 - `CalculateGrossAssimilation.m` - calculates gross CO2 assimilation (Net_A + R_d)
 - `CalculateNetAssimilation.m` - calculates net CO2 assimilation (Gross_A - R_d)
 - `Einput7.txt` - a list of the original enzyme activities for e-Photosynthesis model
 
-The sub-folders listed below contain files associated with each analysis:
-# `CO_2 response` - 
-# `Live_Scripts` - 
-# `Outputs` - 
-# `Parameterisation` - 
-# `Plotting` - 
-# `Shell_Scripts` -
-# `gpmain` - 
+In addition to this, the remaining files are stored in various sub-folders defining their function:
+- CO_2 response - for fitting leaf-level gas exchange measurements to the Farquhar-vonCaemmerer-Berry (FvCB) model
+- Live_Scripts - for running interactive executable scripts combining code, output, and formatted text in a single MATLAB environment 
+- Outputs - for storing outputs from various analyses
+- Parameterisation - for calibrating the model parameters
+- Plotting - for plotting results of analyses 
+- Shell_Scripts - for running `gpmain` simulations on the High-End Computing (HEC) cluster
+- gpmain - running model optimisation simulations at various CO_2 levels
