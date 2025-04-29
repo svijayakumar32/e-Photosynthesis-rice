@@ -1,5 +1,0 @@
-model:
-  name: ODE
-  language: matlab
-  args: ./LeafMetaRun
-  function: LeafMetaRun
