@@ -65,7 +65,7 @@ Live_Scripts - for running interactive executable scripts combining code, output
 Outputs - for storing outputs from various analyses within the subfolders:
 - `Data` - contains `Optimization_Procedure.txt`, `Results_optimization_rice_new_2.xlsx`, and `Series_of_job_submissions.txt`
 - `Enzymes` - BestMatrix gives the optimal distribution of Vmax values for 67 photosynthetic enzymes (V1-V59)
-- `Metabolites` - dplot gives change in metabolite concentrations (needs to reach steady state towards end of optimization)
+- `Metabolites` - dplot gives change in metabolite concentrations (which reach steady state at the end of the optimisation)
 - `Workspaces` - MATLAB workspaces saved after running gpmain simulation
 
 Parameterisation - additional functions for calculating model parameters
