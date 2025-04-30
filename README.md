@@ -49,15 +49,24 @@ In addition to this, the remaining files are stored in various diresctories defi
 
 CO_2 response - for fitting leaf-level gas exchange measurements to the Farquhar-vonCaemmerer-Berry (FvCB) model
 - `fitting_gas_exchange_rice.Rproj` - R project
-The `Scripts` sub-folder contains the following:
-- 
+The `Data` sub-folder contains:
+- `Gas_exchange_measurement_WT_plants.xls` - Excel workbook containing 8 sets of leaf level gas exchange measurements for wild type Oryza sativa cv. IR64
+- Filenames beginning with `IR64-A009-07-33-05` contain data for each curve 
+- `Rubisco_kinetics_Oryza_sativa.xlsx` contains kinetic parameter data for rice published in Hermida-Carrera et al (2016)
+ 
+The `Scripts` sub-folder contains:
+- `msuRACiFit_rice` - R Markdown document containing fitting procedure for obtaining photosynthetic parameters
 
 Live_Scripts - for running interactive executable scripts combining code, output, and formatted text in a single MATLAB environment 
 - `Cc_Gr_simple.mlx`,`Cc_Gr_simple_2.mlx`,`Fig_4A-plot-data.csv`,`Jmax_adj_simple.mlx`,`O2_sol.mlx`,`PsKM_calculation.mlx`,`Sco_calculation.mlx`,
 `Vmax_temp_adj.mlx`,`fold_change_avg.mlx`,`import_optimization_results.mlx`,`plot_Rubisco_activation.mlx`,`plot_Rubisco_temp_corr.mlx`,`plotting_A_rates.mlx`,
 `plotting_bars_in_log_new_2.mlx`,`plotting_scatter_averages.mlx`,`plotting_semilogy_ind.mlx`,`scaling_factor_calculation.mlx`, `test_Gstars_rice.mlx`
 
-Outputs - for storing outputs from various analyses within the subfolders `Data`, `Enzymes`, `Metabolites` and `Workspaces`
+Outputs - for storing outputs from various analyses within the subfolders:
+- `Data` - contains `Optimization_Procedure.txt`, `Results_optimization_rice_new_2.xlsx`, and `Series_of_job_submissions.txt`
+- `Enzymes` - BestMatrix gives the optimal distribution of Vmax values for 67 photosynthetic enzymes (V1-V59)
+- `Metabolites` - dplot gives change in metabolite concentrations (needs to reach steady state towards end of optimization)
+- `Workspaces` - MATLAB workspaces saved after running gpmain simulation
 
 Parameterisation - additional functions for calculating model parameters
 - `calculate_O2_sol` - to calculate molar solubility of oxygen at a given temperature and pressure
@@ -66,11 +75,11 @@ Parameterisation - additional functions for calculating model parameters
 
 Plotting - for plotting results of analyses 
 - `Farq_ePhoto_comparison_new.m` - plot A/Cc curve for measured average parameters from gas exchange data and using Ac and Aj equations from Vcmax_adj_simple and Jmax_adj_simple
-- `extract_PR_constraints.m` - import results of optimization at Cc = 129 umol mol-1, average the results and export PR enzyme Vmax values to serve as constraints for full optimizations
-- `extract_optimization_results.m` - read in optimization results for each Cc (130-380) and average the results
+- `extract_PR_constraints.m` - import results of optimisation at Cc = 129 umol mol-1, average the results and export PR enzyme Vmax values to serve as constraints for full optimizations
+- `extract_optimization_results.m` - read in optimisation results for each Cc (130-380 umol mol-1) and average the results
 - `hex2rgb.m` - convert hexadecimal colour code to RGB
 - `import_optimization_results.m` - imports results data for non-optimised and optimised enzyme concentrations 
-- ` plot_A_Cc_new.m` - plot Cc vs A for FvCB and e-Photosynthesis models on a single graph
+- `plot_A_Cc_new.m` - plot Cc vs A for FvCB and e-Photosynthesis models on a single graph
 - `plot_calibration.m` - plot and examine results of the parameter calibration to identify the best scaling factors αEnzymes and αRubisco
 - `plot_calibration_Jmax.m` - plot and examine results of the parameter calibration to identify optimal αEnzymes
 - `plot_calibration_Vcmax.m` - plot and examine results of the parameter calibration to identify optimal αRubisco
@@ -83,10 +92,12 @@ Plotting - for plotting results of analyses
 - `plotting_ind_scatter_averages.m` - create scatter plots for average non-optimised and optimised enzyme concentrations as individual enzyme plots
 - `plotting_models.m` - plot scaling factors for Rubisco and RuBP-regeneration limitation using results from plot_models_2
 - `plotting_scatter_averages_new.m` - create scatter plots for average non-optimised and optimised enzyme concentrations in a loop, creating panels for individual enzymes
-- `plotting_scatter_reps_in_log.m` - create scatter plots for average optimised enzyme concentrations in a loop, according to functional categories of 7-8 enzymes (CBB,PR,SS)
-- `plotting_semilogy_all.m` - create semilogy plots for average non-optimized and optimized enzyme concentrations in a loop, creating panels for individual enzymes
-- `plotting_semilogy_ind.m` - create semilogy plots for average non-optimized and optimized enzyme concentrations in a loop, according to functional categories of 7-8 enzymes (CBB,PR,SS)
+- `plotting_scatter_reps_in_log.m` - create scatter plots for average optimised enzyme concentrations in a loop, according to functional categories of enzymes (CBB,PR,SS)
+- `plotting_semilogy_all.m` - create semilogy plots for average non-optimised and optimised enzyme concentrations in a loop, creating panels for individual enzymes
+- `plotting_semilogy_ind.m` - create semilogy plots for average non-optimised and optimised enzyme concentrations in a loop, according to functional categories of 7-8 enzymes (CBB,PR,SS)
 
-Shell_Scripts - jobs for running `gpmain` simulations on the High-End Computing (HEC) cluster
+Shell_Scripts - batch job scripts (.sh) for running `gpmain` simulations on the High-End Computing (HEC) cluster: https://lancaster-hec.readthedocs.io/
+- simulations can be run by submitting single scripts or arrays (to run the same program multiple times)
+- running `job_array_gpmain_rice_129.sh` creates the photorespiratory constraints for all other simulations
 
-gpmain - running model optimisation simulations at various CO_2 levels
+gpmain - scripts called by batch jobs for running model optimisation simulations at Cc = 130-380 umol mol-1
