@@ -57,10 +57,7 @@ The `Data` sub-folder contains:
 The `Scripts` sub-folder contains:
 - `msuRACiFit_rice` - R Markdown document containing fitting procedure for obtaining photosynthetic parameters
 
-Live_Scripts - for running interactive executable scripts combining code, output, and formatted text in a single MATLAB environment 
-- `Cc_Gr_simple.mlx`,`Cc_Gr_simple_2.mlx`,`Fig_4A-plot-data.csv`,`Jmax_adj_simple.mlx`,`O2_sol.mlx`,`PsKM_calculation.mlx`,`Sco_calculation.mlx`,
-`Vmax_temp_adj.mlx`,`fold_change_avg.mlx`,`import_optimization_results.mlx`,`plot_Rubisco_activation.mlx`,`plot_Rubisco_temp_corr.mlx`,`plotting_A_rates.mlx`,
-`plotting_bars_in_log_new_2.mlx`,`plotting_scatter_averages.mlx`,`plotting_semilogy_ind.mlx`,`scaling_factor_calculation.mlx`, `test_Gstars_rice.mlx`
+Live_Scripts - for running interactive executable versions of scripts - combining code, output, and formatted text in a single MATLAB environment
 
 Outputs - for storing outputs from various analyses within the subfolders:
 - `Data` - contains `Optimization_Procedure.txt`, `Results_optimization_rice_new_2.xlsx`, and `Series_of_job_submissions.txt`
