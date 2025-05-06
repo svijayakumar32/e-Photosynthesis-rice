@@ -41,14 +41,14 @@ gas_exchange_data <- read_excel("C:/Users/xxxx/Data/Gas_exchange_measurement_WT_
 #A330509WT2 <- read_excel("Data/IR64-A009-07-33-05-09_Wildtype2.xlsx")
 
 #ABSOLUTE PATHS
-A330502WT1 <- read_excel("C:/Users/vijayak2/OneDrive - Lancaster University/Code/Rice/IRRI_data/msuRACiFit/third/Data/IR64-A009-07-33-05-02_Wildtype1.xlsx")
-A330502WT2 <- read_excel("C:/Users/vijayak2/OneDrive - Lancaster University/Code/Rice/IRRI_data/msuRACiFit/third/Data/IR64-A009-07-33-05-02_Wildtype2.xlsx")
-A330504WT1 <- read_excel("C:/Users/vijayak2/OneDrive - Lancaster University/Code/Rice/IRRI_data/msuRACiFit/third/Data/IR64-A009-07-33-05-04_Wildtype1.xlsx")
-A330504WT2 <- read_excel("C:/Users/vijayak2/OneDrive - Lancaster University/Code/Rice/IRRI_data/msuRACiFit/third/Data/IR64-A009-07-33-05-04_Wildtype2.xlsx")
-A330506WT1 <- read_excel("C:/Users/vijayak2/OneDrive - Lancaster University/Code/Rice/IRRI_data/msuRACiFit/third/Data/IR64-A009-07-33-05-06_Wildtype1.xlsx")
-A330506WT2 <- read_excel("C:/Users/vijayak2/OneDrive - Lancaster University/Code/Rice/IRRI_data/msuRACiFit/third/Data/IR64-A009-07-33-05-06_Wildtype2.xlsx")
-A330509WT1 <- read_excel("C:/Users/vijayak2/OneDrive - Lancaster University/Code/Rice/IRRI_data/msuRACiFit/third/Data/IR64-A009-07-33-05-09_Wildtype1.xlsx")
-A330509WT2 <- read_excel("C:/Users/vijayak2/OneDrive - Lancaster University/Code/Rice/IRRI_data/msuRACiFit/third/Data/IR64-A009-07-33-05-09_Wildtype2.xlsx")
+A330502WT1 <- read_excel("C:/Users/xxxx/Data/IR64-A009-07-33-05-02_Wildtype1.xlsx")
+A330502WT2 <- read_excel("C:/Users/xxxx/Data/IR64-A009-07-33-05-02_Wildtype2.xlsx")
+A330504WT1 <- read_excel("C:/Users/xxxx/Data/IR64-A009-07-33-05-04_Wildtype1.xlsx")
+A330504WT2 <- read_excel("C:/Users/xxxx/Data/IR64-A009-07-33-05-04_Wildtype2.xlsx")
+A330506WT1 <- read_excel("C:/Users/xxxx/Data/IR64-A009-07-33-05-06_Wildtype1.xlsx")
+A330506WT2 <- read_excel("C:/Users/xxxx/Data/IR64-A009-07-33-05-06_Wildtype2.xlsx")
+A330509WT1 <- read_excel("C:/Users/xxxx/Data/IR64-A009-07-33-05-09_Wildtype1.xlsx")
+A330509WT2 <- read_excel("C:/Users/xxxx/Data/IR64-A009-07-33-05-09_Wildtype2.xlsx")
 
 ```
 
