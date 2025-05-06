@@ -25,7 +25,7 @@ library(msuRACiFit)
 ```{r}
 #gas_exchange_data <- read_excel("Data/Gas_exchange_measurement_WT_plants.xls")
 # ABSOLUTE PATH
-gas_exchange_data <- read_excel("C:/Users/vijayak2/OneDrive - Lancaster University/Code/Rice/IRRI_data/msuRACiFit/third/Data/Gas_exchange_measurement_WT_plants.xls")
+gas_exchange_data <- read_excel("C:/Users/xxxx/Data/Gas_exchange_measurement_WT_plants.xls")
 ```
 
 #### OR load each dataset as a separate file:
