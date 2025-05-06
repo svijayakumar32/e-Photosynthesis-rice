@@ -91,8 +91,8 @@ Outputs - for storing outputs from various analyses within the subfolders:
 
 Parameterisation - additional functions for calculating model parameters
 - `calculate_O2_sol` - to calculate molar solubility of oxygen at a given temperature and pressure
-- `calculate_PsPr_ratio` - to calculate the Vo/Vc ratio for Rubio based on temperature
-- `find_Rubio_params` - to find the value of the Rubio rate parameter PsV1 at different temperatures
+- `calculate_PsPr_ratio` - to calculate the Vo/Vc ratio for Rubisco based on temperature
+- `find_Rubisco_params` - to find the value of the Rubisco rate parameter PsV1 at different temperatures
 
 Plotting - for plotting results of analyses 
 - `Farq_ePhoto_comparison_new.m` - plot A/Cc curve for measured average parameters from gas exchange data and using Ac and Aj equations from Vcmax_adj_simple and Jmax_adj_simple
