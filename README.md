@@ -77,7 +77,6 @@ CO_2 response - for fitting leaf-level gas exchange measurements to the Farquhar
 The Data sub-folder contains:
 - `Gas_exchange_measurement_WT_plants.xls` - Excel workbook containing 8 sets of leaf level gas exchange measurements for wild type Oryza sativa cv. IR64
 - Filenames beginning with `IR64-A009-07-33-05` contain data for each curve 
-- `Rubisco_kinetics_Oryza_sativa.xlsx` contains kinetic parameter data for rice published in Hermida-Carrera et al (2016)
  
 The Scripts sub-folder contains:
 - `msuRACiFit_rice` - R Markdown document containing fitting procedure for obtaining photosynthetic parameters
