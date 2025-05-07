@@ -1,5 +1,5 @@
 ---
-title: "msuRACiFits_fits_rice"
+title: "msuRACiFits_fits_rice_params"
 author: "Supreeta Vijayakumar"
 date: "`r Sys.Date()`"
 output: html_document
