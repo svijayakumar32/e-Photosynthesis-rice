@@ -1,5 +1,5 @@
 ---
-title: "msuRACiFits_fits_rice_params"
+title: "msuRACiFits_fits_rice"
 author: "Supreeta Vijayakumar"
 date: "`r Sys.Date()`"
 output: html_document
@@ -37,6 +37,12 @@ library(msuRACiFit)
 ```
 
 Using \`here' roots the file path to the project environment.
+
+### Specify an output directory:
+
+```{r}
+base_path <- here("Outputs", "Parameters")
+```
 
 ### Import Excel files containing gas exchange data:
 
@@ -110,17 +116,19 @@ Gstars_Pa_rice<-Gstars_rice*(1000 / 1000000)*mean_press
 ### Save these gamma star values in a .csv:
 
 ```{r}
-write.csv(Gstars_rice,file = "Outputs/Parameters/Gstars_rice.csv") #ppm
+Gstars_rice_file <- file.path(base_path, "Gstars_rice.csv")
+write.csv(Gstars_rice,Gstars_rice_file) #ppm
 ```
 
 ```{r}
-write.csv(Gstars_Pa_rice,file = "Outputs/Parameters/Gstars_Pa_rice.csv") #Pa
+Gstars_Pa_rice_file <- file.path(base_path, "Gstars_Pa_rice.csv")
+write.csv(Gstars_Pa_rice,Gstars_Pa_rice_file) #Pa
 ```
 
 ### Alternatively, to fit data using the Shiny app, run:
 
 ```{r}
-msuRACiFit::genApp()
+# msuRACiFit::genApp()
 ```
 
 Select *O.sativa* as preset plant and fill in the average Tleaf and Pa for each curve, generating guesses and fits, saving outputs as .png and csv tables.
@@ -129,18 +137,18 @@ Select *O.sativa* as preset plant and fill in the average Tleaf and Pa for each 
 
 Make sure all constants are named differently within the function to what they are called outside the function.
 
-### Import data for Kc_c and Kc_dHa:
+### Import data for Kc_c and Kc_dHa (from Hermida-Carrera et al, 2016):
 
 ```{r}
-Kc_c <- 38.9
-Kc_dHa <- 83.1
+Kc_c <- 38.9   # unitless
+Kc_dHa <- 83.1 # kJ mol -1
 ```
 
-### Import data for Kcair_c and Kcair_dHa:
+### Import data for Kcair_c and Kcair_dHa from Hermida-Carrera et al, 2016:
 
 ```{r}
-Kcair_c <- 30.5 
-Kcair_dHa <- 60.5
+Kcair_c <- 30.5   # unitless
+Kcair_dHa <- 60.5 # kJ mol -1
 ```
 
 ### Write function to use the mean temperature in celsius from each curve for calculating Kc and Kcair:
@@ -186,8 +194,9 @@ for (j in seq_along(mean_temps)) {
 all_param$Ko<-(21000 / ((all_param$Kcair / all_param$Kc) - 1))/1000 
 all_param$Temperature <- mean_temps 
 all_param$Press <- mean_press 
-write.csv(all_param,
-         file = "Outputs/Parameters/fitComplete/Rice/kinetic_parameters_rice.csv")
+
+all_param_file <- file.path(base_path, "kinetic_parameters_rice.csv")
+write.csv(all_param,all_param_file)
 ```
 
 ### Input Kc and Ko values from all_param into fitComplete
@@ -207,8 +216,8 @@ complete_Fits_rice_list <- vector("list", length(datasets))
 ```{r}
 for (k in seq_along(datasets)) {  
   data_k <- datasets[[k]]
-  if ("data" %in% colnames(data_k)) {
-    data_k <- data_k$data  
+    if (hasName(data_k, "data")) {
+    data_k <- data_k$data
   }
   data_k <- as.data.frame(data_k)
   
@@ -234,461 +243,140 @@ for (k in seq_along(datasets)) {
 }
 ```
 
-### Fit curves individually using fitComplete algorithm:
+## Save parameter outputs:
 
 ```{r}
-completeFit1_rice <- fitComplete(A330502WT1, 
-                                name_assimilation = "Photo", 
-                                name_ci = "Ci", 
-                                gammastar = Gstars_Pa_rice[1], 
-                                O2 = 21, 
-                                pressure = mean_press[1], 
-                                tleaf = mean_temps[1], 
-                                initialGuess = NA,
-                                forceValues = c(NA, NA, NA, NA, NA, NA, NA), 
-                                bound_l = c(1, 1, 1, .001, .001, 0, 0), 
-                                bound_h = c(1000, 1000, 1000, 30, 10, 1, .75), 
-                                ignoreTPU = F, 
-                                maxiter = 500, 
-                                Kc = all_param[1, "Kc"], 
-                                Ko = all_param[1, "Ko"]) 
+for (o in seq_along(complete_Fits_rice_list)) {
+  filename <- sprintf("completeFits_rice_params_%d.csv", o)
+  output_filename <- file.path(base_path,filename)
+  write.csv(complete_Fits_rice_list[[o]][[1]], 
+            file = output_filename, 
+            row.names = FALSE)
+}
 ```
 
+### Initialise an empty list to store table outputs and sums of squared residuals:
+
 ```{r}
-completeFit2_rice <- fitComplete(A330502WT2, 
-                                 name_assimilation = "Photo", 
-                                 name_ci = "Ci", 
-                                 gammastar = Gstars_Pa_rice[2], 
-                                 O2 = 21, 
-                                 pressure = mean_press[2], 
-                                 tleaf = mean_temps[2], 
-                                 initialGuess = NA, 
-                                 forceValues = c(NA, NA, NA, NA, NA, NA, NA),
-                                 bound_l = c(1, 1, 1, .001, .001, 0, 0), 
-                                 bound_h = c(1000, 1000, 1000, 30, 10, 1, .75), 
-                                 ignoreTPU = F, maxiter = 500, 
-                                 Kc = all_param[2, "Kc"], 
-                                 Ko = all_param[2, "Ko"]) 
+complete_Tables_rice_list <- vector("list", length(datasets))
+SSR <- numeric(length(complete_Tables_rice_list))
 ```
 
-```{r}
-completeFit3_rice <- fitComplete(A330504WT1, 
-                                 name_assimilation = "Photo", 
-                                 name_ci = "Ci", 
-                                 gammastar = Gstars_Pa_rice[3], 
-                                 O2 = 21, 
-                                 pressure = mean_press[3], 
-                                 tleaf = mean_temps[3], 
-                                 initialGuess = NA, 
-                                 forceValues = c(NA, NA, NA, NA, NA, NA, NA), 
-                                 bound_l = c(1, 1, 1, .001, .001, 0, 0), 
-                                 bound_h = c(1000, 1000, 1000, 30, 10, 1, .75), 
-                                 ignoreTPU = F, 
-                                 maxiter = 500, 
-                                 Kc = all_param[3, "Kc"], 
-                                 Ko = all_param[3, "Ko"]) 
-```
+## Produce data tables using parameters fitted for each curve and the SSR assoaciated with each fit:
 
 ```{r}
-completeFit4_rice <- fitComplete(A330504WT2, 
-                                 name_assimilation = "Photo", 
-                                 name_ci = "Ci", 
-                                 gammastar = Gstars_Pa_rice[4], 
-                                 O2 = 21, 
-                                 pressure = mean_press[4], 
-                                 tleaf = mean_temps[4], 
-                                 initialGuess = NA, 
-                                 forceValues = c(NA, NA, NA, NA, NA, NA, NA), 
-                                 bound_l = c(1, 1, 1, .001, .001, 0, 0), 
-                                 bound_h = c(1000, 1000, 1000, 30, 10, 1, .75), 
-                                 ignoreTPU = F, 
-                                 maxiter = 500, 
-                                 Kc = all_param[4, "Kc"], 
-                                 Ko = all_param[4, "Ko"]) 
-```
+    for (k in seq_along(datasets)) {  
+    data_k <- datasets[[k]]
+      if (hasName(data_k, "data")) {
+      data_k <- data_k$data
+    }
+  data_k <- as.data.frame(data_k)
 
-```{r}
-completeFit5_rice <- fitComplete(A330506WT1, 
-                                 name_assimilation = "Photo", 
-                                 name_ci = "Ci", 
-                                 gammastar = Gstars_Pa_rice[5], 
-                                 O2 = 21, 
-                                 pressure = mean_press[5], 
-                                 tleaf = mean_temps[5], 
-                                 initialGuess = NA, 
-                                 forceValues = c(NA, NA, NA, NA, NA, NA, NA), 
-                                 bound_l = c(1, 1, 1, .001, .001, 0, 0), 
-                                 bound_h = c(1000, 1000, 1000, 30, 10, 1, .75), 
-                                 ignoreTPU = F, 
-                                 maxiter = 500, 
-                                 Kc = all_param[5, "Kc"], 
-                                 Ko = all_param[5, "Ko"])
-```
-
-```{r}
-completeFit6_rice <- fitComplete(A330506WT2, 
-                                 name_assimilation = "Photo", 
-                                 name_ci = "Ci", 
-                                 gammastar = Gstars_Pa_rice[6], 
-                                 O2 = 21, 
-                                 pressure = mean_press[6], 
-                                 tleaf = mean_temps[6], 
-                                 initialGuess = NA, 
-                                 forceValues = c(NA, NA, NA, NA, NA, NA, NA), 
-                                 bound_l = c(1, 1, 1, .001, .001, 0, 0), 
-                                 bound_h = c(1000, 1000, 1000, 30, 10, 1, .75), 
-                                 ignoreTPU = F, 
-                                 maxiter = 500, 
-                                 Kc = all_param[6, "Kc"], 
-                                 Ko = all_param[6, "Ko"]) 
-```
-
-```{r}
-completeFit7_rice <- fitComplete(A330509WT1, 
-                                 name_assimilation = "Photo", 
-                                 name_ci = "Ci", 
-                                 gammastar = Gstars_Pa_rice[7], 
-                                 O2 = 21, 
-                                 pressure = mean_press[7], 
-                                 tleaf = mean_temps[7], 
-                                 initialGuess = NA, 
-                                 forceValues = c(NA, NA, NA, NA, NA, NA, NA), 
-                                 bound_l = c(1, 1, 1, .001, .001, 0, 0), 
-                                 bound_h = c(1000, 1000, 1000, 30, 10, 1, .75), 
-                                 ignoreTPU = F, 
-                                 maxiter = 500, 
-                                 Kc = all_param[7, "Kc"], 
-                                 Ko = all_param[7, "Ko"]) 
-```
-
-```{r}
-completeFit8_rice <- fitComplete(A330509WT2, 
-                                 name_assimilation = "Photo", 
-                                 name_ci = "Ci", 
-                                 gammastar = Gstars_Pa_rice[8], 
-                                 O2 = 21, pressure = mean_press[8], 
-                                 tleaf = mean_temps[8], 
-                                 initialGuess = NA, 
-                                 forceValues = c(NA, NA, NA, NA, NA, NA, NA), 
-                                 bound_l = c(1, 1, 1, .001, .001, 0, 0), 
-                                 bound_h = c(1000, 1000, 1000, 30, 10, 1, .75), 
-                                 ignoreTPU = F, 
-                                 maxiter = 500, 
-                                 Kc = all_param[8, "Kc"], 
-                                 Ko = all_param[8, "Ko"]) 
-```
-
-### Save parameter outputs:
-
-```{r}
-write.csv(completeFit1_rice[[1]], 
-          file = "Outputs/Parameters/fitComplete/Rice/completefit1_console_rice_params.csv")
-
-write.csv(completeFit2_rice[[1]], 
-          file = "Outputs/Parameters/fitComplete/Rice/completefit2_console_rice_params.csv")
-
-write.csv(completeFit3_rice[[1]], 
-          file = "Outputs/Parameters/fitComplete/Rice/completefit3_console_rice_params.csv")
-
-write.csv(completeFit4_rice[[1]], 
-          file = "Outputs/Parameters/fitComplete/Rice/completefit4_console_rice_params.csv")
-
-write.csv(completeFit5_rice[[1]], 
-          file = "Outputs/Parameters/fitComplete/Rice/completefit5_console_rice_params.csv")
-
-write.csv(completeFit6_rice[[1]], 
-          file = "Outputs/Parameters/fitComplete/Rice/completefit6_console_rice_params.csv")
-
-write.csv(completeFit7_rice[[1]], 
-          file = "Outputs/Parameters/fitComplete/Rice/completefit7_console_rice_params.csv")
-
-write.csv(completeFit8_rice[[1]], 
-          file = "Outputs/Parameters/fitComplete/Rice/completefit8_console_rice_params.csv")
-```
-
-## Produce data tables for each curve:
-
-```{r}
-completeTables1_rice <- reconstituteTable(data=A330502WT1, 
-                                          fitParams = completeFit1_rice[[1]],
-                                          name_assimilation = "Photo", 
-                                          name_ci=c("Ci"), 
-                                          gammastar=Gstars_Pa_rice[1],
-                                          O2=21, 
-                                          pressure=mean_press[(1)], 
-                                          tleaf = mean_temps[(1)], 
-                                          ignoreTPU=F, 
-                                          Kc=all_param[1, "Kc"], 
-                                          Ko=all_param[1, "Ko"]) 
-
-completeTables2_rice <- reconstituteTable(data=A330502WT2, 
-                                          fitParams = completeFit2_rice[[1]], 
-                                          name_assimilation = "Photo", 
-                                          name_ci=c("Ci"), 
-                                          gammastar=Gstars_Pa_rice[2], 
-                                          O2=21, 
-                                          pressure=mean_press[(2)], 
-                                          tleaf = mean_temps[(2)], 
-                                          ignoreTPU=F, 
-                                          Kc=all_param[2, "Kc"],
-                                          Ko=all_param[2, "Ko"]) 
-
-completeTables3_rice <- reconstituteTable(data=A330504WT1, 
-                                          fitParams = completeFit3_rice[[1]], 
-                                          name_assimilation = "Photo", 
-                                          name_ci=c("Ci"), 
-                                          gammastar=Gstars_Pa_rice[3], 
-                                          O2=21, 
-                                          pressure=mean_press[(3)], 
-                                          tleaf = mean_temps[(3)], 
-                                          ignoreTPU=F, 
-                                          Kc=all_param[3, "Kc"], 
-                                          Ko=all_param[3, "Ko"]) 
-
-completeTables4_rice <- reconstituteTable(data=A330504WT2, 
-                                          fitParams = completeFit4_rice[[1]], 
-                                          name_assimilation = "Photo",
-                                          name_ci=c("Ci"), 
-                                          gammastar=Gstars_Pa_rice[4], 
-                                          O2=21, 
-                                          pressure=mean_press[(4)], 
-                                          tleaf = mean_temps[(4)], 
-                                          ignoreTPU=F, 
-                                          Kc=all_param[4, "Kc"], 
-                                          Ko=all_param[4, "Ko"])
-
-completeTables5_rice <- reconstituteTable(data=A330506WT1, 
-                                          fitParams = completeFit5_rice[[1]], 
-                                          name_assimilation = "Photo", 
-                                          name_ci=c("Ci"), 
-                                          gammastar=Gstars_Pa_rice[5], 
-                                          O2=21, 
-                                          pressure=mean_press[(5)], 
-                                          tleaf = mean_temps[(5)], 
-                                          ignoreTPU=F, 
-                                          Kc=all_param[5, "Kc"], 
-                                          Ko=all_param[5, "Ko"])
-
-completeTables6_rice <- reconstituteTable(data=A330506WT2, 
-                                          fitParams = completeFit6_rice[[1]], 
-                                          name_assimilation = "Photo", 
-                                          name_ci=c("Ci"), 
-                                          gammastar=Gstars_Pa_rice[6], 
-                                          O2=21, 
-                                          pressure=mean_press[(6)], 
-                                          tleaf = mean_temps[(6)], 
-                                          ignoreTPU=F, 
-                                          Kc=all_param[6, "Kc"], 
-                                          Ko=all_param[6, "Ko"])
-
-completeTables7_rice <- reconstituteTable(data=A330509WT1, 
-                                          fitParams = completeFit7_rice[[1]], 
-                                          name_assimilation = "Photo", 
-                                          name_ci=c("Ci"), 
-                                          gammastar=Gstars_Pa_rice[7], 
-                                          O2=21, 
-                                          pressure=mean_press[(7)], 
-                                          tleaf = mean_temps[(7)], 
-                                          ignoreTPU=F, 
-                                          Kc=all_param[7, "Kc"], 
-                                          Ko=all_param[7, "Ko"])
-
-completeTables8_rice <- reconstituteTable(data=A330509WT2, 
-                                          fitParams = completeFit8_rice[[1]], 
-                                          name_assimilation = "Photo", 
-                                          name_ci=c("Ci"), 
-                                          gammastar=Gstars_Pa_rice[8], 
-                                          O2=21, 
-                                          pressure=mean_press[(8)], 
-                                          tleaf = mean_temps[(8)], 
-                                          ignoreTPU=F, 
-                                          Kc=all_param[8, "Kc"], 
-                                          Ko=all_param[8, "Ko"])
+    complete_Tables_rice <- reconstituteTable(
+    data = data_k,  
+    fitParams = complete_Fits_rice_list[[k]][[1]],
+    name_assimilation = "Photo",
+    name_ci = "Ci",
+    gammastar = Gstars_Pa_rice[k],
+    O2 = 21,
+    pressure=mean_press[(k)], 
+    tleaf = mean_temps[(k)], 
+    ignoreTPU=F, 
+    Kc=all_param[k, "Kc"], 
+    Ko=all_param[k, "Ko"])
+  
+  complete_Tables_rice_list[[k]] <- complete_Tables_rice
+  SSR[k] <- sum(complete_Tables_rice_list[[k]]$`res^2`)
+}
 ```
 
 ### Save data tables:
 
 ```{r}
-write.csv(completeTables1_rice, 
-          file = "Outputs/Tables/fitComplete/Rice/completefit1_console_rice_dataTable.csv") 
-write.csv(completeTables2_rice, 
-          file = "Outputs/Tables/fitComplete/Rice/completefit2_console_rice_dataTable.csv")
-write.csv(completeTables3_rice, 
-          file = "Outputs/Tables/fitComplete/Rice/completefit3_console_rice_dataTable.csv") 
-write.csv(completeTables4_rice, 
-          file = "Outputs/Tables/fitComplete/Rice/completefit4_console_rice_dataTable.csv")
-write.csv(completeTables5_rice, 
-          file = "Outputs/Tables/fitComplete/Rice/completefit5_console_rice_dataTable.csv")
-write.csv(completeTables6_rice, 
-          file = "Outputs/Tables/fitComplete/Rice/completefit6_console_rice_dataTable.csv") 
-write.csv(completeTables7_rice, 
-          file = "Outputs/Tables/fitComplete/Rice/completefit7_console_rice_dataTable.csv")
-write.csv(completeTables8_rice, 
-          file = "Outputs/Tables/fitComplete/Rice/completefit8_console_rice_dataTable.csv") 
+for (p in seq_along(complete_Tables_rice_list)) {
+  filename <- sprintf("completeFits_rice_dataTable_%d.csv", p)
+  output_filename <- file.path(base_path,filename)
+  write.csv(complete_Tables_rice_list[[p]], 
+            file = output_filename, 
+            row.names = FALSE)
+}
 ```
 
-### Plot graphs of limitations:
+### Save SSR values:
 
 ```{r}
-completeGraph1_rice <- reconstituteGraph(data=A330502WT1, 
-                                         fitParams = completeFit1_rice[[1]], 
-                                         name_assimilation="Photo", 
-                                         name_ci=("Ci"), 
-                                         gammastar=Gstars_Pa_rice[1], 
-                                         O2=21, 
-                                         pressure=mean_press[(1)], 
-                                         tleaf=mean_temps[(1)], 
-                                         ignoreTPU=F, 
-                                         Kc=all_param[1, "Kc"], 
-                                         Ko=all_param[1, "Ko"])
-
-completeGraph2_rice <- reconstituteGraph(data=A330502WT2, 
-                                         fitParams = completeFit2_rice[[1]], 
-                                         name_assimilation="Photo", name_ci=("Ci"), 
-                                         gammastar=Gstars_Pa_rice[2], O2=21, 
-                                         pressure=mean_press[(2)], tleaf=mean_temps[(2)], 
-                                         ignoreTPU=F,
-                                         Kc=all_param[2, "Kc"], 
-                                         Ko=all_param[2, "Ko"])
-
-completeGraph3_rice <- reconstituteGraph(data=A330504WT1, 
-                                         fitParams = completeFit3_rice[[1]], 
-                                         name_assimilation="Photo", 
-                                         name_ci=("Ci"), 
-                                         gammastar=Gstars_Pa_rice[3], 
-                                         O2=21, 
-                                         pressure=mean_press[(3)], 
-                                         tleaf=mean_temps[(3)], 
-                                         ignoreTPU=F, 
-                                         Kc=all_param[3, "Kc"], 
-                                         Ko=all_param[3, "Ko"])
-
-completeGraph4_rice <- reconstituteGraph(data=A330504WT2, 
-                                         fitParams = completeFit4_rice[[1]], 
-                                         name_assimilation="Photo", 
-                                         name_ci=("Ci"), 
-                                         gammastar=Gstars_Pa_rice[4],
-                                         O2=21, 
-                                         pressure=mean_press[(4)], 
-                                         tleaf=mean_temps[(4)], 
-                                         ignoreTPU=F, 
-                                         Kc=all_param[4, "Kc"], 
-                                         Ko=all_param[4, "Ko"]) 
-
-completeGraph5_rice <- reconstituteGraph(data=A330506WT1, 
-                                         fitParams = completeFit5_rice[[1]], 
-                                         name_assimilation="Photo", 
-                                         name_ci=("Ci"), 
-                                         gammastar=Gstars_Pa_rice[5],
-                                         O2=21, 
-                                         pressure=mean_press[(5)], 
-                                         tleaf=mean_temps[(5)], 
-                                         ignoreTPU=F, 
-                                         Kc=all_param[5, "Kc"], 
-                                         Ko=all_param[5, "Ko"])
-
-completeGraph6_rice <- reconstituteGraph(data=A330506WT2, 
-                                         fitParams = completeFit6_rice[[1]], 
-                                         name_assimilation="Photo", 
-                                         name_ci=("Ci"), 
-                                         gammastar=Gstars_Pa_rice[6],
-                                         O2=21, 
-                                         pressure=mean_press[(6)], 
-                                         tleaf=mean_temps[(6)], 
-                                         ignoreTPU=F, 
-                                         Kc=all_param[6, "Kc"], 
-                                         Ko=all_param[6, "Ko"])
-
-completeGraph7_rice <- reconstituteGraph(data=A330509WT1, 
-                                         fitParams = completeFit7_rice[[1]], 
-                                         name_assimilation="Photo", 
-                                         name_ci=("Ci"), 
-                                         gammastar=Gstars_Pa_rice[7],
-                                         O2=21, 
-                                         pressure=mean_press[(7)], 
-                                         tleaf=mean_temps[(7)], 
-                                         ignoreTPU=F, 
-                                         Kc=all_param[7, "Kc"], 
-                                         Ko=all_param[7, "Ko"])
-
-completeGraph8_rice <- reconstituteGraph(data=A330509WT2, 
-                                         fitParams = completeFit8_rice[[1]], 
-                                         name_assimilation="Photo", 
-                                         name_ci=("Ci"), 
-                                         gammastar=Gstars_Pa_rice[8],
-                                         O2=21,
-                                         pressure=mean_press[(8)], 
-                                         tleaf=mean_temps[(8)], 
-                                         ignoreTPU=F, 
-                                         Kc=all_param[8, "Kc"], 
-                                         Ko=all_param[8, "Ko"]) 
+SSR_file <- file.path(base_path, "SSR_values_rice.csv")
+write.csv(SSR,SSR_file)
 ```
 
-### Save plots:
+### Initialise an empty list to store graph outputs:
 
 ```{r}
-png("Outputs/Graphs/fitComplete/Rice/completefits1_console_rice.png", width = 519, height = 457) 
-plot(completeGraph1_rice) 
-dev.off()
-
-png("Outputs/Graphs/fitComplete/Rice/completefits2_console_rice.png", width = 519, height = 457) 
-plot(completeGraph2_rice) 
-dev.off()
-
-png("Outputs/Graphs/fitComplete/Rice/completefits3_console_rice.png", width = 519, height = 457) 
-plot(completeGraph3_rice) 
-dev.off()
-
-png("Outputs/Graphs/fitComplete/Rice/completefits4_console_rice.png", width = 519, height = 457) 
-plot(completeGraph4_rice) 
-dev.off()
-
-png("Outputs/Graphs/fitComplete/Rice/completefits5_console_rice.png", width = 519, height = 457) 
-plot(completeGraph5_rice) 
-dev.off()
-
-png("Outputs/Graphs/fitComplete/Rice/completefits6_console_rice.png", width = 519, height = 457) 
-plot(completeGraph6_rice) 
-dev.off()
-
-png("Outputs/Graphs/fitComplete/Rice/completefits7_console_rice.png", width = 519, height = 457) 
-plot(completeGraph7_rice) 
-dev.off()
-
-png("Outputs/Graphs/fitComplete/Rice/completefits8_console_rice.png", width = 519, height = 457) 
-plot(completeGraph8_rice) 
-dev.off()
+complete_Graphs_rice_list <- vector("list", length(datasets))
 ```
 
-#### Calculate sum of squared residuals:
+## Produce graphs of limitations using parameters fitted for each curve:
 
 ```{r}
-SSR1<-sum(completeTables1_rice$res^2)
-SSR2<-sum(completeTables2_rice$res^2)
-SSR3<-sum(completeTables3_rice$res^2)
-SSR4<-sum(completeTables4_rice$res^2)
-SSR5<-sum(completeTables5_rice$res^2)
-SSR6<-sum(completeTables6_rice$res^2)
-SSR7<-sum(completeTables7_rice$res^2)
-SSR8<-sum(completeTables8_rice$res^2)
+    for (k in seq_along(datasets)) {  
+    data_k <- datasets[[k]]
+      if (hasName(data_k, "data")) {
+      data_k <- data_k$data
+    }
+  data_k <- as.data.frame(data_k)
+
+    complete_Graphs_rice <- reconstituteGraph(
+    data = data_k,  
+    fitParams = complete_Fits_rice_list[[k]][[1]],
+    name_assimilation = "Photo",
+    name_ci = "Ci",
+    gammastar = Gstars_Pa_rice[k],
+    O2 = 21,
+    pressure=mean_press[(k)], 
+    tleaf = mean_temps[(k)], 
+    ignoreTPU=F, 
+    Kc=all_param[k, "Kc"], 
+    Ko=all_param[k, "Ko"])
+  
+  complete_Graphs_rice_list[[k]] <- complete_Graphs_rice
+}
 ```
 
-### Combine and save SSR values:
+### Save graphs:
 
 ```{r}
-SSR_values <- data.frame(SSR1,SSR2,SSR3,SSR4,SSR5,SSR6,SSR7,SSR8) 
-write.csv(SSR_values, 
-          file = "Outputs/Parameters/fitComplete/Rice/rice_console_SSR_values.csv", 
-          row.names = FALSE)
+for (p in seq_along(complete_Graphs_rice_list)) {
+  filename <- sprintf("completefits_rice_Graph_%d.png", p)
+  output_filename <- file.path(base_path, filename)
+
+  png(output_filename, width = 519, height = 457)
+  plot(complete_Graphs_rice_list[[p]])
+  dev.off()
+}
 ```
 
-### Export plot coordinates for limitations, example below:
+### Create output for limitation data:
 
 ```{r}
-Ac<-completeGraph1_rice$plot_env$cdat 
-Aj<-completeGraph1_rice$plot_env$jdat 
-Ap<-completeGraph1_rice$plot_env$pdat 
-limitations <- list(Ac,Aj,Ap) 
+limitations_list <- vector("list", length(complete_Graphs_rice_list))
+```
 
-write.csv(limitations,"Outputs/Tables/fitComplete/Rice/completeFit1_rice_limitations.csv")
+### Export plot coordinates for limitations:
+
+```{r}
+for (q in seq_along(complete_Graphs_rice_list)) {
+  graph <- complete_Graphs_rice_list[[q]]
+  Ac <- graph$plot_env$cdat
+  Aj <- graph$plot_env$jdat
+  Ap <- graph$plot_env$pdat
+  
+  limitations_list[[q]] <- list(Ac, Aj, Ap)
+}
+```
+
+### Write limitations to output file:
+
+```{r}
+limitations_file <- file.path(base_path, "completeFit_rice_limitations.csv")
+write.csv(limitations_list,limitations_file)
 ```
