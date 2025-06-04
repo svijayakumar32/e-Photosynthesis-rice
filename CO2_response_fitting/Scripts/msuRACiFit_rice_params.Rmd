@@ -93,13 +93,17 @@ mean_press <- numeric(length = 8)
 ```{r}
 for (i in seq_along(datasets)) { 
   mean_temps[i] <- mean(datasets[[i]]$Tleaf) 
-  mean_press[i] <- mean(datasets[[i]]$Press) }
+  mean_press[i] <- mean(datasets[[i]]$Press)
+  sem_mean_temps <- sd(mean_temps) / sqrt(length(mean_temps))
+  sem_mean_press <- sd(mean_press) / sqrt(length(mean_press))
+}
 ```
 
 ### Call the calcgammastar function with different temperature inputs and get outputs saved in a single vector for 8 files:
 
 ```{r}
 Gstars_rice<-msuRACiFit::calcGammaStar(13.7,24.6,mean_temps,21) #rice c and dHa 
+sem_Gstars_rice<- sd(Gstars_rice)/ sqrt(length(Gstars_rice))
 Gstars_rice_25<-msuRACiFit::calcGammaStar(13.7,24.6,25,21) #rice c and dHa 
 ```
 
@@ -107,6 +111,7 @@ Gstars_rice_25<-msuRACiFit::calcGammaStar(13.7,24.6,25,21) #rice c and dHa
 
 ```{r}
 Gstars_Pa_rice<-Gstars_rice*(1000 / 1000000)*mean_press 
+sem_Gstars_Pa_rice<- sd(Gstars_Pa_rice)/ sqrt(length(Gstars_Pa_rice))
 ```
 
 ### Save these gamma star values in a .csv:
@@ -208,6 +213,13 @@ write.csv(mean_temps,temp_file)
 all_param$Ko<-(21000 / ((all_param$Kcair / all_param$Kc) - 1))/1000 
 all_param$Temperature <- mean_temps 
 all_param$Press <- mean_press
+mean_Kc<-mean(all_param$Kc)
+mean_Ko<-mean(all_param$Ko)
+mean_Kcair<-mean(all_param$Kcair)
+
+sem_Kc <- sd(all_param$Kc)/ sqrt(length(all_param$Kc))
+sem_Ko <- sd(all_param$Ko)/ sqrt(length(all_param$Ko))
+sem_Kcair <- sd(all_param$Kcair)/ sqrt(length(all_param$Kcair))
 ```
 
 ### Save parameters in a file:
@@ -261,7 +273,7 @@ for (k in seq_along(datasets)) {
 }
 ```
 
-## Save parameter outputs:
+### Save parameter outputs:
 
 ```{r}
 for (o in seq_along(complete_Fits_rice_list)) {
@@ -295,7 +307,7 @@ complete_Tables_rice_list <- vector("list", length(datasets))
 SSR <- numeric(length(complete_Tables_rice_list))
 ```
 
-## Produce data tables using parameters fitted for each curve and the SSR assoaciated with each fit:
+## Produce data tables using parameters fitted for each curve and the SSR associated with each fit:
 
 ```{r}
     for (k in seq_along(datasets)) {  
@@ -351,6 +363,21 @@ combined_results <- do.call(rbind,
     return(NULL)
   }
 }))
+```
+
+## Compute mean and SEM of parameter values:
+
+```{r}
+VcMax <- mean(combined_results$VcMax)
+J <- mean(combined_results$J)
+TPU <- mean(combined_results$TPU)
+Rd <-  mean(combined_results$rL)
+gm <-  mean(combined_results$gm)
+sem_VcMax <- sd(combined_results$VcMax)/ sqrt(length(combined_results$VcMax))
+sem_J <- sd(combined_results$J)/ sqrt(length(combined_results$J))  
+sem_TPU <- sd(combined_results$TPU)/ sqrt(length(combined_results$TPU)) 
+sem_Rd <- sd(combined_results$rL)/ sqrt(length(combined_results$rL))
+sem_gm <- sd(combined_results$gm)/ sqrt(length(combined_results$gm))   
 ```
 
 ### Save combined parameter values:
