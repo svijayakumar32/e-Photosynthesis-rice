@@ -73,14 +73,13 @@ Custom scripts and data files are described below:
 In addition to this, the remaining files are stored in various directories defining their function:
 
 CO_2 response - for fitting leaf-level gas exchange measurements to the Farquhar-vonCaemmerer-Berry (FvCB) model
-- `fitting_gas_exchange_rice.Rproj` - R project
 
 The Data sub-folder contains:
 - `Gas_exchange_measurement_WT_plants.xls` - Excel workbook containing 8 sets of leaf level gas exchange measurements for wild type Oryza sativa cv. IR64
 - Filenames beginning with `IR64-A009-07-33-05` contain data for each curve 
  
 The Scripts sub-folder contains:
-- `msuRACiFit_rice` - R Markdown document containing fitting procedure for obtaining photosynthetic parameters
+- `msuRACiFit_rice.R` - R script containing fitting procedure for obtaining photosynthetic parameters
 
 Live_Scripts - for running interactive executable versions of scripts - combining code, output, and formatted text in a single MATLAB environment
 
