@@ -13,9 +13,10 @@ To run the full analysis:
 
  - Navigate to the repository folder.
 
- - Modify the setwd() command accordingly to run msuRACiFit_rice_params.R OR
+ - Modify the setwd() command accordingly to run msuRACiFit_rice_params.R 
 
- - Run source(here("Scripts", "msuRACiFit_rice_params.R")) 
+ - Alternatively, you may prefer to replace the setwd() call with:
+   source(here("Scripts", "msuRACiFit_rice_params.R")) 
 
 
 
