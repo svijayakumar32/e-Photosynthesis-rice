@@ -83,7 +83,7 @@ The Scripts sub-folder contains:
 
 Live_Scripts - for running interactive executable versions of scripts - combining code, output, and formatted text in a single MATLAB environment
 
-Outputs - for storing outputs from various analyses within the subfolders:
+Outputs - for storing outputs of the enzyme optimisation within subfolders:
 - `Data` - contains `Optimization_Procedure.txt`, `Results_optimization_rice_new_2.xlsx`, and `Series_of_job_submissions.txt`
 - `Enzymes` - BestMatrix gives the optimal distribution of Vmax values for 67 photosynthetic enzymes (V1-V59)
 - `Metabolites` - dplot gives change in metabolite concentrations (which reach steady state at the end of the optimisation)
