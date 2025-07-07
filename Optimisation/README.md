@@ -19,7 +19,7 @@ The MATLAB scripts in gpmain (`gpmain_rice_xxx_new.m`) require corresponding job
 In our analysis, the batch job scripts are run as arrays - enabling the same program to be run multiple times.
 
 Each job script is a text file containing the commands to be run along with the compute resources required to run them. 
-* Prior to running a script, it may be useful to convert line endings of the text files from DOS (Windows) to Unix, e.g.
+* Prior to running a script, it may be necessary to convert line endings of the text files from DOS (Windows) to Unix, e.g.
 `dos2unix job_array_gpmain_rice_xxx.sh`
 
 Batch jobs are run on the HEC by creating a batch job script and submitting it to the system using the command `sbatch`. 
