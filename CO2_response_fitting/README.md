@@ -1,4 +1,4 @@
-**Structure** 
+## Structure
 
 This repository contains code for fitting CO₂ response data using the `msuRACiFit` package.
 
@@ -15,7 +15,14 @@ The `Data/' subdirectory contains the gas exchange data files used in the analys
 These are named using the pattern:
 `IR64-A009-07-33-05-0x_Wildtypex.xlsx`
 
-**Running the Analysis**
+## Requirements
+Running the code requires installation of the following R packages:
+- `devtools` - for installing other packages.
+- `msuRACiFit` - for fitting photosynthetic CO2 response curves to assimilation. 
+- `here` - for constructing paths to project files.
+- `readxl` - to import Excel files into R.
+
+## Running the Analysis
 
 To run the full analysis:
 
