@@ -6,6 +6,15 @@ The analysis is fully scripted within a single .R file for portability and repro
 
 All core logic is contained in `msuRACiFit_rice_params.R`, located in the `Scripts/` folder.
 
+The `Data/' subdirectory contains the gas exchange data files used in the analysis.
+
+- Raw data:
+`Gas_exchange_measurement_WT_plants.xls`
+
+- Cleaned input files:
+These are named using the pattern:
+`IR64-A009-07-33-05-0x_Wildtypex.xlsx`
+
 **Running the Analysis**
 
 To run the full analysis:
