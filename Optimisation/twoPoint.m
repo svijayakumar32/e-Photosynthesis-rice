@@ -1,5 +1,5 @@
 %   Copyright   Xin-Guang Zhu and Stephen P. Long, University of Illinois 
-%   Copyright ©  2007
+%   Copyright Â©  2007
 
 %   This file is part of CarbonMetabolism.
 
