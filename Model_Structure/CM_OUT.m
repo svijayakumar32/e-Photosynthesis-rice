@@ -55,7 +55,7 @@ TandCon(:,2:36)=d;
 % fid = fopen(outM,'wt'); 
 % %fid = fopen('D6_C_Meta.txt','wt');  
 % fprintf(fid,'%s','t RuBP PGA DPGA T3P FBP E4P S7P SBP ATP NADPH CO2 O2 HexP PenP GCEA GCA PGCA GCAc GOAc SERc GLYc HPRc GCEAc T3Pc FBPc HexPc F26BPc ATPc ADPc OPOPc UDPGc UTPc SUCP SUC PGAc');
-% fprintf(fid,'%c\n',' ');    %ªª––
+% fprintf(fid,'%c\n',' ');    %¬ª¬ª√ê√ê
 % for k=1:row; 
 %     for m=1:36
 %         p=num2str(TandCon(k,m));
