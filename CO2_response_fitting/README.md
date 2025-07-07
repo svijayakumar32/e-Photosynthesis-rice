@@ -3,7 +3,7 @@
 This repository contains code for fitting CO₂ response data using the msuRACiFit package.
 The analysis is fully scripted within a single .R file for portability and ease of reproducibility.
 
-All core logic is contained in this script, which is stored in the Scripts/ folder.
+All core logic is contained in msuRACiFit_rice_params.R, which is stored in the Scripts/ folder.
 
 **Running the Analysis**
 
