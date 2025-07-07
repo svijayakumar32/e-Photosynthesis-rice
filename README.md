@@ -8,51 +8,9 @@ This version of e-Photosynthesis integrates species-specific temperature depende
 The workflow begins by combining species-specific equations for calculating temperature dependencies of Rubisco catalytic properties with leaf-level gas exchange measurements for Oryza sativa cv. IR64 to derive photosynthetic parameters describing Calvin-Benson-Bassham (CBB) cycle activity, i.e. Vcmax and J. 
 These photosynthetic parameters are used to re-scale enzyme activities in e-Photosynthesis before running the model to identify redistributions that are optimal for CO2 assimilation at different [CO2] levels. Following this, additional analyses are applied to evaluate strategies for increasing photosynthesis through overexpressing subsets of 2-6 enzymes to engineer improved photosynthesis under drought stress, current ambient [CO2] and future elevated [CO2].
 
-## Requirements
-Running the code requires installation of the following R packages:
-- `devtools` - for installing other packages.
-- `msuRACiFit` - for fitting photosynthetic CO2 response curves to assimilation. 
-- `here` - for constructing paths to project files.
-- `readxl` - to import Excel files into R.
-
 ## Files
 The files within the main repository contains scripts, variables and data adapted from the version of e-Photosynthesis stored in https://github.com/cropsinsilico/C3-metabolic-and-leaf-model.
 All code licensing information is detailed in `LICENSE`.
-
-- `cdn.m` defines the environmental conditions, such as CO2 concentration and photon flux density.
-- `SYSInitial.m` defines the simulation time.
-
-The evolutionary algorithm is run using the following scripts:
-- `average.m` - calculates the average Vmax in each generation
-- `mutate.m` - generate variation in Vmax populations by modifying mutatePercentage 
-- `rankPop.m` - ranks populations based on their CO2 uptake values
-- `resizePop.m` - resizes the population after each generation
-- `stdev.m` - calculate the standard deviation of Vmax in each generation
-- `twoPoint.m` - a variation of `resizePop` (not used in current simulations)
-  
-For the model scripts, the first part of the filename describes the portion of the e-Photosynthesis model being simulated:
-- `CM_` describes carbon metabolism (CBB cycle).
-- `PS_` describes the CBB cycle in addition to the starch synthesis and triose phosphate export. 
-- `PR_` describes the photorespiration model. 
-- `PS_PR_` describes the CBB cycle, starch synthesis, triose phosphate export, and photorespiration process. 
-- `FI_` describes the light energy absorption, transfer, primary charge separation, and electron transfer around PSII. 
-- `BF_` describes the electron transfer from reduced plastiquinone until the generation of ATP and NADPH, including the ion transfer through thylakoid membrane and ATP synthesis process. 
-- `FIBF_` describes reactions covered by FI_Drive, and BF_Drive. 
-- `RuACT_` describes reactions of Rubisco activation process. 
-- `XanCycle_` describes reaction of the xanthophyll cycle. 
-- `EPS_` describes reactions covered by PS_PRDrive and FIBF_Drive.
-- `RA_` describes reactions covered by EPS_Drive and RA_Drive. 
-- `RedoxReg_` describes reactions covered by EPS_Drive and the redox regulation of enzyme activities. 
-- `DynaPS_` describes reactions covered by EPS_Drive, RuACT_Drive and XanCycle_Drive.
-- `tr DynaPS_` describes reactions covered by EPS_Drive, RuACT_Drive, XanCycle_Drive and RROEA_Drive.
-
-The second part of these filenames use suffixes to describe the purpose of the script:
-- `_AddTitle` defines titles for concentration/time plots plots.
-- `_Ini` defines initial values and parameters.
-- `_Drive` defines model simulation settings.
-- `_Graph` defines plotting commands.
-- `_Rate` defines rate equations.
-- `_mb` defines differential equations.
 
 Custom scripts and data files are described below:
 - `Calculate_Cc.m` - calculates Cc values equivalent to Ca for the FvCB model fit
