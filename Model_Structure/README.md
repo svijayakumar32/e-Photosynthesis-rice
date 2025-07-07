@@ -1,7 +1,7 @@
 This repository contains scripts associated with the structure of the e-Photosynthesis model:
 
-`cdn.m` defines the environmental conditions, such as CO2 concentration and photon flux density.
-`SYSInitial.m` defines the simulation time.
+- `cdn.m` defines the environmental conditions, such as CO2 concentration and photon flux density.
+- `SYSInitial.m` defines the simulation time.
 
 For the model files, the first part of the filename describes the portion of the e-Photosynthesis model being simulated:
 - `CM_` describes carbon metabolism (CBB cycle).
