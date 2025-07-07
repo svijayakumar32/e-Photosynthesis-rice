@@ -1,5 +1,6 @@
 This folder contains scripts associated with the optimisation of the e-Photosynthesis model.
 
+## Evolutionary Algorithm
 The evolutionary algorithm is run using the following scripts:
 - `average.m` calculates the average Vmax in each generation
 - `mutate.m` generates variation in Vmax populations by modifying mutatePercentage
@@ -8,8 +9,12 @@ The evolutionary algorithm is run using the following scripts:
 - `stdev.m` calculates the standard deviation of Vmax in each generation
 - `twoPoint.m` is a variation of `resizePop.m`, but it is not used in the current simulations
 
-These files are called by scripts in the `gpmain` folder, which optimise the model at a specific CO2 concentration (130-420 umol mol^-1 at intervals of 10 umol mol^-1).
-As the optimisation process is computationally intensive, it is recommended that users run the scripts using a high performance computing (HPC) cluster, allotting sufficient memory of 8GB per job.
+## High Performance Computing
+These files are called by scripts in the `gpmain` folder, which optimise the model at a specific CO2 concentration (Cc = 130-380 umol mol^-1 at intervals of 10 umol mol^-1).
+- Simulations can be run by submitting single scripts or arrays (to run the same program multiple times).
+- Running `job_array_gpmain_rice_129.sh` creates the photorespiratory constraints for all other simulations, so it must be run *first*.
+
+As the optimisation process is computationally intensive, it is recommended that users run the simulations using a high performance computing (HPC) cluster, allotting sufficient memory of 8GB per job.
 
 For the purposes of this work, all optimisations were run on the Lancaster University High End Computing (HEC) cluster using basic Linux commands.
 - For further documentation on the Lancaster University HEC, please refer to https://lancaster-hec.readthedocs.io/en/latest/index.html. 
