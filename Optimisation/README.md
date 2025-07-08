@@ -1,6 +1,8 @@
 This folder contains scripts associated with the optimisation of the e-Photosynthesis model.
-## Input
+
+## Inputs
 - `Einput7.txt` - a list of the original enzyme activities for e-Photosynthesis model
+- `MW&Kcat.txt` - a list of molecular weights and kcat values for photosynthetic enzymes
 
 ## Evolutionary Algorithm
 The evolutionary algorithm is run using the following scripts:
