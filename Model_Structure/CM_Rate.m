@@ -166,17 +166,17 @@ global SUCS_CON;
 
 R = 8.314;
 %18/12/2023
-c_c = 38.943737996377;% Kc c rice, umol mol-1
-dHa_c = 83.1375366124519;% Kc dHa rice, umol mol-1
-c_air = 30.4979391963763;% Kcair c rice,umol mol-1
-dHa_air = 60.5017340537083;% Kcair dHa rice, umol mol-1
+c_c = 38.9;% Kc c rice, umol mol-1
+dHa_c = 83.1;% Kc dHa rice, umol mol-1
+c_air = 30.5;% Kcair c rice,umol mol-1
+dHa_air = 60.5;% Kcair dHa rice, umol mol-1
 % 
 % First the physical and chemical constant for all the reactions
 %%%%%%%%%%soy PsKM11_0	=	0.0097; PsKM12_0	=	0.244;	
 % These values originate in Cousins et al (2010) Table 2 
 % as Kc(uM)= 9.7 uM and Ko(uM)= 244 uM in T.aestivum = wheat
 % Makino et al (1988) lists Kc = 8.0 uM,  Ko = 335 uM, therefore Kc = 0.008 mM, Ko = 0.355 mM
-% This Kc is matched by Hermida-Carrera et al (Kc=8.0 uM, Kcair = 17.3 uM - liquid phase at 25°C) - can we work out an equivalent Ko in uM?
+% This Kc is matched by Hermida-Carrera et al (Kc = 8.0 uM, Kcair = 17.3 uM - liquid phase at 25°C) - can we work out an equivalent Ko in uM?
 % Ko in uM = O2 in uM/(Kcair in uM/Kc in uM)-1)
 
 % To find [O2] in uM at 25°C, multiply O2 partial pressure in mbar by the
@@ -184,9 +184,9 @@ dHa_air = 60.5017340537083;% Kcair dHa rice, umol mol-1
 % O2_uM=O2_mbar*O2_sol*1000
 
 O2_uM_25  =  210*0.0013*1000;
-PsKM11_0  =  0.00803;                  % rice CO2	1	RuBP+CO2->2PGA
+PsKM11_0  =  0.0080;                  % rice CO2	1	RuBP+CO2->2PGA
 % Ko_uM = O2_uM/((Kc_air_uM/Kc_uM)-1);
-PsKM12_0    =  (O2_uM_25/((17.2515/8.03)-1))/1000; % rice O2	1	RuBP+CO2->2PGA  
+PsKM12_0    =  (O2_uM_25/((17.3/8.0)-1))/1000; % rice O2	1	RuBP+CO2->2PGA  
 
 % Kinetics are being calculated here for rice c and dHa at 25C, 101.325 kPa
 % c and dHa for rice Kc and Kcair were given in umol mol-1 by Hermida-Carrera
@@ -415,12 +415,16 @@ Q10_57=2;
 Q10_58=2;
 
 % Rubisco activation state (Fig 3A, Cen & Sage, 2005)
-Ru_Act_orig=-3E-05*Tp^3 + 0.0013*Tp^2 - 0.0106*Tp + 0.8839;
+% Temp response of Rubisco activation
+% Ru_Act_orig=-3E-05*Tp^3 + 0.0013*Tp^2 - 0.0106*Tp + 0.8839;
 % Quadratic polynomial fit (Fig 4A, Makino and Sage, 2007 - see plot_Rubisco_activation.mlx for details)
 Ru_Act = - 0.0007851 * Tp ^2 + 0.0319 * Tp + 0.5233;
 
 % Cubic polynomial fit (Fig 4A, Makino and Sage, 2007)
 %Ru_Act =- 5.053e-5 * Tp^3 + 0.003484 * Tp^2 - 0.08222 * Tp + 1.48;
+
+% CO2 response of Rubisco activation - measured at what temp?
+% RuAct = -0.000 * CO2_level^2 + 0.000 * CO2_level + 0.000  (If Quadratic) 
 
 PsV1 =PsV1_0*Ru_Act*Q10_1^((Tp-25)/10);
 PsV2 =PsV2_0*Q10_2^((Tp-25)/10);
@@ -534,7 +538,7 @@ Km621	=	5	;	%	Vsink			Notice: pH dependent	Km621	Sucrose	5		{Weschke, 2000 #2522
 
 % SUCSVdhap_in  = Vdhap_in;    %   DHAP export from chloroplast
 % SUCSVgap_in   = Vgap_in;    %   GAP export from chloroplast
-% SUCSVpga_in   = Vpga_in;    %   PGA export from chloropalst
+% SUCSVpga_in   = Vpga_in;    %   PGA export from chloroplast
 
 
 % The rate constant used in the model	
@@ -684,7 +688,7 @@ PS2EPS_V16=v16;
 v23 = PsV23 * G1P *ATP /((G1P+PsKM231)*((1+ADP/PsKI23)*(ATP+PsKM232)+(PsKM232*Pi/(PsKA231*PGA+PsKA232*F6P+PsKA233*FBP))));
 N = 1 + (1+ PsKM313/PsPEXT)*(Pi/PsKM312+PGA/PsKM32+GAP/PsKM33+DHAP/PsKM311);
 
-% The ATP regualtion really is implicit in the light regulation of sucrose synthesis. 
+% The ATP regulation really is implicit in the light regulation of sucrose synthesis. 
 v31 = PsV31 * DHAP/(N*PsKM311)  ;
 v32 = PsV32 * PGA/(N*PsKM32);
 v33 = PsV33 * GAP/(N * PsKM33);

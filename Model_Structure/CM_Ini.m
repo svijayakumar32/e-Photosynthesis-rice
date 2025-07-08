@@ -198,7 +198,7 @@ V111 = gp2V111;
 global V112;       
 % Reaction 113  : Gcea+ATP<-->ADP + PGA
 global V113;
-% Reactoin 121; Glycolate +O2<-->H2O2+Glyoxylate
+% Reaction 121; Glycolate +O2<-->H2O2+Glyoxylate
 global V121;
 % Reaction 122  : Glyoxylate + Serine<--> Hydoxypyruvate + Glycine;
 global V122;
@@ -208,7 +208,7 @@ global V123;
 global V124;
 % Reaction 131: NAD+Glycine <--> CO2+ NADH + NH3
 global V131;
-% The consant for calculating the glycerate uptake.
+% The constant for calculating the glycerate uptake.
 global V1T;
 global V2T;
 
