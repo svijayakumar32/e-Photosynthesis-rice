@@ -9,4 +9,4 @@
 
 5. BestMatrix gives the optimal distribution of Vmax values for 67 photosynthetic enzymes (V1-V59)
 
-6. dplot gives change in metabolite concentrations (needs to reach steady state towards end of optimization)
+6. dplot gives change in metabolite concentrations (needs to reach steady state towards end of optimisation)
