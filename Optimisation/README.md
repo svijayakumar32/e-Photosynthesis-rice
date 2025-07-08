@@ -1,4 +1,6 @@
 This folder contains scripts associated with the optimisation of the e-Photosynthesis model.
+## Input
+- `Einput7.txt` - a list of the original enzyme activities for e-Photosynthesis model
 
 ## Evolutionary Algorithm
 The evolutionary algorithm is run using the following scripts:
