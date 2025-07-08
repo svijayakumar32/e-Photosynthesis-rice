@@ -44,11 +44,6 @@ Outputs - for storing outputs of the enzyme optimisation within subfolders:
 - `Metabolites` - dplot gives change in metabolite concentrations (which reach steady state at the end of the optimisation)
 - `Workspaces` - MATLAB workspaces saved after running gpmain simulation
 
-Parameterisation - additional functions for calculating model parameters
-- `calculate_O2_sol` - to calculate molar solubility of oxygen at a given temperature and pressure
-- `calculate_PsPr_ratio` - to calculate the Vo/Vc ratio for Rubisco based on temperature
-- `find_Rubisco_params` - to find the value of the Rubisco rate parameter PsV1 at different temperatures
-
 Plotting - for plotting results of analyses 
 - `Farq_ePhoto_comparison_new.m` - plot A/Cc curve for measured average parameters from gas exchange data and using Ac and Aj equations from Vcmax_adj_simple and Jmax_adj_simple
 - `extract_PR_constraints.m` - import results of optimisation at Cc = 129 umol mol-1, average the results and export PR enzyme Vmax values to serve as constraints for full optimizations
