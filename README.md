@@ -16,17 +16,10 @@ The files within the main repository contains scripts, variables and data adapte
 All code licensing information is detailed in `LICENSE`.
 
 Custom scripts and data files are described below:
-- `Calculate_Cc.m` - calculates Cc values equivalent to Ca for the FvCB model fit
-- `CalculateGrossAssimilation.m` - calculates gross CO2 assimilation
-- `Einput7.txt` - a list of the original enzyme activities for e-Photosynthesis model
-- `EPS_Drive_GRNs` - calls EPS_Drive to calculate assimilation rates using a specific list of enzyme activities as input.
-- `enzyme_adjustment_test_new`- runs sensitivity analysis to determine assimilation rates associated for random fold changes (n = 2000) of various enzyme combinations drawn between FC = 1 (no change) and FC = 1.25 for Rubisco and FC = 2.8 for SBPase, aldolase, PRK, FBPase and TK at Cc = 130 umol mol-1, 250 umol mol-1 or Cc = 360 umol mol-1
+
 - `FvCB_check_Vcmax_adj.m` - checks transition between Rubisco-limited and RuBP limited phases in A/Cc fit
-- `Jmax_adj_simple.m` - runs model calibration to find optimal αEnzymes by minimising SSR between assimilation rates of FvCB and e-Photosynthesis models in the RuBP-regeneration limited range of [CO2]
-- `MW&Kcat.txt` - a list of molecular weights and kcat values for photosynthetic enzymes
 - `PR_constraints.txt` - a list of photorespiratory enzyme activities (optimised Vmax) obtained from running `job_array_gpmain_rice_129.sh`
 - `PR_constraints_protein.txt` - a list of photorespiratory enzyme concentrations (optimised protein) converted from `PR_constraints`
-- `Vcmax_adj_simple.m` - runs model calibration to find optimal αRubisco by minimising SSR between assimilation rates of FvCB and e-Photosynthesis models in the Rubisco limited range of [CO2]
   
 In addition to this, the remaining files are stored in various directories defining their function:
 
