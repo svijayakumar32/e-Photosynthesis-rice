@@ -28,7 +28,7 @@ global VmaxAdj;
 VmaxAdj = 1.12;
 
 %Ci=__;% Adjust Ci= 140-420 here in script or
-CO2i=280;% Ci given as input to function
+CO2i=370;% Ci given as input to function
 PPFDi=2000;
 GRNC=0;
 Einput=ones(37,1);%No gene expression data input

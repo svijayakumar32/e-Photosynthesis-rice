@@ -17,16 +17,18 @@
 %    along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
-%function gpmain_rice_129_new(Ci)
-%Adjust alpha values here and read in Einput7.txt
+% function gpmain_rice_129_new(Ci)
+% Load temperature file
+load("WeatherTemp.mat"); %Avg Tleaf, Original = 25C
+
+% Adjust alpha values here and read in Einput7.txt
 global Vrubusco_adj;
-Vrubusco_adj = 1.32; 
+Vrubusco_adj = 1.36; 
 global VmaxAdj;
 VmaxAdj = 1.12;
 
 CO2i = 129;% adj 200,220,240 or 260 %CO2i=Ci if input given to function
 PPFDi = 2000; %PPFD from IRRI
-WeatherTemp = 28.9310407291759;
 GRNC = 0;
 Einput = ones(37,1);%No gene expression data input
 Edata = importdata('Einput7.txt');

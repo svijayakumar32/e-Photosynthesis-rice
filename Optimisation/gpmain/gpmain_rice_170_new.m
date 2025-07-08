@@ -18,16 +18,18 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %function gpmain_rice_all(Ci)
-%Adjust alpha values here and read in Einput7.txt
+% Load temperature file
+load("WeatherTemp.mat"); %Avg Tleaf, Original = 25C
+
+% Adjust alpha values here and read in Einput7.txt
 global Vrubusco_adj;
-Vrubusco_adj = 1.32; 
+Vrubusco_adj = 1.36; 
 global VmaxAdj;
 VmaxAdj = 1.12;
 
 %Ci=__;% Adjust Ci= 140-420 here in script or
 CO2i=170;% Ci given as input to function
 PPFDi=2000;
-WeatherTemp=28.9310407291759;
 GRNC=0;
 Einput=ones(37,1);%No gene expression data input
 Edata=importdata('Einput7.txt');
