@@ -4,6 +4,10 @@ This repository contains the code and data necessary to reproduce the results pr
 ## Overview
 This repository provides a generalisable workflow for calibration, parameter optimisation, and input scaling that can be applied to any plant species with available gas exchange and kinetic data.
 Our paper describes the steps for optimising resource investment among photosynthetic enzymes to maximise carbon assimilation in a model of C3 photosynthetic metabolism calibrated to rice, summarised in `pipeline_simple_flowchart.png`. 
+
+![pipeline_simple_flowchart](https://github.com/user-attachments/assets/6e3b0a39-c109-4f79-8831-0ecfef8d41b8)
+
+
 This version of e-Photosynthesis integrates species-specific temperature dependencies for the balance of oxygenation and carboxylation (Vomax/Vcmax) and ribulose-1,6-bisphosphate carboxylase/oxygenase (Rubisco) activation, as well as accounting for tight binding Rubisco inhibitors.
 The workflow begins by combining species-specific equations for calculating temperature dependencies of Rubisco catalytic properties with leaf-level gas exchange measurements for Oryza sativa cv. IR64 to derive photosynthetic parameters describing Calvin-Benson-Bassham (CBB) cycle activity, i.e. Vcmax and J. 
 These photosynthetic parameters are used to re-scale enzyme activities in e-Photosynthesis before running the model to identify redistributions that are optimal for CO2 assimilation at different [CO2] levels. Following this, additional analyses are applied to evaluate strategies for increasing photosynthesis through overexpressing subsets of 2-6 enzymes to engineer improved photosynthesis under drought stress, current ambient [CO2] and future elevated [CO2].
