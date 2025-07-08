@@ -1,9 +1,9 @@
 %% Simplified Jmax_adj for running only the metabolic model (MetaOnly==1)
-param_file = 'C:/Users/vijayak2/OneDrive - Lancaster University/Code/Rice/IRRI_data/msuRACiFit/third/Outputs/Parameters/complete_Fits_rice_params_all';
-Gstar_file = 'C:/Users/vijayak2/OneDrive - Lancaster University/Code/Rice/IRRI_data/msuRACiFit/third/Outputs/Parameters/Gstars_rice';
-Kcair_file = 'C:/Users/vijayak2/OneDrive - Lancaster University/Code/Rice/IRRI_data/msuRACiFit/third/Outputs/Parameters/Kcair_umol_rice';
-temp_file = 'C:/Users/vijayak2/OneDrive - Lancaster University/Code/Rice/IRRI_data/msuRACiFit/third/Outputs/Parameters/temps_rice';
-Gm_file = 'C:/Users/vijayak2/OneDrive - Lancaster University/Code/Rice/IRRI_data/msuRACiFit/third/Outputs/Parameters/gm_umol_rice';
+param_file = 'C:/Users/xxxxx/Outputs/Parameters/complete_Fits_rice_params_all';
+Gstar_file = 'C:/Users/xxxxx/Outputs/Parameters/Gstars_rice';
+Kcair_file = 'C:/Users/xxxxx/Outputs/Parameters/Kcair_umol_rice';
+temp_file = 'C:/Users/xxxxx/Outputs/Parameters/temps_rice';
+Gm_file = 'C:/Users/xxxxx/Outputs/Parameters/gm_umol_rice';
 
 parameters = readtable(param_file,'PreserveVariableNames', true);
 Gstars_vals = readtable(Gstar_file,'PreserveVariableNames', true);
