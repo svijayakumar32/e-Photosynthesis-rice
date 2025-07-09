@@ -48,7 +48,7 @@ The code is run in the following order, where the final step of each analysis pl
    - msuRACiFit_params.R - > plot_limitations_new.m
    
 2(a). Parameterisation/Input_Scaling 
-  - Jmax_adj_simple.m -> Vcmax_adj_simple.m -> plotting_scaling_factors.m
+   - Jmax_adj_simple.m -> Vcmax_adj_simple.m -> plotting_scaling_factors.m
   
 2(b). Parameterisation/Model_Comparison
    - Farq_ePhoto_comparison_new -> plot_A_Cc_new.m
