@@ -59,9 +59,7 @@ The code is run in the following order, where the final step of each analysis pl
 5) Sensitivity Analysis
    - `enzyme_adjustment_test_2000.m` -> `plot_violins.m`
 
-There is also an additional folder for storing outputs, with examples included for optimisation at one Cc level
-
-Outputs - for storing outputs of the enzyme optimisation within subfolders:
+There is also an additional folder for storing outputs of the enzyme optimisation within subfolders:
 - `Data` - contains `Results_optimization_rice_new_3.xlsx` - an Excel workbook containing all results of the model optimisations
 - `Enzymes` - BestMatrix gives the optimal distribution of Vmax values for 67 photosynthetic enzymes (V1-V59)
 - `Metabolites` - dplot gives change in metabolite concentrations (which reach steady state at the end of the optimisation)
