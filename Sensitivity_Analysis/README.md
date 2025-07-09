@@ -7,3 +7,4 @@ The sensitivity analysis can be run using a single script - as in the case of th
 ## Plotting
 - `plot_violins_new.m` creates violin plots for the enzyme stacking strategies (Stress/Current/Future)
 - `Violin.m` is the class file for violin plots
+- `violinplot.m` is a function that plots violin plots of data and categories
