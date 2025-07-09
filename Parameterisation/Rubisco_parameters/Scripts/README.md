@@ -1,0 +1,2 @@
+- `calculate_PsPr_ratio` calculates the Vo/Vc ratio for Rubisco based on temperature
+- `find_Rubisco_params` finds the value of the Rubisco rate parameter PsV1 at different temperatures
