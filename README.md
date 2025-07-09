@@ -45,24 +45,24 @@ The Scripts sub-folder contains:
 The code is run in the following order, where the final step of each analysis plots figures:
 
 1. CO2 response fitting 
-   - msuRACiFit_params.R - > plot_limitations_new.m
+   - `msuRACiFit_params.R` - > `plot_limitations_new.m`
    
 2(a). Parameterisation/Input_Scaling 
-   - Jmax_adj_simple.m -> Vcmax_adj_simple.m -> plotting_scaling_factors.m
+   - `Jmax_adj_simple.m` -> `Vcmax_adj_simple.m` -> `plotting_scaling_factors.m`
   
 2(b). Parameterisation/Model_Comparison
-   - Farq_ePhoto_comparison_new -> plot_A_Cc_new.m
+   - `Farq_ePhoto_comparison_new` -> `plot_A_Cc_new.m`
    
 3) Optimisation
-   - job_gpmain_rice_129_new.m -> job_gpmain_rice_130...380_new.m -> CalculateGrossAssimilation.m -> plotting_A_rates.m
+   - `job_gpmain_rice_129_new.m` -> `job_gpmain_rice_130...380_new.m` -> `CalculateGrossAssimilation.m` -> `plotting_A_rates.m`
    
 5) Sensitivity Analysis
-   - enzyme_adjustment_test_2000.m -> plot_violins.m
+   - `enzyme_adjustment_test_2000.m` -> `plot_violins.m`
 
-There is also an additional folder for storing outputs:
+There is also an additional folder for storing outputs, with examples included for optimisation at one Cc level
 
 Outputs - for storing outputs of the enzyme optimisation within subfolders:
 - `Data` - contains `Results_optimization_rice_new_3.xlsx` - an Excel workbook containing all results of the model optimisations
 - `Enzymes` - BestMatrix gives the optimal distribution of Vmax values for 67 photosynthetic enzymes (V1-V59)
 - `Metabolites` - dplot gives change in metabolite concentrations (which reach steady state at the end of the optimisation)
-- `Workspaces` - MATLAB workspaces saved after running gpmain simulation
+- `Workspaces` - MATLAB workspaces saved after running gpmain simulations
