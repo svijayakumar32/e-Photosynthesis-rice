@@ -1,7 +1,7 @@
 % Produce violin plots for enzyme sensitivity analysis using the violinplot
 % function from cobratoolbox (https://github.com/opencobra/cobratoolbox/blob/master/external/base/utilities/violinPlots/violinplot.m)
 %% Load results from 2000 node test simulation
-load output_enzyme_adjustment_test_2000_6_new.mat; 
+load output_enzyme_adjustment_test_2000_new.mat; 
 %% Create outputs for increases in gross CO2 assimilation rate
 [IncreaseInGrossAssimilationRate_RS_130,...%two
  IncreaseInGrossAssimilationRate_RS_250,...%two
