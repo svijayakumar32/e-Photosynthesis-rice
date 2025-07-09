@@ -258,4 +258,4 @@ end
 % workspacefileName = strcat ("CO2_rice_",Ci_str,"_",task_id,".mat");
 % % Save the work space 
 % save(workspacefileName);
-save("output_enzyme_adjustment_test_2000_6_new.mat");
+save("output_enzyme_adjustment_test_2000_new.mat");
