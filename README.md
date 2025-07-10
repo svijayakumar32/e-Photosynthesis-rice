@@ -66,4 +66,4 @@ There is also an additional folder for storing outputs of the enzyme optimisatio
 - `Metabolites` - dplot gives change in metabolite concentrations (which reach steady state at the end of the optimisation)
 - `Workspaces` - MATLAB workspaces saved after running gpmain simulations
 
-The `Output` files are structured in this way so that other scripts can import/export data from this folder using relative paths, but they may be restructured to suit the user's preference.
+Note: The `Output` files are structured in this way so that other scripts can import/export data from this folder using relative paths, but they may be restructured to suit the user's preference.
