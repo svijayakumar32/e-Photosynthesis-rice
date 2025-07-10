@@ -1,7 +1,7 @@
 % This script imports data for non-optimized vs optimized enzyme concentrations in a loop
 
 % Import data from excel file containing results of e-Photosynthesis optimization using rice data 
-file = 'Outputs/rice_params/Results_optimization_rice_new_3.xlsx';
+file = 'Outputs/Results_optimization_rice_new_3.xlsx';
 
 % Define range to import data from
 non_optimized_range = 'AI5:AI30'; %
@@ -38,6 +38,6 @@ cats = categorical(cats(rows_to_keep, :)); % Remove duplicate enzymes and conver
 % Get PR constraints from optimizations at 129 ppm
 % PR_constraints_protein = PR_constraints;
 % Get protein constraints
-PR_protein_rows = readmatrix('Outputs/rice_params/Results_optimization_rice_new_3.xlsx','Sheet','129','Range','AA17:AJ23');
+PR_protein_rows = readmatrix('Outputs/Results_optimization_rice_new_3.xlsx','Sheet','129','Range','AA17:AJ23');
 PR_constraints_protein = num2cell(mean(PR_protein_rows,2));
 %writematrix(PR_constraints_protein,'PR_constraints_protein.txt');
