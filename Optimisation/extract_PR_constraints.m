@@ -2,7 +2,7 @@
 % enzyme Vmax values to PR_constraints to serve as constraints for full optimizations
 
 % Define the folder containing the Excel files
-folder_129 = 'Outputs\rice_params\enzymes\129\';
+folder_129 = 'Outputs\Enzymes\129\';
 
 % Get the list of text files containing enzyme Vmax of optimizations at 129 ppm
 optimized_129_list = dir(fullfile(folder_129, '*.txt')); % get all text files in that folder
