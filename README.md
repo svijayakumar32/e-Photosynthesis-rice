@@ -11,7 +11,7 @@ This version of e-Photosynthesis integrates species-specific temperature depende
 The workflow begins by combining species-specific equations for calculating temperature dependencies of Rubisco catalytic properties with leaf-level gas exchange measurements for Oryza sativa cv. IR64 to derive photosynthetic parameters describing Calvin-Benson-Bassham (CBB) cycle activity, i.e. Vcmax and J. 
 These photosynthetic parameters are used to re-scale enzyme activities in e-Photosynthesis before running the model to identify redistributions that are optimal for CO2 assimilation at different [CO2] levels. Following this, additional analyses are applied to evaluate strategies for increasing photosynthesis through overexpressing subsets of 2-6 enzymes to engineer improved photosynthesis under drought stress, current ambient [CO2] and future elevated [CO2].
 
-## Files
+## Structure
 The files within the main repository contains scripts, variables and data adapted from the version of e-Photosynthesis stored in https://github.com/cropsinsilico/C3-metabolic-and-leaf-model.
 All code licensing information is detailed in `LICENSE`.
 
@@ -42,7 +42,8 @@ The Scripts sub-folder contains:
 4) Sensitivity Analysis
    - a single script used to evaluate the effect of variability in protein expression on predicted improvements to CO2 assimilation
 
-The code is run in the following order, where the final step of each analysis plots figures:
+## Running the Analysis
+The code is run in the following order, where the final script of each analysis plots the results:
 
 1. CO2 response fitting 
    - `msuRACiFit_params.R` - > `plot_limitations_new.m`
@@ -64,3 +65,5 @@ There is also an additional folder for storing outputs of the enzyme optimisatio
 - `Enzymes` - BestMatrix gives the optimal distribution of Vmax values for 67 photosynthetic enzymes (V1-V59)
 - `Metabolites` - dplot gives change in metabolite concentrations (which reach steady state at the end of the optimisation)
 - `Workspaces` - MATLAB workspaces saved after running gpmain simulations
+
+The `Output` files are structured in this way so that other scripts can import/export data from this folder using relative paths, but they may be restructured to suit the user's preference.
