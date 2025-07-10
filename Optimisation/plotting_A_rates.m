@@ -1,7 +1,7 @@
 % Plot assimilation rates for rice data
 
 % Import assimilation rates from results file
-file = 'Outputs/rice_params/Results_optimization_rice_new_3.xlsx';
+file = 'Outputs/Results_optimization_rice_new.xlsx';
 optimized_average_As = 'G4'; % average assimilation rate from each sheet
 sheet_names = (string(num2cell([130:10:380])));
 
@@ -77,7 +77,7 @@ legend([p1, p2, p3, p4, p5],'Location', 'southeast','FontSize', 12)
 hold off
 set(gcf, 'PaperOrientation', 'landscape');
 %print(gcf,fullfile('Outputs/rice_params/graphs',"Cc_vs_Assimilation_new_strategies"),'-dpdf','-bestfit');
-%exportgraphics(gcf, fullfile('Outputs/rice_params/graphs', "Cc_vs_Assimilation_new_strategies3.pdf"), 'ContentType', 'vector', 'Resolution', 300, 'ColorSpace', 'rgb');
+%exportgraphics(gcf, fullfile('Outputs/rice_params/graphs', "Cc_vs_Assimilation_new_strategies.pdf"), 'ContentType', 'vector', 'Resolution', 300, 'ColorSpace', 'rgb');
 
 %% Plot assimilation rates' averages against Cc for strategies using twofold increases in Vmax
 figure;
@@ -108,6 +108,6 @@ ax = gca;
 ax.FontSize = 20;
 hold off
 set(gcf, 'PaperOrientation', 'landscape');
-%print(gcf,fullfile('Outputs/rice_params/graphs',"Cc_vs_Assimilation_new_strategies_twofold"),'-dpdf','-bestfit');
-%exportgraphics(gcf, fullfile('Outputs/rice_params/graphs', "Cc_vs_Assimilation_new_strategies_twofold3.pdf"), 'ContentType', 'vector', 'Resolution', 300, 'ColorSpace', 'rgb');
+%print(gcf,fullfile('Outputs/Graphs',"Cc_vs_Assimilation_new_strategies_twofold"),'-dpdf','-bestfit');
+%exportgraphics(gcf, fullfile('Outputs/Graphs', "Cc_vs_Assimilation_new_strategies_twofold.pdf"), 'ContentType', 'vector', 'Resolution', 300, 'ColorSpace', 'rgb');
 
