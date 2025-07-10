@@ -22,7 +22,7 @@ Ei(7) = Ei(4);
 Ei(9) = Ei(6);
 
 % Load average optimized Vmax modelled under Cc = 130, 250 and 360 to create stacked enzyme scenarios
-file = 'Outputs/rice_params/Results_optimization_rice_new_3.xlsx';
+file = 'Outputs/Results_optimization_rice_new_3.xlsx';
 
 % Load optimized Vmax data from sheets for 130, 250 and 360 optimizations
 optimised_Vmax_130 = readmatrix(file, 'Sheet', '130', 'Range', 'G5:G30');
