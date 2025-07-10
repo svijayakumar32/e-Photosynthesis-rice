@@ -3,7 +3,7 @@
 
 % One Cc at a time...
 % Define the folder containing the Excel files
-folder_130 = 'Outputs\rice_params\enzymes\130\';
+folder_130 = 'Outputs\Enzymes\130\';
 
 % Get the list of text files containing enzyme Vmax of optimizations at 130 ppm
 optimized_130_list = dir(fullfile(folder_130, '*.txt')); % get all text files in that folder
