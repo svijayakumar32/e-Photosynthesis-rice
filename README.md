@@ -62,6 +62,7 @@ The code is run in the following order, where the final script of each analysis 
 
 There is also an additional folder for storing outputs of the enzyme optimisation:
 - `Results_optimization_rice_new_3.xlsx` - an Excel workbook containing all results of the model optimisations
+
 There are also subfolders to save these outputs separately:
 - `Enzymes` - BestMatrix gives the optimal distribution of Vmax values for 67 photosynthetic enzymes (V1-V59)
 - `Graphs` - A location to export plots from the optimisation/sensitivity analysis
