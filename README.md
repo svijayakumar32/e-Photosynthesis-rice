@@ -60,10 +60,12 @@ The code is run in the following order, where the final script of each analysis 
 5) Sensitivity Analysis
    - `enzyme_adjustment_test_2000.m` -> `plot_violins.m`
 
-There is also an additional folder for storing outputs of the enzyme optimisation within subfolders:
-- `Data` - contains `Results_optimization_rice_new_3.xlsx` - an Excel workbook containing all results of the model optimisations
+There is also an additional folder for storing outputs of the enzyme optimisation:
+- `Results_optimization_rice_new_3.xlsx` - an Excel workbook containing all results of the model optimisations
+There are also subfolders to save these outputs separately:
 - `Enzymes` - BestMatrix gives the optimal distribution of Vmax values for 67 photosynthetic enzymes (V1-V59)
+- `Graphs` - A location to export plots from the optimisation/sensitivity analysis
 - `Metabolites` - dplot gives change in metabolite concentrations (which reach steady state at the end of the optimisation)
 - `Workspaces` - MATLAB workspaces saved after running gpmain simulations
 
-Note: The `Output` files are structured in this way so that other scripts can import/export data from this folder using relative paths, but they may be restructured to suit the user's preference.
+Note: The `Output` files are structured in this way so that other scripts can import/export data from this folder using relative paths, but they may be restructured to suit the user's preferences.
