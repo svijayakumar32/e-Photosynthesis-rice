@@ -46,5 +46,5 @@ To run the full analysis:
 This allows the script to run from any environment within the directory.
 
 ## Plotting (Optional)
-`plot_limitations_new` re-plots the CO2 response curves by importing the fit data from R into MATLAB.
+`plot_limitations_new.mat` re-plots the CO2 response curves by importing the fit data from R into MATLAB.
 
