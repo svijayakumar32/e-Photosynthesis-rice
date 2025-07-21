@@ -17,7 +17,7 @@ The evolutionary algorithm is run using the following scripts:
 These files are called by scripts in the `gpmain` folder, which optimise the model at a specific CO2 concentration (Cc = 130-380 umol mol^-1 at intervals of 10 umol mol^-1).
 - Simulations can be run by submitting single scripts or arrays (to run the same program multiple times).
 - Running `job_array_gpmain_rice_129.sh` creates the photorespiratory constraints for all other simulations, so it must be run *first*.
-- `extract_PR_constraints.m` imports the results of optimisation at Cc = 129 umol mol-1, then averages and exports PR enzyme Vmax values to serve as constraints for full optimisations
+- `extract_PR_constraints.m` imports the results of optimisation at Cc = 129 umol mol^-1, then averages and exports PR enzyme Vmax values to serve as constraints for full optimisations
 
 As the optimisation process is computationally intensive, it is recommended that users run the simulations using a high performance computing (HPC) cluster, allotting sufficient memory of 8GB per job.
 
@@ -39,7 +39,7 @@ For example, a job script named `job_array_gpmain_rice_xxx.sh` can be submitted 
 `sbatch job_array_gpmain_rice_xxx.sh`
 
 After completing the optimisations, the following scripts are useful for saving the outputs of the optimisation and importing them for further analyses:
-- `extract_optimization_results.m` reads in optimisation results for each Cc (130-380 umol mol-1) stored in `.txt` files in Outputs/Enzymes and averages them.
+- `extract_optimization_results.m` reads in optimisation results for each Cc (130-380 umol mol^-1) stored in `.txt` files in Outputs/Enzymes and averages them.
 - `import_optimization_results.m` imports results data for non-optimised and optimised enzyme concentrations for further analyses. 
-- `CalculateGrossAssimilation` calculates gross CO2 assimilation for the enzyme stacking strategies (Stress/Current/Future, termed here as Low/Ambient/Elevated) using non-optimised and optimised Vmax data of targeted enzymes at Cc = 130, 250 and 360 umol mol^-1 - these are plotted in Figure 5
-- `plotting_A_rates.m` plots assimilation rates for each Cc (130-380) for non-optimised and optimised enzyme concentrations as well as the enzyme stacking strategies (Stress/Current/Future)
+- `CalculateGrossAssimilation.m` calculates gross CO2 assimilation for the enzyme stacking strategies (Stress/Current/Future, termed here as Low/Ambient/Elevated) using non-optimised and optimised Vmax data of targeted enzymes at Cc = 130, 250 and 360 umol mol^-1 - these are plotted in Figure 5
+- `plotting_A_rates.m` plots assimilation rates for each Cc (130-380 umol mol^-1) for non-optimised and optimised enzyme concentrations as well as the enzyme stacking strategies (Stress/Current/Future)
