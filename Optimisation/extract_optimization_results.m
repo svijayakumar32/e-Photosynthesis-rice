@@ -1,7 +1,4 @@
-% Read in optimization results for each Cc (130-380) and average the results - can I
-% automate this for all Cc levels at one?
-
-% One Cc at a time...
+% Read in optimization results for each Cc (130-380) and average the results one Cc at a time
 % Define the folder containing the Excel files
 folder_130 = 'Outputs\Enzymes\130\';
 
@@ -28,19 +25,6 @@ combined_130_matrix_new = vertcat(combined_130_matrix(2:8,:), ...
 % Average across the columns for each enzyme Vmax
 avg_optimized_130 = mean(combined_130_matrix_new,2);
 
-% Update results in file
-writematrix(combined_130_matrix_new,'Results_optimization_rice_new_2.xlsx','Sheet','130','Range','I4')
-
-% %% Convert Vmax to protein (WORK IN PROGRESS)
-% % Load kcat and MW data
-% Enzyme=importdata('MW&Kcat.txt');
-% MWKcat=Enzyme.data;
-% %MWKcat([7,9,12],:) = []; %remove rows corresponding to V8, V10 and V16
-% % Create empty cell to store protein concentrations
-% combined_130_matrix_new(1,:) = [];
-% combined_130_protein = cell(numel(optimized_130_list), 1);
-% % Loop over the rows to obtain
-%     combined_130_protein{1} = (combined_130_matrix_new(1)/MWKcat(1,2))*(MWKcat(1,3)/1000)*1.1;
 % for j = 2:numel(combined_130_matrix_new)
 %     % Calculate the protein amount
 %     combined_130_protein{j} = (combined_130_matrix_new(j)/MWKcat(j,2))*(MWKcat(j,3)/1000);
