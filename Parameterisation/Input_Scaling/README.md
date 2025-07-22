@@ -6,5 +6,3 @@ This calculation is included in `gpmain` and other scripts so does not need to b
 - `Jmax_adj_simple.m` runs model calibration to find optimal αEnzymes by minimising SSR between assimilation rates of FvCB and e-Photosynthesis models in the RuBP-regeneration limited range of [CO2]
 
 - `Vcmax_adj_simple.m` - runs model calibration to find optimal αRubisco by minimising SSR between assimilation rates of FvCB and e-Photosynthesis models in the Rubisco limited range of [CO2]
-
-- `plot_scaling_factors.m` plots sum-of-squared-residual (SSR) values and scaling factors obtained from Jmax_adj_simple and Vcmax_adj_simple
