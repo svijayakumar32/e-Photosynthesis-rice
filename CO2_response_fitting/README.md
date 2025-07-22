@@ -44,7 +44,3 @@ To run the full analysis:
    `source(here("Scripts", "msuRACiFit_rice_params.R"))`.
 
 This allows the script to run from any environment within the directory.
-
-## Plotting (Optional)
-`plot_limitations_new.mat` re-plots the CO2 response curves by importing the fit data from R into MATLAB.
-
