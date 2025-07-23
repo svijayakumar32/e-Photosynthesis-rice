@@ -46,19 +46,19 @@ The Scripts sub-folder contains:
 The code is run in the following order, where the final script of each analysis plots the results:
 
 1. CO2 response fitting 
-   - `msuRACiFit_params.R` - > `plot_limitations_new.m`
+   - `msuRACiFit_params.R` 
    
 2(a). Parameterisation/Input_Scaling 
-   - `Jmax_adj_simple.m` -> `Vcmax_adj_simple.m` -> `plotting_scaling_factors.m`
-  
+   - `Jmax_adj_simple.m` -> `Vcmax_adj_simple.m`
+     
 2(b). Parameterisation/Model_Comparison
-   - `Farq_ePhoto_comparison_new` -> `plot_A_Cc_new.m`
+   - `Farq_ePhoto_comparison_new` 
    
 3) Optimisation
-   - `job_gpmain_rice_129_new.m` -> `job_gpmain_rice_130...380_new.m` -> `CalculateGrossAssimilation.m` -> `plotting_A_rates.m`
+   - `job_gpmain_rice_129_new.m` -> `job_gpmain_rice_130...380_new.m` -> `CalculateGrossAssimilation.m` 
    
 5) Sensitivity Analysis
-   - `enzyme_adjustment_test_2000.m` -> `plot_violins.m`
+   - `enzyme_adjustment_test_2000.m` 
 
-There is also an additional folder for storing outputs of the enzyme optimisation.
-Note: The `Output` files are structured in this way so that other scripts can import/export data from this folder using relative paths, but they may be restructured to suit the user's preferences.
+There is also an additional folder containing a blank template file for storing outputs of the enzyme optimisation (`Results_optimization_rice_template`).
+Note: The structure of `Results_optimization_rice_template` is such that other scripts can import/export data from this folder using relative paths, but they may be restructured to suit the user's preferences.
