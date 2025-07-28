@@ -90,14 +90,6 @@ summary_cubic
 summary_quartic <- summary(poly_model4)
 summary_quartic
 
-# The coefficients for the 4th-degree polynomial indicate a very steep model, which could cause values to escalate or drop rapidly, especially near the boundaries or beyond the range of the data. 
-# So this is not likely to be an appropriate model, especially for fitting only 6 data points.
-# When comparing fit summaries of the quadratic and cubic models, the cubic model explains a higher percentage of the variability (96.16% vs. 93.73%).
-# The cubic model has a slightly lower RSE and slightly higher adjusted $R^{2}$ value, so it fits slightly better to the data than the quadratic as it includes an extra term - adding to complexity. 
-# On the other hand, the quadratic model doesn't explain as much variance, but it is penalised less for including fewer predictors. 
-# It is also better than the cubic model in terms of statistical significance 
-# (P-val sig \**.*\* for intercept and quadratic term in the quadratic model = significant at 10% level vs. none of the terms being significant for the cubic model).
-
 # Extract the fit coefficients for the quadratic and cubic models:
 
 coef_quad <- coef(poly_model2)
@@ -232,9 +224,6 @@ ggplot(plot_data,
        ylab("Residuals") +
        theme_minimal()
 
-# There is no observable pattern in the scatter of residuals and they are close to the RSE values, which suggests the models are appropriate and have captured the underlying relationship between leaf temperature and activation state.
-# Even if some of the residual values are a bit higher, they are all \<10.
-
 # Compute MSE, RMSE and AIC for the models:
 
 mse_quad <- mean((y - y_pred_quad)^2)
@@ -249,5 +238,3 @@ aic_quad <- AIC(poly_model2)
 aic_quad
 aic_cubic <- AIC(poly_model3)
 aic_cubic
-
-# The cubic has a lower MSE and AIC but there is not that much difference between the two AIC values.
