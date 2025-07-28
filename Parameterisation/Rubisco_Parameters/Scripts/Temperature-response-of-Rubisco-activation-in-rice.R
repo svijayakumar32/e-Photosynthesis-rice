@@ -27,12 +27,6 @@ library(ggplot2)
 
 # Alternatively, you can load data from the .csv file compiled using one of the automated tools: 
 
-# These points are extracted using Plot Digitizer:
-
-# plot_data <- read.csv("Data/Fig_4A-plot-data.csv")
-# x <- plot_data$x # Temperature
-# y <- plot_data$y # Activation state (%)
-
 # These points are extracted using Web Plot Digitizer:
 
 plot_data <- read.csv("Data/Fig_4A_plot_data.csv", 
