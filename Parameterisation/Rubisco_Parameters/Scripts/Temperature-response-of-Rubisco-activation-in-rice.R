@@ -12,10 +12,12 @@ library(ggplot2)
 # There is published data in Fig 4A of [Makino and Sage (2007)](https://academic.oup.com/pcp/article/48/10/1472/1938331),
 # which plots the change in activation state across temperatures for rice: Data/Makino_Sage_Fig_4-01.png.
 
-# To be able to extract this data, the points can be estimated manually using measuring tools or software such as:
+# To be able to extract this data, the points can be estimated manually or using measuring tools or software such as:
 # [GraphReader](https://www.graphreader.com/)
 # [PlotDigitizer](https://plotdigitizer.com/app) 
 # [WebPlotDigitizer](https://automeris.io/).
+
+# The points can then be saved in a .csv file to be loaded later (`Fig_4A-plot-data.csv`).
 
 # Define the data points:
 
@@ -23,7 +25,7 @@ library(ggplot2)
 # x <-c(16,20,25,32,37,41) # Temperature
 # y <-c(85,85,80,73,69,48) # Activation state (%)
 
-# Alternatively, you can load data from a .csv file compiled using one of the automated tools: 
+# Alternatively, you can load data from the .csv file compiled using one of the automated tools: 
 
 # These points are extracted using Plot Digitizer:
 
@@ -33,7 +35,7 @@ library(ggplot2)
 
 # These points are extracted using Web Plot Digitizer:
 
-plot_data <- read.csv("Data/Fig_4A_plot_data_2.csv", 
+plot_data <- read.csv("Data/Fig_4A_plot_data.csv", 
                        header = FALSE)
 
 # Convert activation state from percentage to decimal
