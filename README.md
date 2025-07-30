@@ -46,10 +46,11 @@ The code is run in the following order, where the final script of each analysis 
 1. CO2 response fitting 
    - `msuRACiFit_params.R` 
    
-2(a). Parameterisation/Input_Scaling 
+2. Parameterisation
+(a) Input_Scaling 
    - `Jmax_adj_simple.m` -> `Vcmax_adj_simple.m`
      
-2(b). Parameterisation/Model_Comparison
+(b) Model_Comparison
    - `Farq_ePhoto_comparison_new` 
    
 3) Optimisation
