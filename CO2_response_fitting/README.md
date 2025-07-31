@@ -9,11 +9,11 @@ All core logic is contained in `msuRACiFit_rice_params.R`, located in the `Scrip
 The `Data/' subdirectory contains the gas exchange data files used in the analysis.
 
 - Raw data:
-`Gas_exchange_measurement_WT_plants.xls`
+`Gas_exchange_measurement_WT_plants.csv`
 
 - Cleaned input files:
 These are named using the pattern:
-`IR64-A009-07-33-05-0x_Wildtypex.xlsx`
+`IR64-A009-07-33-05-0x_Wildtypex.csv`
 
 ## Requirements
 Running the code requires installation of the following R packages:
