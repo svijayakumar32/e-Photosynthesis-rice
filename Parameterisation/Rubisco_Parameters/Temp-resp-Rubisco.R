@@ -29,7 +29,7 @@ library(ggplot2)
 # Define the data points:
 
 # Use manual estimates
-# x <-c(16,20,25,32,37,41) # Temperature
+# x <-c(16,20,25,32,37,41) # Temperature (°C)
 # y <-c(85,85,80,73,69,48) # Activation state (%)
 
 # Alternatively, you can load data from the .csv file compiled using one of the automated tools: 
@@ -44,7 +44,7 @@ plot_data$V2<- plot_data$V2/100
 
 # Specify variables:
 
-x <- plot_data$V1 # Temperature (C)
+x <- plot_data$V1 # Temperature (°C)
 y <- plot_data$V2 # Activation state (proportion)
 
 print(plot_data)
