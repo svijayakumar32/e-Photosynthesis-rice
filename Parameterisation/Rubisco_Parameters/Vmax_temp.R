@@ -1,6 +1,14 @@
-# Set working directory:
+# Set the working directory by choosing a folder interactively
 
-setwd("C:/Users/path/to/main_code_repository")
+# Install the rChoiceDialogs package
+install.packages("rChoiceDialogs")
+
+# Load rChoiceDialogs
+library(rChoiceDialogs)
+
+# Set the working directory
+setwd(rchoose.dir(default = getwd(),
+            caption = "Select Directory"))
 
 # Load libraries:
 
