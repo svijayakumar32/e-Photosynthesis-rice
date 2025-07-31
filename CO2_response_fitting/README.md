@@ -32,7 +32,7 @@ To run the full analysis:
 
 3. Run the script using one of the following approaches:
 
-     (a) Modify the setwd() line in `msuRACiFit_rice_params.R` to match your local path to the repository, then run:
+     (a) Modify the setwd() line in `msuRACiFit_params.R` to match your local path to the repository, then run:
      `source("Scripts/x_params.R")`
    
      (b) Alternatively, install the here package using:
