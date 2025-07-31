@@ -59,6 +59,3 @@ The code is run in the following order, where the final script of each analysis 
    
 5) Sensitivity Analysis
    - `enzyme_adjustment_test_2000.m` 
-
-There is also an additional folder containing a blank template file for storing outputs of the enzyme optimisation (`Results_optimization_rice_template`).
-Note: The structure of `Results_optimization_rice_template` is such that other scripts can import/export data from this folder using relative paths, but they may be restructured to suit the user's preferences.
