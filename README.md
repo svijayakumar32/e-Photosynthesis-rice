@@ -47,12 +47,10 @@ The code is run in the following order, where the final script of each analysis 
    - `msuRACiFit_params.R`
       
 2. Parameterisation
-   
-(a) Input_Scaling
-   - `Jmax_adj_simple.m` -> `Vcmax_adj_simple.m`
-     
-(b) Model_Comparison
-   - `Farq_ePhoto_comparison_new` 
+   - (a) Input_Scaling
+      - `Jmax_adj_simple.m` -> `Vcmax_adj_simple.m`
+   - (b) Model_Comparison
+      - `Farq_ePhoto_comparison_new` 
    
 3) Optimisation
    - `job_gpmain_rice_129_new.m` -> `job_gpmain_rice_130...380_new.m` -> `CalculateGrossAssimilation.m` 
