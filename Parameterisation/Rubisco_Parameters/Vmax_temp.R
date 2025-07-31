@@ -151,9 +151,7 @@ dHa_norm <- as.numeric(norm_coefficients["dHa_VoVc"])
 Bernacchi_PrPs_ratio_Tp <- (c_norm * exp(-dHa_norm / (R * Tp)))
 print(Bernacchi_PrPs_ratio_Tp)
 
-# This ratio is different from the other two ratios since we re-scaled the values and obtained a new parameter estimate for c.
-
 # Multiply the Bernacchi ratio at Tp by the Makino ratio at 25°C:
 
-Makino_PrPs_ratio_Tp <- Makino_PrPs_ratio_25*Bernacchi_PrPs_ratio_Tp
-print(Makino_PrPs_ratio_Tp)
+Makino_PrPs_ratio_Tp2 <- Makino_PrPs_ratio_25*Bernacchi_PrPs_ratio_Tp
+print(Makino_PrPs_ratio_Tp2)
