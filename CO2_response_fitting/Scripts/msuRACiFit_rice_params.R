@@ -1,8 +1,17 @@
-# Set working directory
-setwd("C:/Users/path/to/main_code_repository")
+# Set the working directory by choosing a folder interactively
+
+# Install the rChoiceDialogs package
+install.packages("rChoiceDialogs")
+
+# Load rChoiceDialogs
+library(rChoiceDialogs)
+
+# Set the working directory
+setwd(rchoose.dir(default = getwd(),
+            caption = "Select Directory"))
 
 # Install A/Ci fitting package if necessary
-  
+
 # msuRACiFit is a package of R scripts used to fit CO2 response curves developed by Thomas Sharkeys lab at Michigan State University.
 
 # Source Code:
@@ -11,13 +20,10 @@ setwd("C:/Users/path/to/main_code_repository")
 # Publication:
 # <https://doi.org/10.1111/pce.14153>
 
-# Install the package using devtools:
+# Install msuRACiFit package using devtools or remotes:
 
 library(devtools)
-devtools::install_github("poales/msuRACiFit")
-
-# or remotes:
-
+devtools::install_github("poales/msuRACiFit") # OR
 # remotes::install_github("poales/msuRACiFit")
 
 # Load the here, msuRACiFit and readxl libraries:
@@ -26,22 +32,22 @@ library(here)
 library(readxl)
 library(msuRACiFit)
 
-# Using 'here' roots the file path to the project environment.
+# Using 'here' roots the file path to the R environment.
 
 # Specify an output directory:
 
 output_path <- here("Outputs", "Parameters")
 
-# Import Excel files containing gas exchange data:
+# Import csv files containing gas exchange data:
 
-A330502WT1 <- read_excel(here("Data","IR64-A009-07-33-05-02_Wildtype1.xlsx"))
-A330502WT2 <- read_excel(here("Data","IR64-A009-07-33-05-02_Wildtype2.xlsx"))
-A330504WT1 <- read_excel(here("Data","IR64-A009-07-33-05-04_Wildtype1.xlsx"))
-A330504WT2 <- read_excel(here("Data","IR64-A009-07-33-05-04_Wildtype2.xlsx"))
-A330506WT1 <- read_excel(here("Data","IR64-A009-07-33-05-06_Wildtype1.xlsx"))
-A330506WT2 <- read_excel(here("Data","IR64-A009-07-33-05-06_Wildtype2.xlsx"))
-A330509WT1 <- read_excel(here("Data","IR64-A009-07-33-05-09_Wildtype1.xlsx"))
-A330509WT2 <- read_excel(here("Data","IR64-A009-07-33-05-09_Wildtype2.xlsx"))
+A330502WT1 <- read.csv(here("Data","IR64-A009-07-33-05-02_Wildtype1.csv"))
+A330502WT2 <- read.csv(here("Data","IR64-A009-07-33-05-02_Wildtype2.csv"))
+A330504WT1 <- read.csv(here("Data","IR64-A009-07-33-05-04_Wildtype1.csv"))
+A330504WT2 <- read.csv(here("Data","IR64-A009-07-33-05-04_Wildtype2.csv"))
+A330506WT1 <- read.csv(here("Data","IR64-A009-07-33-05-06_Wildtype1.csv"))
+A330506WT2 <- read.csv(here("Data","IR64-A009-07-33-05-06_Wildtype2.csv"))
+A330509WT1 <- read.csv(here("Data","IR64-A009-07-33-05-09_Wildtype1.csv"))
+A330509WT2 <- read.csv(here("Data","IR64-A009-07-33-05-09_Wildtype2.csv"))
 
 # Store the files in a list:
 
@@ -67,17 +73,20 @@ datasets <- list(c(A330502WT1),
 # Kcair (Pa) = Kcair(umol mol -1) * 1000 / 1000000 * Patm,
 # Ko (kPa) = O(Pa) / ((Kcair(Pa) / Kc(Pa)) - 1)/1000
 
-# Create vectors of mean temperature and pressure:
-
+# Create output vectors of mean and SEM for temperature and pressure:
 
 mean_temps <- numeric(length = 8) 
 mean_press <- numeric(length = 8)
+sem_mean_temps <- numeric(length = 8) 
+sem_mean_press <- numeric(length = 8)
+
+# Calculate mean and SEM for temperature and pressure:
 
 for (i in seq_along(datasets)) { 
   mean_temps[i] <- mean(datasets[[i]]$Tleaf) 
   mean_press[i] <- mean(datasets[[i]]$Press)
-  sem_mean_temps <- sd(mean_temps) / sqrt(length(mean_temps))
-  sem_mean_press <- sd(mean_press) / sqrt(length(mean_press))
+  sem_mean_temps[i] <- sd(mean_temps) / sqrt(length(mean_temps))
+  sem_mean_press[i] <- sd(mean_press) / sqrt(length(mean_press))
 }
 
 # Call the calcgammastar function with different temperature inputs and get outputs saved in a single vector for 8 files:
@@ -100,10 +109,10 @@ write.csv(Gstars_Pa_rice,Gstars_Pa_rice_file) #Pa
 
 # Alternatively, to fit data using the Shiny app:
 # Run msuRACiFit::genApp() 
- ## Select *O.sativa* as preset plant
- ## Fill in the average Tleaf and Pa for each curve
- ## Generate guesses and fits
- ## Save outputs as .png and csv tables
+## Select *O.sativa* as preset plant
+## Fill in the average Tleaf and Pa for each curve
+## Generate guesses and fits
+## Save outputs as .png and csv tables
 
 # Calculate Kc and Kcair for our Tleaf values in umol mol-1, then convert them into Pa before working out Ko.
 
