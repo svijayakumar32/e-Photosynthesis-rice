@@ -1,7 +1,14 @@
-# Set working directory:
+# Set the working directory by choosing a folder interactively
 
-setwd("C:/Users/path/to/main_code_repository")
+# Install the rChoiceDialogs package
+install.packages("rChoiceDialogs")
 
+# Load rChoiceDialogs
+library(rChoiceDialogs)
+
+# Set the working directory
+setwd(rchoose.dir(default = getwd(),
+            caption = "Select Directory"))
 # Load libraries:
 
 library(ggplot2)
@@ -32,17 +39,17 @@ library(ggplot2)
 plot_data <- read.csv("Data/Fig_4A_plot_data.csv", 
                        header = FALSE)
 
-# Convert activation state from percentage to decimal
+# Convert activation state from percentage to decimal fraction
 plot_data$V2<- plot_data$V2/100
 
 # Specify variables:
 
-x <- plot_data$V1 # Temperature
-y <- plot_data$V2 # Activation state (%)
+x <- plot_data$V1 # Temperature (C)
+y <- plot_data$V2 # Activation state (proportion)
 
 print(plot_data)
 
-# Plot the points, setting y-axis breaks at 20% intervals:
+# Plot the points, setting y-axis breaks at intervals of 0.2:
 
 ggplot(plot_data, 
        aes(x, y)) +
@@ -56,7 +63,7 @@ ggplot(plot_data,
        scale_y_continuous(limits = c(0, 1.2), 
                           breaks = seq(0.2, 1.2, by = 0.2)) +
        labs(x = "Leaf temperature (°C)", 
-            y = "Rubisco activation (%)") +
+            y = "Rubisco activation") +
        theme_minimal()
 
 
@@ -154,7 +161,7 @@ ggplot(plot_data,
   scale_y_continuous(limits = c(0, 1.2), 
                      breaks = seq(0.2, 1.2, by = 0.2)) +
   labs(x = "Leaf temperature (°C)", 
-       y = "Rubisco activation (%)",
+       y = "Rubisco activation",
        color = "Polynomial Fit") +
   theme_minimal() +
   scale_color_manual(
