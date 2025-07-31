@@ -124,108 +124,11 @@ y <- Temp_Range$Vo_Vc_ratio # Vo/Vc ratio
 
 # Define an exponential model with non-linear parameters using this form of the Arrhenius equation.
 
-# Create a fit type for a custom nonlinear model using nlsLM():
+# Create a fit type for a custom nonlinear model using nlsLM()
  
-# nlsLM() uses the Levenberg-Marquardt algorithm for nonlinear least-squares estimation:
+# nlsLM() uses the Levenberg-Marquardt algorithm for nonlinear least-squares estimation
 
-nls_model <- nlsLM(Vo_Vc_ratio ~ c_VoVc * exp(-dHa_VoVc / (R * T)),
-                                 data = Temp_Range,
-                                 start = list(c_VoVc = 0, 
-                                              dHa_VoVc = 2))
-
-# View the plot summary:
-
-summary(nls_model)
-
-# nlsLM() converged successfully so we can add the fitted values and new parameter estimates for c and dHa to Temp_Range dataframe:
-
-Temp_Range$fitted <- predict(nls_model)
-
-# Plot the non-linear fit of the model to the data:
-
-ggplot(Temp_Range, aes(x = Temp_K, y = Vo_Vc_ratio)) +
-                   geom_point() +
-                   geom_line(aes(y = fitted), color = "red") +
-                   labs(x = "Temperature (K)", 
-                        y = "Vo/Vc Ratio", 
-                        title = "Non-linear Fit for Vo/Vc")
-ggsave("Outputs/Temp_vs_VoVc_nlsLM.png")
-
-# Calculate the residuals by subtracting the fitted values from the observed responses:
-
-Temp_Range$nls_residuals <- Temp_Range$Vo_Vc_ratio - Temp_Range$fitted
-
-# Plot residuals against temperature:
-
-ggplot(Temp_Range, aes(x = Temp_K, y = nls_residuals)) +
-                       geom_point() +
-                       geom_hline(yintercept = 0, 
-                                  linetype = "dashed", 
-                                  color = "red") +
-                       scale_y_continuous(limits = c(-8e-16, +8e-16)) +
-                       labs(x = "Temperature (K)", 
-                            y = "Residuals", 
-                            title = "Non-Linear Residuals vs. Temperature")
-ggsave("Outputs/nlsLM_residuals_temp.png")
-
-# Plot residuals against fitted values:
-
-ggplot(Temp_Range, aes(x = fitted, y = nls_residuals)) +
-                       geom_point() +
-                       geom_hline(yintercept = 0, 
-                                  linetype = "dashed", 
-                                  color = "red") +
-                       scale_y_continuous(limits = c(-8e-16, +8e-16)) +
-                       labs(x = "Fitted Values", 
-                            y = "Residuals", 
-                            title = "Non-Linear Residuals vs. Fitted Values")
-ggsave("Outputs/nlsLM_residuals_fitted.png")
-
-# Calculate R-squared:
-
-SST <- sum((Temp_Range$Vo_Vc_ratio - mean(Temp_Range$Vo_Vc_ratio))^2)     # Total sum of squares
-SSR <- sum(Temp_Range$nls_residuals^2)                                    # Residual sum of squares
-R_squared <- 1 - (SSR / SST)
-print(R_squared)
-
-# Calculate the mean squared error (MSE) and Akaike Information Criterion (AIC):
-
-squared_residuals <- Temp_Range$nls_residuals^2
-
-mse <- mean(squared_residuals)
-print(mse)
-
-nls_AIC <- AIC(nls_model)
-print(nls_AIC)
-
-# Extract the nlsLM derived parameter coefficients:
- 
-coefficients <- coef(nls_model)
-c_VoVc <- as.numeric(coefficients["c_VoVc"])
-dHa_VoVc <- as.numeric(coefficients["dHa_VoVc"])
-
-# Work out the conversion ratio between Bernacchi and Makino Vo/Vc ratios at 25°C:
-
-conv_ratio <- Makino_PrPs_ratio_25/Bernacchi_PrPs_ratio_25
-
-# Predict Vo/Vc value at Tp using the estimated parameters:
-
-Bernacchi_PrPs_ratio_Tp2 <- (c_VoVc * exp(-dHa_VoVc / (R * Tp)))
-print(Bernacchi_PrPs_ratio_Tp2)
-
-# Correct for the conversion to Makino:
-
-Makino_PrPs_ratio_Tp2 <- Bernacchi_PrPs_ratio_Tp2*conv_ratio
-print(Makino_PrPs_ratio_Tp2)
-
-# Compare the two values obtained for Makino ratios at Tp and print TRUE if they are equal:
-
-are_equal <- Makino_PrPs_ratio_Tp == Makino_PrPs_ratio_Tp2
-print(are_equal)  
-
-# Normalisation fitting method
-
-# We can also compare the values by re-scaling the Vo/Vc ratio from Bernacchi so that it has a value of 1 at 25°C and then fitting the Arrhenius function using these values.
+# Compare the values by re-scaling the Vo/Vc ratio from Bernacchi so that it has a value of 1 at 25°C and then fitting the Arrhenius function using these values.
 # Divide all Vo/Vc values calculated at different temperatures by the value at 25°C:
 
 normalised_ratios <- Temp_Range$Vo_Vc_ratio/Bernacchi_PrPs_ratio_25;
@@ -245,19 +148,12 @@ dHa_norm <- as.numeric(norm_coefficients["dHa_VoVc"])
 
 # Predict the Bernacchi ratio at Tp using the parameters obtained from the non-linear fit of normalised values:
 
-Bernacchi_PrPs_ratio_Tp3 <- (c_norm * exp(-dHa_norm / (R * Tp)))
-print(Bernacchi_PrPs_ratio_Tp3)
+Bernacchi_PrPs_ratio_Tp <- (c_norm * exp(-dHa_norm / (R * Tp)))
+print(Bernacchi_PrPs_ratio_Tp)
 
 # This ratio is different from the other two ratios since we re-scaled the values and obtained a new parameter estimate for c.
 
 # Multiply the Bernacchi ratio at Tp by the Makino ratio at 25°C:
 
-Makino_PrPs_ratio_Tp3 <- Makino_PrPs_ratio_25*Bernacchi_PrPs_ratio_Tp3
-print(Makino_PrPs_ratio_Tp3)
-
-# Compare the third value obtained for Makino ratios to the first two and print TRUE if equal:
-
-are_equal <- (Makino_PrPs_ratio_Tp == Makino_PrPs_ratio_Tp3) | 
-             (Makino_PrPs_ratio_Tp2 == Makino_PrPs_ratio_Tp3)
-
-print(are_equal) 
+Makino_PrPs_ratio_Tp <- Makino_PrPs_ratio_25*Bernacchi_PrPs_ratio_Tp
+print(Makino_PrPs_ratio_Tp)
