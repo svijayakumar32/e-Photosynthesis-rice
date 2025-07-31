@@ -32,13 +32,13 @@ To run the full analysis:
 
 3. Run the script using one of the following approaches:
 
-     (a) Modify the setwd() line in `msuRACiFit_params.R` to match your local path to the repository, then run:
-     `source("Scripts/x_params.R")`
+     (a) Set your working directory using `rchoose.dir` to match your local path to the repository, then run:
+     `source("Scripts/msuRACiFit_params.R")`
    
      (b) Alternatively, install the here package using:
      `install.packages("here")`.
    
-   Then replace the `setwd()` line with:
+   Then replace the `choose_dir` line with:
    `library(here)`
    and run the script using:
    `source(here("Scripts", "msuRACiFit_rice_params.R"))`.
