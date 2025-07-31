@@ -4,7 +4,7 @@ This repository contains code for fitting CO₂ response data using the `msuRACi
 
 The analysis is fully scripted within a single .R file for portability and reproducibility.
 
-All core logic is contained in `msuRACiFit_rice_params.R`, located in the `Scripts/` folder.
+All core logic is contained in `msuRACiFit_params.R`, located in the `Scripts/` folder.
 
 The `Data/' subdirectory contains the gas exchange data files used in the analysis.
 
@@ -32,7 +32,7 @@ To run the full analysis:
 
 3. Run the script using one of the following approaches:
 
-     (a) Set your working directory using `rchoose.dir` to match your local path to the repository, then run:
+     (a) Set your working directory using `rchoose.dir()` to match your local path to the repository, then source the script:
      `source("Scripts/msuRACiFit_params.R")`
    
      (b) Alternatively, install the here package using:
@@ -41,6 +41,6 @@ To run the full analysis:
    Then replace the `choose_dir` line with:
    `library(here)`
    and run the script using:
-   `source(here("Scripts", "msuRACiFit_rice_params.R"))`.
+   `source(here("Scripts", "msuRACiFit_params.R"))`.
 
 This allows the script to run from any environment within the directory.
