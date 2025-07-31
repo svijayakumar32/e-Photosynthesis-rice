@@ -44,11 +44,11 @@ The Scripts sub-folder contains:
 The code is run in the following order, where the final script of each analysis plots the results:
 
 1. CO2 response fitting 
-   - `msuRACiFit_params.R` 
-   
+   - `msuRACiFit_params.R`
+      
 2. Parameterisation
    
-(a) Input_Scaling 
+(a) Input_Scaling
    - `Jmax_adj_simple.m` -> `Vcmax_adj_simple.m`
      
 (b) Model_Comparison
