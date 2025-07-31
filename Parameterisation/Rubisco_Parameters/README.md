@@ -33,7 +33,7 @@ PsKM12 = PsKM12_0 * (Ko_Tp)/(Ko_25); % temperature-corrected rice Kc	(liquid pha
 
 ## Temperature response of Rubisco activation state using quadratic polynomial fit (Fig 4A, Makino and Sage, 2007) 
 
-- see `Temperature-response-of-Rubisco-activation-in-rice.R` for details)
+- see `Temp-resp-Rubisco-activation.R` for details)
 
 Ru_Act = - 0.0007851 * Tp ^2 + 0.0319 * Tp + 0.5233;
 
