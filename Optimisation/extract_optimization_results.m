@@ -1,5 +1,5 @@
 % Read in optimization results for each Cc (130-380) and average the results one Cc at a time
-% Define the folder containing the Excel files
+% Define the folder containing the results
 folder_130 = 'Outputs\Enzymes\130\';
 
 % Get the list of text files containing enzyme Vmax of optimizations at 130 ppm
