@@ -26,9 +26,14 @@ The Scripts sub-folder contains:
 
 2) Parameterisation - describes modification of model inputs and parameters prior to model optimisation.
    
-   - Rubisco Parameters
+   - Rubisco Parameters:
+      - Two `.R` scripts are included to determine the temperature dependences of Vomax/Vcmax and Rubisco activation state. 
+     The values/formulas obtained are then used to modify `CM_Rate.m`.
    - Input Scaling
+     - Prior to running the scripts, the MATLAB working directory can be set interactively using `selpath = uigetdir()` 
+and subsequently added to the MATLAB path using `addpath(genpath(selpath))`. This only needs to be completed *once*.
    - Model Comparison
+     - 
 
 3) Optimisation - these are the files used to run the optimisation of e-Photosynthesis
 
