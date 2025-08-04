@@ -1,20 +1,12 @@
-%% 11/12/2024
 %% Plot A/Cc curve for measured average parameters from IRRI data and using Ac and Aj equations from Vcmax_adj_simple and Jmax_adj_simple
 % Vcmax, J and TPU parameters are the averaged values of parameters derived from fitting eight curves 
 % using the R package msuRACiFit described in Gregory et al (2021) and is available at: https://github.com/poales/msuRACiFit
-
 %% Farquhar model parameters
-param_file = 'C:/Users/xxxxx/Outputs/Parameters/complete_Fits_rice_params_all';
-Gstar_file = 'C:/Users/xxxxx/Outputs/Parameters/Gstars_rice';
-Kcair_file = 'C:/Users/xxxxx/Outputs/Parameters/Kcair_umol_rice';
-temp_file = 'C:/Users/xxxxx/Outputs/Parameters/temps_rice';
-Gm_file = 'C:/Users/xxxxx/Outputs/Parameters/gm_umol_rice';
-
-parameters = readtable(param_file,'PreserveVariableNames', true);
-Gstars_vals = readtable(Gstar_file,'PreserveVariableNames', true);
-Kcair_vals = readtable(Kcair_file,'PreserveVariableNames', true);
-Gm_vals = readtable(Gm_file,'PreserveVariableNames', true);
-temp_vals = readtable(temp_file,'PreserveVariableNames', true);
+parameters = readtable("CO2_response_fitting/Outputs/complete_Fits_rice_params_all.csv",'PreserveVariableNames', true);
+Gstar_vals = readtable("CO2_response_fitting/Outputs/Gstars_rice",'PreserveVariableNames', true);
+Kcair_vals = readtable("CO2_response_fitting/Outputs/Kcair_umol_rice",'PreserveVariableNames', true);
+temp_vals = readtable("CO2_response_fitting/Outputs/temps_rice",'PreserveVariableNames', true);
+Gm_vals = readtable("CO2_response_fitting/Outputs/gm_umol_rice",'PreserveVariableNames', true);
 
 Kcair_vals(:,1) = [];  % Remove the first column
 Gm_vals(:,1) = [];  
@@ -26,7 +18,7 @@ Gm_vals.Properties.VariableNames = arrayfun(@num2str, 1:8, 'UniformOutput', fals
 Vcmax_m = mean(parameters.VcMax);
 J = mean(parameters.J);
 TPU = mean(parameters.TPU);
-Gr = mean(Gstars_vals.x);
+Gr = mean(Gstar_vals.x);
 Rd = mean(parameters.rL);
 Gm = mean(Gm_vals{:,:}); 
 Kc_air = mean(Kcair_vals{:,:}); 
