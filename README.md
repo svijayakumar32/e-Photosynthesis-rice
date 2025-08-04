@@ -27,13 +27,15 @@ The Scripts sub-folder contains:
 2) Parameterisation - describes modification of model inputs and parameters prior to model optimisation.
    
    - Rubisco Parameters:
-      - Two `.R` scripts are included to determine the temperature dependences of Vomax/Vcmax and Rubisco activation state. 
+      - Two `.R` scripts (`Temp-resp-Rubisco.R` and `Vmax-temp.R`) determine the temperature dependences of Vomax/Vcmax and Rubisco activation state. 
      The values/formulas obtained are then used to modify `CM_Rate.m`.
+
    - Input Scaling
      - Prior to running the scripts, the MATLAB working directory can be set interactively using `selpath = uigetdir()` 
 and subsequently added to the MATLAB path using `addpath(genpath(selpath))`. This only needs to be completed *once*.
+
    - Model Comparison
-     - 
+     - Running `Farq_ePhoto_comparison_new.m` saves assimilation rates under Rubisco, RuBP regeneration and TPU limitation states for the FvCB and e-Photosynthesis models, enabling the comparison of untuned e-and tuned e-Photosynthesis model (with scaling of Vmax).
 
 3) Optimisation - these are the files used to run the optimisation of e-Photosynthesis
 
