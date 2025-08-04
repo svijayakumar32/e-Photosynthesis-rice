@@ -25,9 +25,10 @@ The Scripts sub-folder contains:
    - `msuRACiFit_rice.R` - R script containing fitting procedure for obtaining photosynthetic parameters
 
 2) Parameterisation - describes modification of model inputs and parameters prior to model optimisation.
+   
+   - Rubisco Parameters
    - Input Scaling
    - Model Comparison
-   - Rubisco Parameters
 
 3) Optimisation - these are the files used to run the optimisation of e-Photosynthesis
 
@@ -47,10 +48,12 @@ The code is run in the following order, where the final script of each analysis 
    - `msuRACiFit_params.R`
       
 2. Parameterisation
-   - (a) Input_Scaling
+   - (a) Rubisco_Parameters
+      - `Temp-resp-Rubisco.R` -> `Vmax-temp.R` - > modify `CM_Rate.m` as required
+   - (b) Input_Scaling
       - `Jmax_adj_simple.m` -> `Vcmax_adj_simple.m`
-   - (b) Model_Comparison
-      - `Farq_ePhoto_comparison_new` 
+   - (c) Model_Comparison
+      - `Farq_ePhoto_comparison_new.m` 
    
 3) Optimisation
    - `job_gpmain_rice_129_new.m` -> `job_gpmain_rice_130...380_new.m` -> `CalculateGrossAssimilation.m` 
