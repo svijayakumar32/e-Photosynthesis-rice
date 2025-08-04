@@ -22,7 +22,7 @@ The Data sub-folder contains:
    - Filenames beginning with `IR64-A009-07-33-05` contain subsets of data for each curve (Photo, Ci, Tleaf, Press)
  
 The Scripts sub-folder contains:
-   - `msuRACiFit_rice.R` - R script containing fitting procedure for obtaining photosynthetic parameters
+   - `msuRACiFit_params.R` - R script containing fitting procedure for obtaining photosynthetic parameters
 
 2) Parameterisation - describes modification of model inputs and parameters prior to model optimisation.
    
