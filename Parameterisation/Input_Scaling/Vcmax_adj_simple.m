@@ -1,15 +1,13 @@
 %% Simplified Vcmax_adj for running only the metabolic model (MetaOnly==1)
-param_file = 'C:/Users/xxxxx/Outputs/Parameters/complete_Fits_rice_params_all';
-Gstar_file = 'C:/Users/xxxxx/Outputs/Parameters/Gstars_rice';
-Kcair_file = 'C:/Users/xxxxx/Outputs/Parameters/Kcair_umol_rice';
-temp_file = 'C:/Users/xxxxx/Outputs/Parameters/temps_rice';
-Gm_file = 'C:/Users/xxxxx/Outputs/Parameters/gm_umol_rice';
-
-parameters = readtable(param_file,'PreserveVariableNames', true);
-Gstars_vals = readtable(Gstar_file,'PreserveVariableNames', true);
-Kcair_vals = readtable(Kcair_file,'PreserveVariableNames', true);
-Gm_vals = readtable(Gm_file,'PreserveVariableNames', true);
-temp_vals = readtable(temp_file,'PreserveVariableNames', true);
+%% Select working directory interactively and add to the MATLAB path
+% selpath = uigetdir();
+% addpath(genpath(selpath));
+%% Load parameters
+parameters = readtable("CO2_response_fitting/Outputs/complete_Fits_rice_params_all.csv",'PreserveVariableNames', true);
+Gstar_vals = readtable("CO2_response_fitting/Outputs/Gstars_rice",'PreserveVariableNames', true);
+Kcair_vals = readtable("CO2_response_fitting/Outputs/Kcair_umol_rice",'PreserveVariableNames', true);
+temp_vals = readtable("CO2_response_fitting/Outputs/temps_rice",'PreserveVariableNames', true);
+Gm_vals = readtable("CO2_response_fitting/Outputs/gm_umol_rice",'PreserveVariableNames', true);
 
 Kcair_vals(:,1) = [];  % Remove the first column
 Gm_vals(:,1) = [];  
@@ -20,19 +18,10 @@ Gm_vals.Properties.VariableNames = arrayfun(@num2str, 1:8, 'UniformOutput', fals
 
 Vcmax_m = mean(parameters.VcMax);
 J = mean(parameters.J);
-Gr = mean(Gstars_vals.x);
+Gr = mean(Gstar_vals.x);
 Rd = mean(parameters.rL);
 Gm = mean(Gm_vals{:,:}); 
 Kc_air = mean(Kcair_vals{:,:}); 
-
-%Farquhar model parameters
-%Vcmax_m = 134.380530667391;% Avg Estimated using msuRACiFit (Gregory et al 2021) with rice Gamma Star at 28.9C
-%J = 189.091184437385;% Avg Estimated using msuRACiFit (Gregory et al 2021) with rice Gamma Star at 28.9C
-%Gr = 49.6558492521714;%µmol mol-1
-%Rd = 1.33898789673117; %umol m-2 s-1
-%Gm = 0.545813281251705; %umol m-2 s-1
-%Kc_air = 606.946980366782;%umol mol-1
-%WeatherTemp = 28.9310407291759;
 
 Lii = 2000;%Light intensity from IRRI
 O = 210;%mbar
@@ -145,23 +134,25 @@ numbers_V = reshape(ePhoto_Matrix_V(:,4),[5,50]);
 a_Rubisco = SSR_Matrix_V(scaling_index_V, 1);
 min_SSR_V = SSR_Matrix_V(scaling_index_V, 2);
 
-% Plot scaling factors
-fig = figure;
-scatter(SSR_Matrix_V(:,1),SSR_Matrix_V(:,2),'MarkerEdgeColor',[0 0.7 0],'MarkerFaceColor',[0 0.7 0]);
-hold on
-scatter(a_Rubisco,min_SSR_V,'MarkerEdgeColor','r','MarkerFaceColor','r')
-xticks(0.5:0.2:1.5);
-xlabel('α_{Rubisco}');
-ylabel('SSR');
-
-% Set figure size
-set(fig, 'PaperUnits', 'inches');
-set(fig, 'PaperPosition', [0 0 6 4]);        % [left bottom width height]
-set(fig, 'PaperSize', [6 4]);                % Exact size of output file
-
-% Export figure
-print(fig, 'Scaling_Factor_Optimisation_for_Rubisco_carboxylation.pdf', '-dpdf', '-r300');
-
-% If running on HEC, save result to check
+% Save results
 save Vcmax_simple_new_result.mat;
-save("WeatherTemp.mat","WeatherTemp")
+save("WeatherTemp.mat","WeatherTemp");
+
+% % Plot scaling factors (optional)
+% fig = figure;
+% scatter(SSR_Matrix_V(:,1),SSR_Matrix_V(:,2),'MarkerEdgeColor',[0 0.7 0],'MarkerFaceColor',[0 0.7 0]);
+% hold on
+% scatter(a_Rubisco,min_SSR_V,'MarkerEdgeColor','r','MarkerFaceColor','r')
+% xticks(0.5:0.2:1.5);
+% xlabel('α_{Rubisco}');
+% ylabel('SSR');
+% 
+% % Set figure size
+% set(fig, 'PaperUnits', 'inches');
+% set(fig, 'PaperPosition', [0 0 6 4]);        % [left bottom width height]
+% set(fig, 'PaperSize', [6 4]);                % Exact size of output file
+% 
+% % Export figure
+% print(fig, 'Scaling_Factor_Optimisation_for_Rubisco_carboxylation.pdf', '-dpdf', '-r300');
+
+
