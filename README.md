@@ -43,7 +43,7 @@ and subsequently added to the MATLAB path using `addpath(genpath(selpath))`. Thi
   - simulations can be run by submitting single scripts or arrays (to run the same program multiple times)
   - running `job_array_gpmain_rice_129.sh` creates the photorespiratory constraints for all other simulations
 
-- gpmain scripts - called by batch job scripts to run model optimisation simulations at Cc = 130-380 umol mol-1
+- gpmain scripts - called by batch job scripts to run model optimisation simulations at Cc = 129 umol mol-1, then at Cc = 130-380 umol mol-1
 
 - `CalculateGrossAssimilation` creates stacked enzyme strategies using average optimized Vmax (1-10) modelled under Cc = 130, 250 and 360 and calculates gross assimilation 
 
