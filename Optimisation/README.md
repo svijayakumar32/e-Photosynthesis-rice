@@ -15,7 +15,8 @@ The evolutionary algorithm is run using the following scripts:
 
 ## High Performance Computing
 These files are called by scripts in the `gpmain` folder, which optimise the model at a specific CO2 concentration (Cc = 130-380 umol mol^-1 at intervals of 10 umol mol^-1).
-- Simulations can be run by submitting single scripts or arrays (to run the same program multiple times).
+- Simulations can be run by submitting single scripts or arrays (to run the same program multiple times). For each Cc input, an array of 15 batch jobs is submitted in parallel. While only 10 successful replicates are required for downstream analysis, the additional 5 jobs are included as a buffer. This overprovisioning accounts for potential failures in optimization due to convergence issues or other runtime errors that may occur in a subset of jobs.
+
 - Running `job_array_gpmain_rice_129.sh` creates the photorespiratory constraints for all other simulations, so it must be run *first*.
 - `extract_PR_constraints.m` imports the results of optimisation at Cc = 129 umol mol^-1, then averages and exports PR enzyme Vmax values to serve as constraints for full optimisations
 
