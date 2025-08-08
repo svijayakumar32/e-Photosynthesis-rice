@@ -7,4 +7,4 @@ This calculation is included in `gpmain` and other scripts so does not need to b
 
 - `Vcmax_adj_simple.m` - runs model calibration to find optimal αRubisco by minimising SSR between assimilation rates of FvCB and e-Photosynthesis models in the Rubisco limited range of [CO2]
 
-- Through running `Vcmax_adj_simple.m`, `WeatherTemp.mat` is generate for use in downstream analysis.
+- Through running `Vcmax_adj_simple.m`, `WeatherTemp.mat` is generated for use in downstream analysis.
