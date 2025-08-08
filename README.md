@@ -45,6 +45,8 @@ and subsequently added to the MATLAB path using `addpath(genpath(selpath))`. Thi
 
 - gpmain scripts - called by batch job scripts to run model optimisation simulations at Cc = 130-380 umol mol-1
 
+- `CalculateGrossAssimilation` creates stacked enzyme strategies using average optimized Vmax (1-10) modelled under Cc = 130, 250 and 360 and calculates gross assimilation 
+
 4) Sensitivity Analysis
    - a single script used to evaluate the effect of variability in protein expression on predicted improvements to CO2 assimilation
 
