@@ -30,17 +30,11 @@ To run the full analysis:
 
 2. Navigate to the repository root directory.
 
-3. Run the script using one of the following approaches:
+3. Run the `msuRACiFit_params.R` script. 
 
-     (a) Set your working directory using `rchoose.dir()` to match your local path to the repository, then source the script:
+     (a) The script installs the `rChoiceDialogs` package to interactively set the working directory (`CO2_response_fitting`) using `setwd(rchoose.dir(default = getwd(), caption = "Select Directory"))` to match your local path to the repository.
+   
+     (b) After setting the location of the new `CO2_response_fitting directory`, you can also source the script by running:
      `source("Scripts/msuRACiFit_params.R")`
-   
-     (b) Alternatively, install the here package using:
-     `install.packages("here")`.
-   
-   Then replace the `choose_dir` line with:
-   `library(here)`
-   and run the script using:
-   `source(here("Scripts", "msuRACiFit_params.R"))`.
 
 This allows the script to run from any environment within the directory.
