@@ -38,7 +38,5 @@ For example, a job script named `job_array_gpmain_rice_xxx.sh` can be submitted 
 
 `sbatch job_array_gpmain_rice_xxx.sh`
 
-After completing the optimisations, the following scripts are useful for saving the outputs of the optimisation and importing them for further analyses:
-- `extract_optimization_results.m` reads in optimisation results for each Cc (130-380 umol mol^-1) stored in `.txt` files in Outputs/Enzymes and averages them.
-- `import_optimization_results.m` imports results data for non-optimised and optimised enzyme concentrations for further analyses. 
+After completing the optimisations, the following script is useful for saving the outputs of the optimisation and importing them for further analyses:
 - `CalculateGrossAssimilation.m` calculates gross CO2 assimilation for the enzyme stacking strategies (Stress/Current/Future, termed here as Low/Ambient/Elevated) using non-optimised and optimised Vmax data of targeted enzymes at Cc = 130, 250 and 360 umol mol^-1 - these are plotted in Figure 5
