@@ -1,5 +1,19 @@
 %% Sensitivity Analysis for determining assimilation rates associated with increases 
 %% from non-optimal enzyme increases (sampled between no change from non-opt to random FC between 1-1.25 for Rubisco or 1-4 for other enzymes) 
+
+% Get absolute path of this script
+ScriptPath = mfilename('fullpath');
+
+% Locate directory containing this script
+ScriptDir = fileparts(ScriptPath);
+
+% Change directory to main e-Photosynthesis code repository
+cd(fullfile(ScriptDir,'..'));
+ePhotosynthesis_repository = pwd;
+
+% Add repository to path
+addpath(genpath(ePhotosynthesis_repository));
+
 % Load original enzyme activity levels for e-Photosynthesis (pre-adjustment)
 Eidata = importdata('Einput7.txt');
 Eio = Eidata.data(:,1);
@@ -213,8 +227,6 @@ Einput_RSAPFT = vertcat(increased_vmax_RSAPFT_rubisco,non_opt_vmax(2:3,1:end),in
 Einput=ones(37,1); 
 % Set light intensity 
 PPFDi = 2000; 
-% Set temperature
-%WeatherTemp = 28.9310407291759; 
 % Set other variables
 global pcfactor;
 pcfactor = 1;
@@ -251,11 +263,6 @@ GrossAssimilationRate_RSAP_360(n) = EPS_Drive_GRNs(Einput,CO2i_high,PPFDi,Weathe
 GrossAssimilationRate_RSAPFT_360(n) = EPS_Drive_GRNs(Einput,CO2i_high,PPFDi,WeatherTemp,0,0,Einput_RSAPFT(:,n));
 end
 %% On HEC
-% % Save assimilation rates to output text file
-% Ci_str = num2str(CO2i);
-% task_id=getenv('SLURM_ARRAY_TASK_ID');
-% % Specify unique filenames for each Ci
-% workspacefileName = strcat ("CO2_rice_",Ci_str,"_",task_id,".mat");
-% % Save the work space 
+% Save the work space 
 % save(workspacefileName);
-save("output_enzyme_adjustment_test_2000_new.mat");
+save(fullfile("Sensitivity_Analysis","output_enzyme_adjustment_test_2000_new.mat"));
