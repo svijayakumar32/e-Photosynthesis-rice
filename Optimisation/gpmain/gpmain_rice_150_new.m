@@ -18,6 +18,32 @@
 
 %%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%%
 %function gpmain_rice_all(Ci)
+% Get absolute path of this script
+ScriptPath = mfilename('fullpath');
+
+% Locate directory containing this script
+ScriptDir = fileparts(ScriptPath);
+
+% Change directory to main e-Photosynthesis code repository
+cd(fullfile(ScriptDir,'..','..'));
+ePhotosynthesis_repository = pwd;
+
+% Add repository to path
+addpath(genpath(ePhotosynthesis_repository));
+
+% Get absolute path of this script
+ScriptPath = mfilename('fullpath');
+
+% Locate directory containing this script
+ScriptDir = fileparts(ScriptPath);
+
+% Change directory to main e-Photosynthesis code repository
+cd(fullfile(ScriptDir,'..','..'));
+ePhotosynthesis_repository = pwd;
+
+% Add repository to path
+addpath(genpath(ePhotosynthesis_repository));
+
 % Load temperature file
 load("WeatherTemp.mat"); %Avg Tleaf, Original = 25C
 
@@ -274,16 +300,46 @@ PR_constraints = importdata('PR_constraints.txt');
 	    if rem(i/100,1)==0
         i
         Ci_str = num2str(CO2i);
-        task_id=getenv('SLURM_ARRAY_TASK_ID');
+        task_id = getenv('SLURM_ARRAY_TASK_ID');
+            if isempty(task_id) % if running on local machine and there is no task_id
+                task_id = 'local';  % set as 'local'
+            end
         % Specify unique filenames for each Ci
         workspacefileName = strcat ("CO2_rice_",Ci_str,"_",task_id,".mat");
-        % Save the work space 
-        save(workspacefileName);
-        %Save matrix of optimal enzyme rates to output file
-        BestMatrix=BestMatrix'; % Transpose matrix
         BestMatrixfileName = strcat ("outputenz_",Ci_str,"_",task_id,".txt");
-        d_plotfileName = strcat ("d_plot_",Ci_str,"_",task_id,".xls");
-        writematrix(BestMatrix,BestMatrixfileName);
-        writematrix(d_plot,d_plotfileName);
+        d_plotfileName = strcat ("d_plot_",Ci_str,"_",task_id,".csv");
+   
+        % Create directories to save results
+        workspaceDir = fullfile(ePhotosynthesis_repository,"Optimisation", "Results", "Workspaces");
+        if ~exist(workspaceDir, 'dir')
+            mkdir(workspaceDir);
+        end
+
+        enzymeDir = fullfile(ePhotosynthesis_repository,"Optimisation", "Results", "Enzymes");
+        if ~exist(enzymeDir, 'dir')
+            mkdir(enzymeDir);
+        end
+
+        metaboliteDir = fullfile(ePhotosynthesis_repository,"Optimisation", "Results", "Metabolites");
+        if ~exist(metaboliteDir, 'dir')
+            mkdir(metaboliteDir);
+        end
+
+        % Debug output
+        % disp("Saving workspace to:");
+        % disp(fullfile(workspaceDir, workspacefileName));
+        % 
+        % disp("Saving BestMatrix to:");
+        % disp(fullfile(enzymeDir, BestMatrixfileName));
+        % 
+        % disp("Saving metabolites to:");
+        % disp(fullfile(metaboliteDir, d_plotfileName));
+
+	    % Save the workspace 
+        save(fullfile(workspaceDir, workspacefileName));
+        % Save matrix of optimal enzyme rates to output file, transposing BestMatrix
+        writematrix(BestMatrix', fullfile("Optimisation","Results","Enzymes", BestMatrixfileName));
+        % Save .csv of metabolite concentrations
+        writematrix(d_plot, fullfile("Optimisation","Results","Metabolites", d_plotfileName));
       end
 end
